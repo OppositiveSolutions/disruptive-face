@@ -184,3 +184,30 @@ function loadLoginPage() {
 
 	});
 }
+
+function authenticate(username, password) {
+	var url = protocol + "//" + host + "/login";
+	$.ajax({
+		url : url,
+		type : "POST",
+		cache : false,
+		action : "Authenticating",
+		data : {
+			username : username,
+			password : password
+		},
+		success : function(statusMap) {
+			loadContainerPage();
+		}
+	});
+}
+
+function loadContainerPage() {
+	$.get("container.html", {
+		"_" : $.now()
+	}, function(data) {
+		$("#loginPage").remove();
+		$("#container").remove();
+		$("body").append(data);
+	});
+}
