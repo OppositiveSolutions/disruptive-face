@@ -1,0 +1,48 @@
+<div id="divSuperAdminCategoryPage" class="page">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button class="btn btn-sm btn-white pull-right" id="btnAddNewCategory">
+				Add New Category
+			</button>
+			<h3 class="panel-title">Category Master</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table-responsive noSwipe assignManagementTable">
+				<table id="tblCategory" class="table table-bordered slNo">
+					<thead>
+						<tr>
+							<th class="slNo">No</th>
+							<th>Category Name</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewCategoryPage">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content modal-sm">
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title">Add New Category</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>Category Name </label>
+						<input type="text" id="txtCategoryName" class="form-control input-sm mandatory"/>
+					</div>
+					<div class="text-center">
+						<button class="btn btn-default" id="btnAddNewCategorySave">
+							Add
+						</button>
+						<button class="btn btn-default"  data-dismiss="modal">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>

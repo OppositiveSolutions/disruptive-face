@@ -1,3 +1,0 @@
-function all(){
-	alert("all");
-}

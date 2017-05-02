@@ -4,51 +4,51 @@ $(document).ready(function() {
 	checkSession();
 });
 function checkSession() {
-	var session = false;
-	alert("session");
-	if (!session) {
-		hasher.setHash('');
-		loadLoginPage();
-	}
-	parseHash(hasher.getHash());
+	var url = protocol + "//" + host + "/login";
+	$.ajax({
+		url : url,
+		type : "GET",
+		cache : false,
+		success : function(statusMap) {
+			currentAccountDetails = statusMap.data;
+			if (statusMap.status == STATUS_OK) {
+				loadContainerPage();
+			}
+		},
+		error : function() {
+			setHashInUrl('login');
+		}
+	});
+
 }
 
 //setup crossroads
-crossroads.ignoreState = true;
-crossroads.addRoute('home', function() {
-	loadFilesAndExecutecallBack(['js/main2.js', 'css/jquery-ui.css'], function() {
-		all("ASddddddddddddddddddddd");
-	});
-
-});
-crossroads.addRoute('dashboard', function(query) {
-	alert("dash");
-
-});
-crossroads.addRoute('', function() {
-	alert("login");
-}, 1);
-
-crossroads.bypassed.add(function() {
-	hasher.setHash('');
-});
-
-crossroads.routed.add(console.log, console);
-//log all routes
-//setup hasher
-
-//only required if you want to set a default value
+//crossroads.ignoreState = true;
 if (! hasher.getHash()) {
 	console.info(hasher.getHash());
 	//hasher.setHash(DEFAULT_HASH);
 }
-function parseHash(newHash, oldHash) {
-	// second parameter of crossroads.parse() is the "defaultArguments" and should be an array
-	// so we ignore the "oldHash" argument to avoid issues.
-	console.info(newHash);
-	crossroads.parse(newHash);
-}
-
+var loginRoute = crossroads.addRoute('login', function(query) {
+	var session = false;
+	var url = protocol + "//" + host + "/login";
+	$.ajax({
+		url : url,
+		type : "GET",
+		cache : false,
+		success : function(statusMap) {
+			currentAccountDetails = statusMap.data;
+			if (statusMap.status == STATUS_OK) {
+				setHashInUrl('home');
+			}
+		},
+		error : function() {
+			loadLoginPage();
+		}
+	});
+});
+// crossroads.bypassed.add(function() {
+// setHashInUrl('login');
+// });
 //hasher.initialized.add(parseHash);
 //parse initial hash
 hasher.changed.add(parseHash);
@@ -140,10 +140,10 @@ function loadLoginPage() {
 		"_" : $.now()
 	}, function(data) {
 		$("#loginPage").remove();
+		$("#pageContainer").empty();
+		$("#container").remove();
 		$("body").append(data);
 		$("#lblSignUp").click(function() {
-			//----------signup disabled after screening
-			return;
 			window.location = protocol + "//" + window.location.host + FOLDER_NAME + "/signup.html";
 		});
 		$("#btnLogin").unbind('click');
@@ -197,6 +197,8 @@ function authenticate(username, password) {
 			password : password
 		},
 		success : function(statusMap) {
+			currentAccountDetails = statusMap.data;
+			currentAccountDetails.role = 1;
 			loadContainerPage();
 		}
 	});
@@ -209,5 +211,67 @@ function loadContainerPage() {
 		$("#loginPage").remove();
 		$("#container").remove();
 		$("body").append(data);
+		currentAccountDetails = {};
+		currentAccountDetails.role = "2";
+		initializePagesBasedOnRole();
+		$("#linkSignOut").click(function() {
+			logout();
+		});
+	});
+
+}
+
+function initializePagesBasedOnRole() {
+	switch(currentAccountDetails.role) {
+	case "1":
+		break;
+	case "2":
+		loadFilesAndExecutecallBack(['js/superadmin/home.js' + postUrl], function() {
+			initializeSuperAdminRoutes();
+			loadSuperAdminView();
+		});
+		break;
+	}
+}
+
+function parseHash(newHash, oldHash) {
+	// second parameter of crossroads.parse() is the "defaultArguments" and should be an array
+	// so we ignore the "oldHash" argument to avoid issues.
+	crossroads.parse(newHash);
+}
+
+function showPage(toPage) {
+	$(".page").hide();
+	$(toPage).show();
+}
+
+jQuery.expr[':'].contains = function(a, i, m) {
+	return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+};
+function updateLeftMenu(menuTitle) {
+	$("#leftMenuContainer").find("div.activeMenu").removeClass("activeMenu");
+	$("#leftMenuContainer").find("div:contains(" + menuTitle + ")").addClass("activeMenu");
+}
+
+function setHashInUrl(hash) {
+	var previousHash = hasher.getHash();
+	hasher.setHash(hash);
+	if (previousHash == hash) {
+		parseHash(hash);
+	}
+}
+
+function logout() {
+	var url = protocol + "//" + host + "/logout";
+	$.ajax({
+		url : url,
+		type : "GET",
+		cache : false,
+		success : function() {
+			setHashInUrl('login');
+		},
+		error : function() {
+			setHashInUrl('login');
+		}
 	});
 }
