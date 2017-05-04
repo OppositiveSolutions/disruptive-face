@@ -144,16 +144,11 @@ label {
 }
 #loginPage {
 	height:100%;
-	background:#ffffff;
-}
-#loginPage .container-fluid {
-	background:#ffffff
 }
 .postlogin-box {
-	background:#F5F5F5;
 	box-shadow:0 2px 5px rgba(0, 0, 0, 0.15);
-	margin:10px auto;
-	width:500px;
+	border-radius: 0;
+	margin:50px auto;
 }
 .postlogin-box2 {
 	margin:10px auto;
@@ -169,28 +164,22 @@ label {
 }
 .postlogin-box .panel-body {
 	padding:15px 25px;
+	border-top: 4px solid #134272;
 }
-#divStudentInfo div p> span:first-child {
-	display:inline-block;
-	width:110px;
-	font-weight:400
+.postlogin-box .panel-body .form-control {
+	border: none;
+    box-shadow: none;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    font-size: 16px;
+    height: 42px;
 }
-#divStudentInfo {
-	background-color:#fbfbfb;
-	border:1px solid #ddd;
-	border-top:1px solid #ddd;
-	margin:0 0px 20px;
-	padding:10px 10px 0;
-	font-weight:600;
-	position:relative;
+.postlogin-box .panel-body .form-group {
+	margin-bottom:25px;
 }
-#btnEditProfileInfoOfStudent {
-	margin-top:-25px;
-	position:absolute;
-	right:5px;
-	bottom:3px;
-	z-index: 999;
-	width: 69px;
+.postlogin-box .panel-body .btn {
+	padding:10px 12px;
+	border-radius:0;
 }
 .btnTag.green{
 	background-color: #5EB601;
@@ -213,7 +202,7 @@ label {
 }
 .login-links {
 	float:left;
-	padding:10px 0;
+	padding:20px 0;
 	width:100%;
 }
 .accordionCheckBox .panel-heading {
@@ -257,65 +246,13 @@ label {
 .panel-title> a:hover, .panel-title> a:focus, .panel-title> a:active {
 	color:inherit;
 }
-.vitalDashGroup {
-	margin:0px 0 0 20px;
-}
-.pager.calender-pager {
-	margin:0;
-}
-.pager.calender-pager li> a {
-	padding:1px 10px;
-	border-radius:4px;
-}
-table.vitalCalenderTableView.table-bordered {
-	margin-bottom:6px;
-}
-table.vitalCalenderTableView.table-bordered td {
-	vertical-align:middle;
-}
-table.vitalCalenderTableView.table-bordered th {
-	vertical-align:middle;
-	text-align:center;
-}
-table.vitalCalenderTableView.table-bordered .today {
-	background-color:#f5f5f5;
-}
-span.spanVitalMoreCount {
-	display:none !important;
-}
-table.vitalCalenderTableView.table-bordered th.calenderDays {
-	width:115px;
-}
-table.vitalCalenderTableView.table-bordered th.calenderDays span {
-	display:block;
-	font-size:12px;
-	font-weight:400;
-	line-height:14px;
-}
-.popover-content .form-control {
-	margin-bottom:5px;
-}
-.popover-content .text-center .btn {
-	margin-right:4px;
-}
-#vitalCalenderViewPage .colorValues {
-	float:left;
-	width:100%;
-}
-#patientVitalsDashBoardPage .colorValues {
-	margin-bottom:5px;
-}
 .margintopfive {
 	margin-top:5px;
 }
-.leaderboardTables tr td:first-child {
-	white-space:nowrap;
-	font-size:12px;
-}
-.margintopten, .login-logo, h3 {
+.margintopten, h3 {
 	margin-top:10px;
 }
-.margintopfifteen, .page .form.hidden .text-center {
+.margintopfifteen {
 	margin-top:15px;
 }
 .imgcursor, .login-links label, .accordionCheckBox h4 {
@@ -375,9 +312,6 @@ ul.image_picker_selector .thumbnail {
 }
 .fullwidth {
 	width:100%;
-}
-#body table#tblPrivileges label, #body form label.labelfont-sm {
-	font-size:14px;
 }
 #body form label, .fontsize-lg {
 	font-size:16px;
@@ -506,8 +440,8 @@ img#imgProfilePic {
 	color:#ffffff;
 }
 .logoContainer {
-	width:500px;
-	margin:0 auto;
+	background-color:#ffffff;
+	padding: 5px 15px;
 }
 .navbar .login-logo p {
 	font-size:10px;
