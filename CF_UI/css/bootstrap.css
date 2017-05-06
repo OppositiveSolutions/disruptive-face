@@ -916,7 +916,7 @@ a {
 }
 a:hover,
 a:focus {
-  color: #5eb601;
+  color: #134272;
   text-decoration: none;
 }
 a:focus {
@@ -2828,8 +2828,8 @@ fieldset[disabled] .btn {
 }
 .btn-default {
   color: #ffffff;
-  background-color: #5EB601;
-  border-color: #5EB601;
+  background-color: #134272;
+  border-color: #134272;
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -2838,8 +2838,8 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
   color: #ffffff;
-  background-color: #448301;
-  border-color: #3f7901;
+  background-color: #072442;
+  border-color: #072442;
 }
 .btn-default:active,
 .btn-default.active,
@@ -2864,11 +2864,11 @@ fieldset[disabled] .btn-default:active,
 .btn-default.disabled.active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
-  background-color: #5eb601;
-  border-color: #5eb601;
+  background-color: #134272;
+  border-color: #134272;
 }
 .btn-default .badge {
-  color: #5eb601;
+  color: #134272;
   background-color: #ffffff;
 }
 .btn-primary {
@@ -3118,7 +3118,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #5eb601;
+  color: #134272;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -4431,7 +4431,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > li > span:hover,
 .pagination > li > a:focus,
 .pagination > li > span:focus {
-  color: #5eb601;
+  color: #134272;
   background-color: #eeeeee;
   border-color: #dddddd;
 }
