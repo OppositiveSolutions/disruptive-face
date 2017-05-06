@@ -86,9 +86,6 @@ label {
 .activeMenu {
 	background:#5EB601;
 }
-.form-control {
-	color:#000000;
-}
 #loginPage {
 	height:100%;
 }
@@ -246,24 +243,13 @@ hr {
 	display:inherit;
 	overflow:hidden;
 }
-#pageContainer .page {
-	margin-top:37px;
-}
-#pageContainer .page> h3, #pageContainer .page> button.margintopfive {
-	margin-top:0;
-}
+
 #pageContainer.home-hold .page.form {
 	margin-top:44px;
 	padding-bottom:10px;
 }
 #breadcrumb ol li .glyphicon {
 	margin-right:5px;
-}
-img#imgProfilePic {
-	border:1px solid #dddddd;
-	max-width:54px;
-	border-radius:100%;
-	max-height:54px;
 }
 #patientVitalsDashboard .panel-heading .btn-group {
 	margin-right:-5px;
@@ -283,12 +269,6 @@ img#imgProfilePic {
 }
 #gchReaderView .divFormReviewOfSystem .panel-body {
 	padding-top:10px;
-}
-.navbar-fixed-top {
-	background:#ffffff;
-	border-bottom:none;
-        min-height: 75px;
-        padding-bottom: 6px;
 }
 .logo-block {
 	min-height:77px;
@@ -391,6 +371,123 @@ img#imgProfilePic {
 .margin-btm-zero {
 	margin-bottom:0;
 }
+.navbar-fixed-top {
+	background:#ffffff;
+	border-bottom:none;
+        min-height: 75px;
+        padding-bottom: 6px;
+        -webkit-box-shadow: 5px 0px 10px #eee;
+    -moz-box-shadow: 5px 0px 10px #eee;
+    box-shadow: 5px 0px 10px #eee;
+}
+.navbar-nav> li {
+	width:100%;
+}
+.navbar-nav li> div {
+	padding:10px 15px 10px 15px;
+	line-height:20px;
+	display:block;
+	position:relative;
+	cursor:pointer;
+        color:#ffffff;
+        font-size: 15px;
+}
+#leftMenuContainer> ul {
+	overflow-y:auto;
+	overflow-x:hidden;
+	height:100%;
+	margin-left:-10px;
+	margin-top: 5px;
+}
+#leftMenuContainer ul li> div.activeMenu {
+	background: #f9f9fa;
+    color: #555;
+}
+#leftMenuContainer {
+    background-color: #134272;
+}
+#leftMenuContainer li> div:hover {
+	color:#c7c2c2;
+}
+.settings-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 11px;
+}
+.logout-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 37px;
+}
+.profile-details {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9fa;
+    padding: 5px;
+    margin: 5px 10px 0 5px;
+    position: relative;
+}
+.minute-detail {
+    margin-top: 5px;
+}
+.profile-details .btn-sm {
+    padding: 1px 6px;
+    font-size: 13px;
+}
+img#imgProfilePic {
+	border:1px solid #dddddd;
+	max-width:54px;
+	border-radius:100%;
+	max-height:54px;
+}
+#pageContainer .page {
+	margin-top:10px;
+}
+.panel-default {
+    border-color: #dddddd;
+    border: none;
+    border-radius: 0;
+    -moz-box-shadow: 0 0 10px rgba(189,189,189,0.4);
+    -webkit-box-shadow: 0 0 10px rgba(189,189,189,0.4);
+    box-shadow: 0 0 10px rgba(189,189,189,0.4);
+}
+.panel-default > .panel-heading {
+    background-color: #ffffff;
+    padding: 10px;
+    background: -moz-linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(0,0,0,0.1) 100%);
+    background: -webkit-linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(0,0,0,0.1) 100%);
+}
+.panel-default > .panel-heading .btn-sm {
+    margin-top: -4px;
+    background-color: #849fbb;
+    color: #fff;
+    border-color: #849fbb;
+}
+.panel-title {
+	font-size:16px;
+	font-weight:600;
+	line-height:1;
+}
+.modal .modal-header button.close {
+	color:#ffffff;
+	font-size:30px;
+	opacity:1;
+}
+.modal-header {
+	min-height:40px;
+	padding:8px 15px;
+	color:#ffffff;
+	border-radius:6px 6px 0 0;
+	background:#134272;
+	border-bottom:none;
+}
+.modal-footer {
+	padding:8px 15px;
+	text-align:center;
+}
 /*-------------------------------*/
 .navbar .logoContainer-admin  .login-logo p {
 	font-size:9px;
@@ -458,53 +555,11 @@ ul#notificationList {
 .navbar-fixed-top .navbar-collapse {
 	border-color:#fbfbfb;
 }
-.profile-details {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9fa;
-    padding: 5px;
-    margin: 5px 10px 0 5px;
-}
-.minute-detail {
-    margin-top: 5px;
-}
+
 .menu-area {
 	padding-right:0;
 }
-#leftMenuContainer {
-    background-color: #134272;
-}
 
-.navbar-nav> li {
-	width:100%;
-}
-.navbar-nav li> div {
-	padding:10px 15px 10px 7px;
-	line-height:20px;
-	display:block;
-	position:relative;
-	cursor:pointer;
-	line-height:16px;
-}
-.navbar-nav ul li> div {
-	padding:8px 15px 8px 7px;
-}
-#leftMenuContainer> ul {
-	overflow-y:auto;
-	overflow-x:hidden;
-	height:100%;
-}
-#leftMenuContainer> ul ul {
-	padding-left:5px;
-}
-#leftMenuContainer> ul {
-	margin-right:-1px;
-	margin-left:-10px;
-	padding:0;
-}
-#leftMenuContainer li> div:hover {
-	color:#5eb601;
-}
 #leftMenuContainer li ul li> div {
 	font-size:14px;
 }
@@ -533,15 +588,7 @@ ul#notificationList {
 #leftMenuContainer ul li.hasChild.isOpen> div b.arrow.fa-angle-down {
 	display:none;
 }
-#leftMenuContainer ul li> div.activeMenu, .modal-big .gchReaderNavigationMenuContainer li> div.activeMenu {
-	background:#5eb601;
-	color:#ffffff;
-}
-#leftMenuContainer ul li {
-	list-style:none;
-	position:relative;
-	padding-left:0;
-}
+
 #leftMenuContainer> ul ul li {
 	padding-left:15px;
 }
@@ -583,50 +630,6 @@ legend {
 	width:auto;
 	margin-bottom:0;
 }
-
-.modal .modal-header button.close {
-	color:#ffffff;
-	font-size:30px;
-	opacity:1;
-}
-.modal-header {
-	min-height:40px;
-	padding:8px 15px;
-	color:#ffffff;
-	border-radius:6px 6px 0 0;
-	background:#5eb601;
-	border-bottom:none;
-}
-.modal-footer {
-	padding:8px 15px;
-	text-align:center;
-}
-.panel-title {
-	font-size:16px;
-	font-weight:400;
-	line-height:1;
-}
-.panel-heading {
-	padding:8px 10px;
-}
-.tokenPopUpLabel, #body .page.form form label .placeHolderLabel, .placeHolderLabel {
-	display:none;
-}
-.goalValueContainer {
-	font-weight:400;
-	font-size:12px;
-	background:rgba(255, 255, 255, .7);
-	padding:0 2px;
-	border:1px solid #ddd;
-	line-height:14px;
-	border-radius:4px;
-}
-.goalValue {
-	display:inline-block;
-	margin-left:3px;
-}
-
-
 .scrollBoxContainer::-webkit-scrollbar, .careProgramSrollableBlock::-webkit-scrollbar {
 	width:7px;
 }
@@ -5822,17 +5825,10 @@ tr.leaderboardHead th {
 * {
 	outline:none;
 }
-}
 @media print {
 	p.printMargin {
 		page-break-inside:avoid;
 	}
-}
-@media(max-width:540px) {
-	
-}
-@media(max-width:480px) {
-	
 }
 @media(max-width:420px) {
 	.logoContainer ul.navbar-right li a {
