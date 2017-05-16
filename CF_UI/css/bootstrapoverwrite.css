@@ -537,6 +537,23 @@ img#imgProfilePic {
 .modal-backdrop.in {
 	z-index: 1039;
 }
+.modal-body {
+	background: #f9f9fa;
+}
+.modal .tab-content {
+	    background: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+.nav-tabs > li > a {
+	color: #aaaaaa;
+}
+.nav> li> a:hover, .nav> li> a:focus, .nav .open> a, .nav .open> a:hover, .nav .open> a:focus {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #333;
+}
 /*-------------------------------*/
 .navbar .logoContainer-admin  .login-logo p {
 	font-size:9px;
