@@ -551,7 +551,7 @@ img#imgProfilePic {
 }
 .nav> li> a:hover, .nav> li> a:focus, .nav .open> a, .nav .open> a:hover, .nav .open> a:focus {
     background-color: transparent;
-    border: 1px solid transparent;
+    border: 1px solid transparent ;
     color: #333;
 }
 /*-------------------------------*/
