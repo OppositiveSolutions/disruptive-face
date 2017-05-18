@@ -17,6 +17,9 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('exam-master', function(query) {
 		showExamMasterPage();
 	});
+	crossroads.addRoute('student-details', function(query) {
+		showStudentDetailsPage();
+	});
 	crossroads.bypassed.add(function() {
 		hasher.setHash('home');
 	});
@@ -98,10 +101,22 @@ function showExamMasterPage() {
 	//$("#divAddNewCategoryPage").modal("show");
 }
 
+function showStudentDetailsPage() {
+	if ($("#divSuperAdminStudentDetailsPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/studentdetails.js' + postUrl], function() {
+			loadStudentDetailPage(true);
+		});
+		return;
+	}
+	updateLeftMenu("Student Details");
+	showPage($("#divSuperAdminStudentDetailsPage")[0]);
+}
+
 function handleSuperAdminMenuClick(menuDiv) {
 	var menuTitle = $(menuDiv).text();
 	menuTitle = menuTitle.trim();
 	var previousHash = hasher.getHash();
+	console.info(menuTitle);
 	switch(menuTitle.toLowerCase()) {
 	case "home":
 		setHashInUrl('home');
@@ -111,6 +126,9 @@ function handleSuperAdminMenuClick(menuDiv) {
 		break;
 	case  "exam master":
 		setHashInUrl('exam-master');
+		break;
+	case  "student details":
+		setHashInUrl('student-details');
 		break;
 	}
 	updateLeftMenu(menuTitle);
