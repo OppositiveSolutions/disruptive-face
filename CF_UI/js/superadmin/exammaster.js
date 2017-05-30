@@ -1,42 +1,65 @@
 function loadExamMasterPage(isShow) {
-	$.get("superadmin/exammaster.html" + postUrl, {
-		"_" : $.now()
-	}, function(data) {
-		$("#pageContainer").append(data);
-		if (isShow) {
-			showExamMasterPage();
-		}
-		$("#btnAddNewExamMasterExam").click(function() {
-			$("#divAddNewExamMasterPage").modal("show");
-		});
-		$("#divAddNewCategoryPage").on("shown.bs.modal", function() {
+	$
+		.get(
+		"superadmin/exammaster.html" + postUrl, {
+			"_": $.now()
+		},
+		function (data) {
+			$("#pageContainer").append(data);
+			if (isShow) {
+				showExamMasterPage();
+			}
+			$("#btnAddNewExamMasterExam").click(function () {
+				$("#divAddNewExamMasterPage").modal("show");
+			});
+			$("#divAddNewCategoryPage").on("shown.bs.modal", function () {
 
-		});
-		$("a[href='#divExamMasterCategoryTab']").click(function() {
-			getCategoryForExam();
-		});
-		$("#btnExamMasterExamDetailsNext").click(function() {
-			saveExamMasterExamDetails(function(obj) {
+			});
+			$("a[href='#divExamMasterCategoryTab']").click(function () {
 				getCategoryForExam();
-				var questionPaperId = obj.data.questionPaperId;
-				$("#btnExamMasterCategoryDetailsNext").attr("questionPaperId", questionPaperId);
-				$("a[href='#divExamMasterCategoryTab']").tab("show");
 			});
-		});
-		$("#btnExamMasterCategoryDetailsNext").click(function() {
-			var questionPaperId = $("#btnExamMasterCategoryDetailsNext").attr("questionPaperId");
-			saveExamMasterCategorytails(questionPaperId, function(list) {
-				createSubCategoryDetailsForEachCategory(list);
-				$("a[href='#divExamMasterSubCategoryTab']").tab("show");
-			});
-		});
-		$("#btnExamMasterSubCategoryDetailsNext").click(function() {
-			saveExamMasterSubCategorytails(function(list) {
-				$("a[href='#divExamMasterSubCategoryTab']").tab("show");
-			});
-		});
+			$("#btnExamMasterExamDetailsNext").click(function () {
+				var editMode = $(this).attr("editMode");
+				var object = $(this).attr("obj");
+				if (editMode == "1") {
+					editExamMasterExamDetails(function (obj) {
+						getCategoryForExam(function () {
+							populateExamCategoriesForEdit(object);
+						});
+						var questionPaperId = obj.data.questionPaperId;
+						$("#btnExamMasterCategoryDetailsNext").attr("questionPaperId", questionPaperId);
+						$("a[href='#divExamMasterCategoryTab']").tab("show");
+					});
+				} else {
+					saveExamMasterExamDetails(function (obj) {
+						getCategoryForExam(function () {
 
-	});
+						});
+						var questionPaperId = obj.data.questionPaperId;
+						$("#btnExamMasterCategoryDetailsNext")
+							.attr(
+							"questionPaperId",
+							questionPaperId);
+						$(
+							"a[href='#divExamMasterCategoryTab']")
+							.tab("show");
+					});
+				}
+			});
+			$("#btnExamMasterCategoryDetailsNext").click(function () {
+				var questionPaperId = $("#btnExamMasterCategoryDetailsNext").attr("questionPaperId");
+				saveExamMasterCategorytails(questionPaperId, function (list) {
+					createSubCategoryDetailsForEachCategory(list);
+					$("a[href='#divExamMasterSubCategoryTab']").tab("show");
+				});
+			});
+			$("#btnExamMasterSubCategoryDetailsNext").click(function () {
+				saveExamMasterSubCategorytails(function (list) {
+					$("a[href='#divExamMasterSubCategoryTab']").tab("show");
+				});
+			});
+
+		});
 }
 
 function saveExamMasterExamDetails(callBack) {
@@ -45,12 +68,12 @@ function saveExamMasterExamDetails(callBack) {
 		return;
 	}
 	$.ajax({
-		url : protocol + "//" + host + "/question-paper",
-		type : "POST",
-		cache : false,
-		data : JSON.stringify(obj),
-		contentType : "application/json; charset=utf-8",
-		success : function(returnMap) {
+		url: protocol + "//" + host + "/question-paper",
+		type: "POST",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function (returnMap) {
 			if (callBack != undefined) {
 				callBack(returnMap);
 			}
@@ -77,10 +100,17 @@ function validateAndReturnExamMasteExamDetails() {
 	obj.name = courseName;
 	var examDurationHours = $("#txtExamMasterExamDurationHours").val();
 	var examDurationMinutes = $("#txtExamMasterExamDurationMinutes").val();
-	if (examDurationHours == "") {
+	if (examDurationHours == "" && examDurationMinutes == "") {
 		alert("Please enter exam duration");
 		return;
 	}
+	if (examDurationHours == "") {
+		examDurationHours = 0;
+	}
+	examDurationHours = parseInt(examDurationHours);
+	examDurationMinutes = parseInt(examDurationMinutes);
+	examDurationHours = examDurationHours * 60;
+	examDurationHours = examDurationHours + examDurationMinutes;
 	obj.duration = examDurationHours;
 	var noOfQuestions = $("#txtExamMasterTotalNoOfQuestions").val();
 	if (noOfQuestions == "") {
@@ -99,10 +129,10 @@ function validateAndReturnExamMasteExamDetails() {
 
 function getCategoryForExam() {
 	$.ajax({
-		url : protocol + "//" + host + "/category",
-		type : "GET",
-		cache : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/category",
+		type: "GET",
+		cache: false,
+		success: function (obj) {
 			var list = obj.data;
 			populateCategoryForExam(list);
 		}
@@ -126,7 +156,7 @@ function populateCategoryForExam(list) {
 		$(tdForQuestion).append(inputForQuestion);
 		$(tr).append(tdForQuestion);
 
-		var inputForOption = $("<input>").addClass("form-control input-sm noOfSubcategory");
+		var inputForOption = $("<input>").addClass(	"form-control input-sm noOfSubcategory");
 		var tdForOption = $("<td>");
 		$(tdForOption).append(inputForOption);
 		$(tr).append(tdForOption);
@@ -152,12 +182,12 @@ function saveExamMasterCategorytails(questionPaperId, callBack) {
 		return;
 	}
 	$.ajax({
-		url : protocol + "//" + host + "/question-paper/category",
-		type : "POST",
-		cache : false,
-		data : JSON.stringify(obj),
-		contentType : "application/json; charset=utf-8",
-		success : function(returnMap) {
+		url: protocol + "//" + host + "/question-paper/category",
+		type: "POST",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function (returnMap) {
 			if (callBack != undefined) {
 				callBack(returnMap.data);
 			}
@@ -169,46 +199,51 @@ function saveExamMasterCategorytails(questionPaperId, callBack) {
 function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 	var shouldReturn = false;
 	var list = [];
-	$("#tblCategoryForExam tbody").find("input:checkbox:checked").each(function() {
-		var obj = {};
-		var categoryId = $(this).val();
-		var name = $(this).attr("name");
-		var tr = $(this).closest("tr")[0];
-		var noOfQuestions = $(tr).find("input:text.noOfQuestion").val();
-		if (noOfQuestions == "") {
-			alert("Please enter no. of questions");
-			shouldReturn = true;
-			return false;
-		}
-		var noOfSubCategory = $(tr).find("input:text.noOfSubcategory").val();
-		if (noOfSubCategory == "") {
-			alert("Please enter no. of sub categories");
-			shouldReturn = true;
-			return false;
-		}
-		var correctAnswerMark = $(tr).find("input:text.weightage").val();
-		if (correctAnswerMark == "") {
-			alert("Please enter right answer mark");
-			shouldReturn = true;
-			return false;
-		}
-		var negativeMark = $(tr).find("input:text.negativeMark").val();
-		if (negativeMark == "") {
-			alert("Please enter minus mark");
-			shouldReturn = true;
-			return false;
-		}
-		obj.category = {};
-		obj.questionPaperId = questionPaperId;
-		obj.category.categoryId = categoryId;
-		obj.category.name = name;
-		obj.noOfQuestions = noOfQuestions;
-		obj.noOfSubCategory = noOfSubCategory;
-		obj.correctAnswerMark = correctAnswerMark;
-		obj.negativeMark = negativeMark;
-		list.push(obj);
+	$("#tblCategoryForExam tbody").find("input:checkbox:checked")
+		.each(
+		function () {
+			var obj = {};
+			var categoryId = $(this).val();
+			var name = $(this).attr("name");
+			var tr = $(this).closest("tr")[0];
+			var noOfQuestions = $(tr).find("input:text.noOfQuestion").val();
+			if (noOfQuestions == "") {
+				alert("Please enter no. of questions");
+				shouldReturn = true;
+				return false;
+			}
+			var noOfSubCategory = $(tr).find(
+				"input:text.noOfSubcategory").val();
+			if (noOfSubCategory == "") {
+				alert("Please enter no. of sub categories");
+				shouldReturn = true;
+				return false;
+			}
+			var correctAnswerMark = $(tr).find(
+				"input:text.weightage").val();
+			if (correctAnswerMark == "") {
+				alert("Please enter right answer mark");
+				shouldReturn = true;
+				return false;
+			}
+			var negativeMark = $(tr)
+				.find("input:text.negativeMark").val();
+			if (negativeMark == "") {
+				alert("Please enter minus mark");
+				shouldReturn = true;
+				return false;
+			}
+			obj.category = {};
+			obj.questionPaperId = questionPaperId;
+			obj.category.categoryId = categoryId;
+			obj.category.name = name;
+			obj.noOfQuestions = noOfQuestions;
+			obj.noOfSubCategory = noOfSubCategory;
+			obj.correctAnswerMark = correctAnswerMark;
+			obj.negativeMark = negativeMark;
+			list.push(obj);
 
-	});
+		});
 	if (shouldReturn) {
 		return;
 	}
@@ -218,10 +253,10 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 
 function getExamMasterExams() {
 	$.ajax({
-		url : protocol + "//" + host + "/question-paper",
-		type : "GET",
-		cache : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/question-paper/all",
+		type: "GET",
+		cache: false,
+		success: function (obj) {
 			var list = obj.data;
 			populateExamMasterExams(list);
 		}
@@ -269,24 +304,25 @@ function appendLiForExamSettings(div) {
 	$(ul).empty();
 	var liForEdit = createAndReturnLiForSettingsGear("Edit Exam Details");
 	$(ul).append(liForEdit);
-	$(liForEdit).click(function() {
+	$(liForEdit).click(function () {
 		var obj = $(this).closest("tr").data("obj");
+		populateExamMasterExamForm(obj);
 	});
 	var liForSetQuestions = createAndReturnLiForSettingsGear("Set Question Paper");
 	$(ul).append(liForSetQuestions);
-	$(liForSetQuestions).click(function() {
+	$(liForSetQuestions).click(function () {
 		var obj = $(this).closest("tr").data("obj");
 	});
 
 	var liForManageSolution = createAndReturnLiForSettingsGear("Manage Solution");
 	$(ul).append(liForManageSolution);
-	$(liForManageSolution).click(function() {
+	$(liForManageSolution).click(function () {
 		var obj = $(this).closest("tr").data("obj");
 	});
 
 	var liForDelete = createAndReturnLiForSettingsGear("Delete");
 	$(ul).append(liForDelete);
-	$(liForDelete).click(function() {
+	$(liForDelete).click(function () {
 		var obj = $(this).closest("tr").data("obj");
 	});
 }
@@ -319,7 +355,8 @@ function createAndReturnFieldSet(index) {
 function createAndReturnSubCategoryDetailsDiv(panelBody, index) {
 	var divFormGroup = $("<div>").addClass("form-group");
 	var labelSubCategoryName = $("<label>").html("Subcategory name");
-	var inputCategoryName = $("<input>").attr("type", "text").addClass("input-sm form-control subcategoryName");
+	var inputCategoryName = $("<input>").attr("type", "text").addClass(
+		"input-sm form-control subcategoryName");
 	$(inputCategoryName).val("Subcategory " + index);
 	$(divFormGroup).append(labelSubCategoryName);
 	$(divFormGroup).append(inputCategoryName);
@@ -327,14 +364,16 @@ function createAndReturnSubCategoryDetailsDiv(panelBody, index) {
 
 	var divFormGroupForDescription = $("<div>").addClass("form-group");
 	var labelSubCategoryDescription = $("<label>").html("Description");
-	var inputDescription = $("<input>").attr("type", "text").addClass("input-sm form-control description");
+	var inputDescription = $("<input>").attr("type", "text").addClass(
+		"input-sm form-control description");
 	$(divFormGroupForDescription).append(labelSubCategoryDescription);
 	$(divFormGroupForDescription).append(inputDescription);
 	$(panelBody).append(divFormGroupForDescription);
 
 	var divFormGroupNoOfQuestion = $("<div>").addClass("form-group");
 	var labelSubCategoryNoOfQuestion = $("<label>").html("No. of Questions");
-	var inputNoOfQuestion = $("<input>").attr("type", "text").addClass("input-sm form-control noOfQuestions");
+	var inputNoOfQuestion = $("<input>").attr("type", "text").addClass(
+		"input-sm form-control noOfQuestions");
 	$(divFormGroupNoOfQuestion).append(labelSubCategoryNoOfQuestion);
 	$(divFormGroupNoOfQuestion).append(inputNoOfQuestion);
 	$(panelBody).append(divFormGroupNoOfQuestion);
@@ -350,12 +389,14 @@ function createSubCategoryDetailsForEachCategory(list) {
 		var noOfSubCategories = list[i].noOfSubCategory;
 		for (var j = 0; j < noOfSubCategories; ++j) {
 			var panelForSubCategory = createAndReturnPanelDiv();
-			$(panelForSubCategory).attr("questionPaperCategoryId", list[i].questionPaperCategoryId);
+			$(panelForSubCategory).attr("questionPaperCategoryId",
+				list[i].questionPaperCategoryId);
 			$(panelForSubCategory).find("div.panel-heading").remove();
 			$(panelBody).append(panelForSubCategory);
 			var label = $("<label>").html("Sub category " + parseInt(j + 1));
 			$(panelForSubCategory).find("div.panel-body").append(label);
-			createAndReturnSubCategoryDetailsDiv($(panelForSubCategory).find("div.panel-body"), parseInt(j + 1));
+			createAndReturnSubCategoryDetailsDiv($(panelForSubCategory).find(
+				"div.panel-body"), parseInt(j + 1));
 		}
 		$("#divSubCategoryDetailsContainer").append(divPanel);
 
@@ -365,22 +406,29 @@ function createSubCategoryDetailsForEachCategory(list) {
 function validateAndReturnSubcategoryDetails() {
 	var list = [];
 	var shouldReturn = false;
-	$("#divSubCategoryDetailsContainer").find("*[questionPaperCategoryId]").each(function() {
-		var obj = {};
-		var description = $(this).find("input:text.description").val();
-		var noOfQuestions = $(this).find("input:text.noOfQuestions").val();
-		var name = $(this).find("input:text.subcategoryName").val();
-		var questionPaperCategoryId = $(this).attr("questionPaperCategoryId");
-		obj.description = description;
-		obj.noOfQuestions = noOfQuestions;
-		obj.name = name;
-		if (obj.noOfQuestions == "") {
-			alert("Please enter no of questions");
-			shouldReturn = true;
-			return false;
-		}
-		list.push(obj);
-	});
+	$("#divSubCategoryDetailsContainer").find("*[questionPaperCategoryId]")
+		.each(
+		function () {
+			var obj = {};
+			var description = $(this)
+				.find("input:text.description").val();
+			var noOfQuestions = $(this).find(
+				"input:text.noOfQuestions").val();
+			var name = $(this).find("input:text.subcategoryName")
+				.val();
+			var questionPaperCategoryId = $(this).attr(
+				"questionPaperCategoryId");
+			obj.description = description;
+			obj.noOfQuestions = noOfQuestions;
+			obj.name = name;
+			obj.questionPaperCategoryId = questionPaperCategoryId;
+			if (obj.noOfQuestions == "") {
+				alert("Please enter no of questions");
+				shouldReturn = true;
+				return false;
+			}
+			list.push(obj);
+		});
 	if (shouldReturn) {
 		return;
 	}
@@ -393,12 +441,12 @@ function saveExamMasterSubCategorytails(callBack) {
 		return;
 	}
 	$.ajax({
-		url : protocol + "//" + host + "/question-paper/sub-category",
-		type : "POST",
-		cache : false,
-		data : JSON.stringify(obj),
-		contentType : "application/json; charset=utf-8",
-		success : function(returnMap) {
+		url: protocol + "//" + host + "/question-paper/sub-category",
+		type: "POST",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function (returnMap) {
 			if (callBack != undefined) {
 				callBack(returnMap.data);
 			}
@@ -406,3 +454,21 @@ function saveExamMasterSubCategorytails(callBack) {
 	});
 
 }
+
+function populateExamMasterExamForm(obj) {
+	$("#divAddNewExamMasterPage").modal("show");
+	$("#txtExamMasterExamCode").val(obj.examCode);
+	$("#txtExamMasterCourseName").val(obj.courseName);
+	obj.duration = parseInt(obj.duration);
+	var hours = obj.duration / 60;
+	hours = parseInt(hours);
+	var hoursInMinutes = hours * 60;
+	var minutes = parseInt(obj.duration) - hoursInMinutes;
+	$("#txtExamMasterExamDurationHours").val(hours);
+	$("#txtExamMasterExamDurationMinutes").val(minutes);
+	$("#txtExamMasterTotalNoOfQuestions").val(obj.noOfQuestions);
+	$("#txtExamMasterTotalNoOfOptions").val(obj.noOfOptions);
+
+}
+
+function populateExamCategoriesForEdit(obj) { }
