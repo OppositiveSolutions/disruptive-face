@@ -1,6 +1,6 @@
 function loadCategoryMasterPage(isShow) {
 	$.get("superadmin/category.html" + postUrl, {
-		"_" : $.now()
+		"_": $.now()
 	}, function(data) {
 		$("#pageContainer").append(data);
 		if (isShow) {
@@ -29,12 +29,12 @@ function saveCategory() {
 		return;
 	}
 	$.ajax({
-		url : protocol + "//" + host + "/category",
-		type : "POST",
-		cache : false,
-		data : JSON.stringify(obj),
-		contentType : "application/json; charset=utf-8",
-		success : function(obj) {
+		url: protocol + "//" + host + "/category",
+		type: "POST",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function(obj) {
 			console.info(obj);
 			getCategory();
 			$("#divAddNewCategoryPage").modal("hide");
@@ -51,12 +51,12 @@ function editCategory() {
 	var categoryId = $("#btnAddNewCategorySave").attr("categoryId");
 	obj.categoryId = categoryId;
 	$.ajax({
-		url : protocol + "//" + host + "/category",
-		type : "PUT",
-		cache : false,
-		data : JSON.stringify(obj),
-		contentType : "application/json; charset=utf-8",
-		success : function(obj) {
+		url: protocol + "//" + host + "/category",
+		type: "PUT",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function(obj) {
 			console.info(obj);
 			getCategory();
 			$("#divAddNewCategoryPage").modal("hide");
@@ -78,10 +78,10 @@ function validateAndReturnCategoryInfo() {
 
 function getCategory() {
 	$.ajax({
-		url : protocol + "//" + host + "/category",
-		type : "GET",
-		cache : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/category",
+		type: "GET",
+		cache: false,
+		success: function(obj) {
 			var list = obj.data;
 			populateCategory(list);
 		}
@@ -90,10 +90,10 @@ function getCategory() {
 
 function deleteCategory(id) {
 	$.ajax({
-		url : protocol + "//" + host + "/category/" + id,
-		type : "DELETE",
-		cache : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/category/" + id,
+		type: "DELETE",
+		cache: false,
+		success: function(obj) {
 			getCategory();
 		}
 	});
