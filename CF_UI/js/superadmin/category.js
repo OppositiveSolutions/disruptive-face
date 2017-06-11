@@ -102,6 +102,7 @@ function deleteCategory(id) {
 function populateCategory(list) {
 	var tbody = $("#tblCategory tbody")[0];
 	$(tbody).empty();
+	destroyDataTable("tblCategory");
 	for (var i = 0; i < list.length; i++) {
 		var tr = $("<tr>");
 		$("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
@@ -116,7 +117,7 @@ function populateCategory(list) {
 		appendLiForCategorySettings(settingsGear, list[i]);
 		$(tbody).append(tr);
 	}
-	initializeTable("tblCategory")
+	initializeDataTable("tblCategory")
 
 }
 

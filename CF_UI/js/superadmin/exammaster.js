@@ -189,8 +189,7 @@ function populateCategoryForExam(list) {
 		$(label).append(list[i].name);
 		$(tdForName).append(label);
 		$(tr).append(tdForName);
-		var inputForQuestion = $("<input>").addClass(
-			"form-control input-sm noOfQuestion");
+		var inputForQuestion = $("<input>").addClass("form-control input-sm noOfQuestion");
 		var tdForQuestion = $("<td>");
 		$(tdForQuestion).append(inputForQuestion);
 		$(tr).append(tdForQuestion);
@@ -329,6 +328,7 @@ function getExamMasterExams() {
 function populateExamMasterExams(list) {
 	var tbody = $("#tblExamMaster tbody")[0];
 	$(tbody).empty();
+	destroyDataTable("tblExamMaster");
 	for (var i = 0; i < list.length; i++) {
 		var tr = $("<tr>");
 		$("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
@@ -360,6 +360,7 @@ function populateExamMasterExams(list) {
 		appendLiForExamSettings(settingsGear, list[i]);
 		$(tbody).append(tr);
 	}
+	initializeDataTable("tblExamMaster");
 }
 
 function appendLiForExamSettings(div) {

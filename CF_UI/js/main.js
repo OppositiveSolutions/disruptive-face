@@ -285,7 +285,7 @@ function logout() {
 	});
 }
 
-function initializeTable(tableId, isRenderMobileView, displayStart,
+function initializeDataTable(tableId, isRenderMobileView, displayStart,
 	callBackAfterNextOrPreviousClick) {
 	try {
 		$.fn.dataTableExt.sErrMode = 'throw';
@@ -356,6 +356,7 @@ function initializeTable(tableId, isRenderMobileView, displayStart,
 			"aaSorting": [],
 			"bAutoWidth": false,
 			"responsive": true,
+			"destroy": true,
 			"iDisplayStart": iDisplayStart,
 			"fnDrawCallback": function(oSettings) {
 				//------------------------for removing scroll if no data available
@@ -382,5 +383,19 @@ function initializeTable(tableId, isRenderMobileView, displayStart,
 		});
 	} catch (err) {
 		console.info(err);
+	}
+}
+
+function destroyDataTable(tableId) {
+	if (dataTableList[tableId] != undefined) {
+		try {
+			if (dataTableList[tableId].fnSettings() != null) {
+				dataTableList[tableId].fnClearTable();
+				dataTableList[tableId].fnDestroy();
+				dataTableList[tableId].destroy();
+			}
+		} catch (err) {
+
+		}
 	}
 }
