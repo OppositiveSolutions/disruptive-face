@@ -1,21 +1,22 @@
 var DEFAULT_HASH = 'home';
-$(document).ready(function () {
+$(document).ready(function() {
 	initialize();
 	checkSession();
 });
+
 function checkSession() {
 	var url = protocol + "//" + host + "/login";
 	$.ajax({
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function (statusMap) {
+		success: function(statusMap) {
 			currentAccountDetails = statusMap.data;
 			if (statusMap.status == STATUS_OK) {
 				loadContainerPage();
 			}
 		},
-		error: function () {
+		error: function() {
 			setHashInUrl('login');
 		}
 	});
@@ -28,20 +29,20 @@ if (!hasher.getHash()) {
 	console.info(hasher.getHash());
 	// hasher.setHash(DEFAULT_HASH);
 }
-var loginRoute = crossroads.addRoute('login', function (query) {
+var loginRoute = crossroads.addRoute('login', function(query) {
 	var session = false;
 	var url = protocol + "//" + host + "/login";
 	$.ajax({
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function (statusMap) {
+		success: function(statusMap) {
 			currentAccountDetails = statusMap.data;
 			if (statusMap.status == STATUS_OK) {
 				setHashInUrl('home');
 			}
 		},
-		error: function () {
+		error: function() {
 			loadLoginPage();
 		}
 	});
@@ -58,7 +59,7 @@ hasher.init();
 // start listening for hash changes
 
 function loadFilesAndExecutecallBack(files, callBack) {
-	head.load(files, function () {
+	head.load(files, function() {
 		if (callBack != undefined) {
 			callBack();
 		}
@@ -67,12 +68,12 @@ function loadFilesAndExecutecallBack(files, callBack) {
 
 function initialize() {
 	if (typeof String.prototype.trim !== 'function') {
-		String.prototype.trim = function () {
+		String.prototype.trim = function() {
 			return this.replace(/^\s+|\s+$/g, '');
 		};
 	}
 	if (!Array.prototype.indexOf) {
-		Array.prototype.indexOf = function (elt /* , from */) {
+		Array.prototype.indexOf = function(elt /* , from */ ) {
 			var len = this.length >>> 0;
 			var from = Number(arguments[1]) || 0;
 			from = (from < 0) ? Math.ceil(from) : Math.floor(from);
@@ -86,12 +87,11 @@ function initialize() {
 		};
 	}
 	$(document).ajaxSend(
-		function (e, xhr, settings) {
+		function(e, xhr, settings) {
 			if (settings.hideLoading != undefined && settings.hideLoading) {
 				return;
 			}
-			loadingMsg = settings.action == undefined ? "Loading"
-				: settings.action;
+			loadingMsg = settings.action == undefined ? "Loading" : settings.action;
 			var regex = /\.html$/;
 			if (regex.test(settings.url)) {
 				return;
@@ -101,27 +101,26 @@ function initialize() {
 				loadingMsg = "Loading data";
 			}
 			isAjaxProgress = true;
-		}).ajaxStop(function () {
-			isAjaxProgress = false;
-		});
+		}).ajaxStop(function() {
+		isAjaxProgress = false;
+	});
 	$.ajaxSetup({
-		beforeSend: function (jqXHR) {
+		beforeSend: function(jqXHR) {
 			// $.xhrPool.push(jqXHR);
 		},
-		complete: function (result, status, xhr) {
+		complete: function(result, status, xhr) {
 			// var index = $.xhrPool.indexOf(result);
 			// if (index > -1) {
 			// $.xhrPool.splice(index, 1);
 			// }
 			try {
 				var responseText = result.responseText.trim();
-				if (responseText == '#NO_SESSION#') {
-				}
+				if (responseText == '#NO_SESSION#') {}
 			} catch (err) {
 
 			}
 		},
-		error: function (jqXHR, textStatus, errorThrown) {
+		error: function(jqXHR, textStatus, errorThrown) {
 			if (jqXHR.status == "0") {
 				// alert("Seems like your internet connection is broken. Please
 				// try again later. ");
@@ -129,8 +128,8 @@ function initialize() {
 		}
 	});
 	jQuery.expr[":"].containsIgnoreCase = jQuery.expr
-		.createPseudo(function (arg) {
-			return function (elem) {
+		.createPseudo(function(arg) {
+			return function(elem) {
 				return jQuery(elem).text().toUpperCase().indexOf(
 					arg.toUpperCase()) >= 0;
 			};
@@ -142,18 +141,18 @@ function initialize() {
 function loadLoginPage() {
 	$.get("login.html", {
 		"_": $.now()
-	}, function (data) {
+	}, function(data) {
 		$("#loginPage").remove();
 		$("#pageContainer").empty();
 		$("#container").remove();
 		$("body").append(data);
 		$("#lblSignUp").click(
-			function () {
-				window.location = protocol + "//" + window.location.host
-					+ FOLDER_NAME + "/signup.html";
+			function() {
+				window.location = protocol + "//" + window.location.host + FOLDER_NAME +
+					"/signup.html";
 			});
 		$("#btnLogin").unbind('click');
-		$("#btnLogin").click(function () {
+		$("#btnLogin").click(function() {
 			var username = $("#txtEmailId").val().trim();
 			var password = $("#txtPassword").val();
 			if (username == "") {
@@ -168,11 +167,11 @@ function loadLoginPage() {
 		});
 
 		$("#lblForgotPassword").unbind('mousedown');
-		$("#lblForgotPassword").on("mousedown", function () {
+		$("#lblForgotPassword").on("mousedown", function() {
 			loadForgotPasswordPage();
 		});
 		$("#txtPassword").unbind("keydown");
-		$("#txtPassword").keydown(function (event) {
+		$("#txtPassword").keydown(function(event) {
 			if (event.keyCode == 13) {
 				var username = $("#txtEmailId").val().trim();
 				var password = $("#txtPassword").val();
@@ -202,7 +201,7 @@ function authenticate(username, password) {
 			username: username,
 			password: password
 		},
-		success: function (statusMap) {
+		success: function(statusMap) {
 			currentAccountDetails = statusMap.data;
 			currentAccountDetails.role = 1;
 			loadContainerPage();
@@ -213,14 +212,14 @@ function authenticate(username, password) {
 function loadContainerPage() {
 	$.get("container.html", {
 		"_": $.now()
-	}, function (data) {
+	}, function(data) {
 		$("#loginPage").remove();
 		$("#container").remove();
 		$("body").append(data);
 		currentAccountDetails = {};
 		currentAccountDetails.role = "2";
 		initializePagesBasedOnRole();
-		$("#linkSignOut").click(function () {
+		$("#linkSignOut").click(function() {
 			logout();
 		});
 	});
@@ -233,7 +232,7 @@ function initializePagesBasedOnRole() {
 			break;
 		case "2":
 			loadFilesAndExecutecallBack(['js/superadmin/home.js' + postUrl],
-				function () {
+				function() {
 					initializeSuperAdminRoutes();
 					loadSuperAdminView();
 				});
@@ -253,9 +252,10 @@ function showPage(toPage) {
 	$(toPage).show();
 }
 
-jQuery.expr[':'].contains = function (a, i, m) {
+jQuery.expr[':'].contains = function(a, i, m) {
 	return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };
+
 function updateLeftMenu(menuTitle) {
 	$("#leftMenuContainer").find("div.activeMenu").removeClass("activeMenu");
 	$("#leftMenuContainer").find("div:contains(" + menuTitle + ")").addClass(
@@ -276,11 +276,111 @@ function logout() {
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function () {
+		success: function() {
 			setHashInUrl('login');
 		},
-		error: function () {
+		error: function() {
 			setHashInUrl('login');
 		}
 	});
+}
+
+function initializeTable(tableId, isRenderMobileView, displayStart,
+	callBackAfterNextOrPreviousClick) {
+	try {
+		$.fn.dataTableExt.sErrMode = 'throw';
+	} catch (err) {
+
+	}
+	isRenderMobileView = isRenderMobileView == undefined ? true :
+		isRenderMobileView;
+	var table = $("#" + tableId)[0];
+	if (!$(table).is("table")) {
+		table = $(table).children("table.table")[0];
+	}
+	var bindFunction;
+
+	try {
+		jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+			"date-uk-pre": function(a) {
+				if (a == null || a == "") {
+					return 0;
+				}
+				return parseMMDDYYYYHHMMToJSDateObject(a).getTime();
+			},
+
+			"date-uk-asc": function(a, b) {
+				return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+			},
+
+			"date-uk-desc": function(a, b) {
+				return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+			}
+		});
+
+	} catch (err) {
+
+	}
+	var dontSort = [];
+	$(table).find('thead th').each(function(index) {
+		var thText = $(this).text();
+		$(table).find('tbody tr').each(function(indexOfTd) {
+			$(this).find('td:eq(' + index + ')').attr("data-title", thText);
+		});
+	});
+	$(table).find('thead th').each(function(index) {
+		if ($(this).hasClass('dont-sort')) {
+			dontSort.push({
+				"bSortable": false,
+			});
+			// dontSort.push(null);
+		} else if ($(this).hasClass('sortDate')) {
+			dontSort.push({
+				"bSortable": true,
+				"sType": 'date-uk',
+				"iDataSort": index - 1,
+			});
+		} else if ($(this).hasClass('numeric')) {
+			dontSort.push({
+				"bSortable": true,
+				"sType": 'numeric',
+			});
+		} else {
+			dontSort.push(null);
+		}
+	});
+	var iDisplayStart = displayStart == undefined ? 0 : displayStart;
+	try {
+		dataTableList[tableId] = $(table).DataTable({
+			"sDom": '<"top"fp<"clear">>rt<"bottom"ip<"clear">>',
+			"aaSorting": [],
+			"bAutoWidth": false,
+			"responsive": true,
+			"iDisplayStart": iDisplayStart,
+			"fnDrawCallback": function(oSettings) {
+				//------------------------for removing scroll if no data available
+				if (oSettings._iDisplayEnd == 0) {
+					$(table).closest("div.table-responsive").addClass("table-nodata");
+				} else {
+					$(table).closest("div.table-responsive").removeClass("table-nodata");
+				}
+				if (bindFunction != undefined) {
+					bindFunction();
+				}
+			},
+			"aoColumns": dontSort,
+			"fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+				if ($(table).hasClass("slNo")) {
+					var index = $(table).find("th.slNo").index();
+					if (index == "-1") {
+						index = 0;
+					}
+					$("td:eq(" + index + ")", nRow).html(parseInt(iDisplayIndexFull + 1));
+				}
+				return nRow;
+			},
+		});
+	} catch (err) {
+		console.info(err);
+	}
 }

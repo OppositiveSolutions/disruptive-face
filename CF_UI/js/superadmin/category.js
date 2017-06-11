@@ -116,6 +116,7 @@ function populateCategory(list) {
 		appendLiForCategorySettings(settingsGear, list[i]);
 		$(tbody).append(tr);
 	}
+	initializeTable("tblCategory")
 
 }
 
