@@ -377,9 +377,9 @@ select.input-sm, .input-sm {
 	border-bottom:none;
         min-height: 75px;
         padding-bottom: 6px;
-        -webkit-box-shadow: 5px 0px 10px #eee;
-    -moz-box-shadow: 5px 0px 10px #eee;
-    box-shadow: 5px 0px 10px #eee;
+        -webkit-box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.14);
+    -moz-box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.14);
+    box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.14);
 }
 .navbar-nav> li {
 	width:100%;
@@ -401,8 +401,8 @@ select.input-sm, .input-sm {
 	margin-top: 5px;
 }
 #leftMenuContainer ul li> div.activeMenu {
-	background: #f9f9fa;
-    color: #555;
+	background: #022548;
+    color: #fff;
 }
 #leftMenuContainer {
     background-color: #134272;
@@ -450,9 +450,9 @@ img#imgProfilePic {
     border-color: #dddddd;
     border: none;
     border-radius: 0;
-    -moz-box-shadow: 0 0 10px rgba(189,189,189,0.4);
-    -webkit-box-shadow: 0 0 10px rgba(189,189,189,0.4);
-    box-shadow: 0 0 10px rgba(189,189,189,0.4);
+    -moz-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 .panel-default > .panel-heading {
     background-color: #ffffff;
@@ -554,6 +554,20 @@ img#imgProfilePic {
     border: 1px solid transparent ;
     color: #333;
 }
+.dataTables_wrapper .top .dataTables_paginate {
+	display:none;
+}
+.dataTables_wrapper .dataTables_filter label {
+	font-weight:400;
+}
+.dataTables_wrapper .dataTables_filter label input {
+	    background: transparent;
+    border: 1px solid #ddd;
+    height: 28px;
+}
+.mainContentArea {
+	padding:10px 17px;
+}
 /*-------------------------------*/
 .navbar .logoContainer-admin  .login-logo p {
 	font-size:9px;
@@ -615,6 +629,7 @@ ul#notificationList {
 	padding:0 10px;
 	border:none;
 	border-radius:0;
+	box-shadow:2px 0 2px 0 rgba(0, 0, 0, 0.14);
 /*	border-right:1px solid #dddddd;
 	background:#fbfbfb;*/
 }
