@@ -9,6 +9,7 @@ function loadManageCenterPage(isShow) {
     $("#btnAddNewCenter").click(function() {
       $("#divSuperAdminAddNewCenterPage").modal("show");
     });
+    populateStateDropdown($("#sltManageCenterState"));
     $("#divAddNewCategoryPage").on("shown.bs.modal", function() {
 
     });
@@ -83,15 +84,32 @@ function validateManageCenterPage() {
     return;
   }
   obj.centerCode = centerCode;
-  var address = $("#txtAddNewCenterAddress").val();
-  if (address == "") {
-    alert("Please enter the center address");
+  obj.address = {};
+  obj.address.state = {
+    name: "sdasdas"
+  }
+  var stateId = $("#sltManageCenterState").val();
+  if (stateId == "Select") {
+    alert("Please enter select the state");
     return;
   }
+  obj.address.state.stateId = stateId;
+  var city = $("#txtAddNewCenterCity").val();
+  if (city == "") {
+    alert("Please enter a city");
+    return;
+  }
+  obj.address.city = city;
+  var pinCode = $("#txtAddNewCenterPinCode").val();
+  if (pinCode == "") {
+    alert("Please enter a pin code");
+    return;
+  }
+  obj.address.pinCode = pinCode;
   obj.centerLatitude = 1233;
   obj.centerLongitude = 1234;
   obj.isFranchise = true;
-  obj.address = address;
+  obj.landMark = "sadsada";
   return obj;
 }
 
