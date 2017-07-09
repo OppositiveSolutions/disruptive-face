@@ -1,6 +1,6 @@
 function loadStudentDetailPage(isShow) {
 	$.get("superadmin/studentdetails.html" + postUrl, {
-		"_" : $.now()
+		"_": $.now()
 	}, function(data) {
 		$("#pageContainer").append(data);
 		if (isShow) {
@@ -12,6 +12,7 @@ function loadStudentDetailPage(isShow) {
 		$("#divAddNewStudentDetailsPage").on("shown.bs.modal", function() {
 
 		});
+		attachDatePickers($("#divAddNewStudentDetailsPage")[0]);
 		$("#btnStudentDetailsSave").click(function() {
 			var type = $(this).attr("type");
 			if (type == "edit") {
@@ -22,18 +23,19 @@ function loadStudentDetailPage(isShow) {
 		});
 	});
 }
+
 function saveStudentDetails() {
 	var obj = validateAndReturnStudentInfo();
 	if (obj == undefined) {
 		return;
 	}
 	$.ajax({
-		url : protocol + "//" + host + "/student",
-		type : "POST",
-		cache : false,
-		data : JSON.stringify(obj),
-		contentType : "application/json; charset=utf-8",
-		success : function(obj) {
+		url: protocol + "//" + host + "/student",
+		type: "POST",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function(obj) {
 			console.info(obj);
 			getStudentDetails();
 			$("#divAddNewStudentDetailsPage").modal("hide");
@@ -50,12 +52,12 @@ function editStudentDetails() {
 	var studentId = $("#btnStudentDetailsSave").attr("studentId");
 	obj.studentId = studentId;
 	$.ajax({
-		url : protocol + "//" + host + "/student",
-		type : "PUT",
-		cache : false,
-		data : JSON.stringify(obj),
-		contentType : "application/json; charset=utf-8",
-		success : function(obj) {
+		url: protocol + "//" + host + "/student",
+		type: "PUT",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function(obj) {
 			console.info(obj);
 			getStudentDetails();
 			$("#divAddNewStudentDetailsPage").modal("hide");
@@ -79,64 +81,70 @@ function validateAndReturnStudentInfo() {
 	}
 	obj.lastName = lastName;
 	var gender = $("input:radio[name='gendername']:checked").val();
-	if (gender == "" || gender==undefined || gender==null) {
+	if (gender == "" || gender == undefined || gender == null) {
 		alert("Please enter gender");
 		return;
 	}
 	obj.gender = gender;
-	var dob = $("#dob").val();
+	var dob = $("#txtDob").val();
 	if (dob == "") {
 		alert("Please enter DOB");
 		return;
 	}
 	obj.dob = dob;
-	var qualification = $("#qualification").val();
+	var qualification = $("#txtQualification").val();
 	if (qualification == "") {
 		alert("Please enter qualification");
 		return;
 	}
 	obj.qualification = qualification;
-	var address = $("#address").val();
+	var address = $("#txtAddress").val();
 	if (address == "") {
 		alert("Please enter address");
 		return;
 	}
 	obj.address = address;
-	var city = $("#city").val();
-	if (city == "") {
-		alert("Please enter city");
-		return;
-	}
-	obj.city = city;
-	var state = $("#state").val();
-	if (state == "") {
-		alert("Please enter city");
-		return;
-	}
-	obj.state = state;
-	var pinCode = $("#pinCode").val();
-	if (pinCode == "") {
-		alert("Please enter city");
-		return;
-	}
-	obj.pinCode = pinCode;
-	var emailId = $("#emailId").val();
+	var emailId = $("#txtEmailId").val();
 	if (emailId == "") {
-		alert("Please enter city");
+		alert("Please enter emailId");
 		return;
 	}
 	obj.emailId = emailId;
-	var mobileNo = $("#mobileNo").val();
-	if (mobileNo == "") {
-		alert("Please enter city");
-		return;
-	}
-	obj.mobileNo = mobileNo;
-	var centerId = $("#centerId").val();
-	if (centerId == "") {
-		alert("Please enter city");
-		return;
-	}
-	obj.centerId = centerId;
+	// var city = $("#city").val();
+	// if (city == "") {
+	// 	alert("Please enter city");
+	// 	return;
+	// }
+	// obj.city = city;
+	// var state = $("#state").val();
+	// if (state == "") {
+	// 	alert("Please enter city");
+	// 	return;
+	// }
+	// obj.state = state;
+	// var pinCode = $("#pinCode").val();
+	// if (pinCode == "") {
+	// 	alert("Please enter city");
+	// 	return;
+	// }
+	// obj.pinCode = pinCode;
+	// var emailId = $("#emailId").val();
+	// if (emailId == "") {
+	// 	alert("Please enter city");
+	// 	return;
+	// }
+	// obj.emailId = emailId;
+	// var mobileNo = $("#mobileNo").val();
+	// if (mobileNo == "") {
+	// 	alert("Please enter city");
+	// 	return;
+	// }
+	// obj.mobileNo = mobileNo;
+	// var centerId = $("#centerId").val();
+	// if (centerId == "") {
+	// 	alert("Please enter city");
+	// 	return;
+	// }
+	// obj.centerId = centerId;
 	return obj;
 }

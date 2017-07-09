@@ -7,16 +7,6 @@
 			<h3 class="panel-title">Student Details</h3>
 		</div>
 		<div class="panel-body">
-		<div class="row table-top-actions">
-                                <div class="col-sm-5">
-                                </div>
-                                <div class="col-sm-4">
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="input-group table-search"><input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
-                                </div>
-                            </div>
 			<div class="table-responsive noSwipe assignManagementTable">
 				<table id="tblStudentDetails" class="table table-bordered table-striped slNo">
 					<thead>
@@ -32,8 +22,8 @@
 		</div>
 	</div>
 	<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewStudentDetailsPage">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content modal-sm">
+		<div class="modal-dialog">
+			<div class="modal-content">
 				<div class="modal-header">
 					<button class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>
@@ -41,26 +31,54 @@
 					<h4 class="modal-title">Add New Category</h4>
 				</div>
 				<div class="modal-body">
-				<div class="form-group">
-					<label> First Name </label>
-						<input type="text" id="txtFirstName" class="form-control input-sm mandatory"/>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label> First Name </label>
+								<input type="text" id="txtFirstName" class="form-control input-sm mandatory" />
+							</div>
+							<div class="form-group">
+								<label> Last Name </label>
+								<input type="text" id="txtLastName" class="form-control input-sm mandatory" />
+							</div>
+
+							<div class="form-group">
+								<label> DOB </label>
+								<input type="text" id="txtDob" class="form-control input-sm mandatory date	" />
+							</div>
+							<div class="form-group">
+								<label> Gender </label>
+								<label><input type="radio" name="gendername" value="Male" class="form-control input-sm mandatory"/> Male</label>
+								<label><input type="radio" name="gendername" value="Female" class="form-control input-sm mandatory"/> Female</label>
+							</div>
+
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label> Educational Qualification </label>
+								<input type="text" id="txtQualification" class="form-control input-sm mandatory" />
+							</div>
+							<div class="form-group">
+								<label> Address </label>
+								<input type="text" id="txtAddress" class="form-control input-sm mandatory" />
+							</div>
+							<div class="form-group">
+								<label> EmailId </label>
+								<input type="text" id="txtEmailId" class="form-control input-sm mandatory" />
+							</div>
+							<div class="form-group">
+								<label> Confirm EmailId </label>
+								<input type="text" id="txtConfirmEmailId" class="form-control input-sm mandatory" />
+							</div>
+						</div>
 					</div>
-					<div class="form-group">
-					<label> Last Name </label>
-						<input type="text" id="txtLastName" class="form-control input-sm mandatory"/>
-					</div>
-					<div class="form-group">
-					<label> Gender </label>
-						<label><input type="radio" name="gendername" value="Male" class="form-control input-sm mandatory"/> Male</label> 
-						<label><input type="radio" name="gendername" value="Female" class="form-control input-sm mandatory"/> Female</label> 
-					</div>
-					</div>
-					<div class="modal-footer">
+				</div>
+				<div class="modal-footer">
 					<div class="text-center">
 						<button class="btn btn-default" id="btnStudentDetailsSave">
 							Save
 						</button>
-						<button class="btn btn-default"  data-dismiss="modal">
+						<button class="btn btn-default" data-dismiss="modal">
 							Close
 						</button>
 					</div>
