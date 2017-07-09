@@ -88,6 +88,9 @@ function validateManageCenterPage() {
     alert("Please enter the center address");
     return;
   }
+  obj.centerLatitude = 1233;
+  obj.centerLongitude = 1234;
+  obj.isFranchise = true;
   obj.address = address;
   return obj;
 }
