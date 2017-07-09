@@ -17,6 +17,9 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('exam-master', function(query) {
 		showExamMasterPage();
 	});
+	crossroads.addRoute('manage-center', function(query) {
+		showManageCenterPage();
+	});
 	crossroads.addRoute('student-details', function(query) {
 		showStudentDetailsPage();
 	});
@@ -28,7 +31,7 @@ function initializeSuperAdminRoutes() {
 	//setup hasher
 	hasher.initialized.add(parseHash);
 	//only required if you want to set a default value
-	if (! hasher.getHash()) {
+	if (!hasher.getHash()) {
 		console.info(hasher.getHash());
 		//hasher.setHash(DEFAULT_HASH);
 	}
@@ -47,7 +50,7 @@ function initializeSuperAdminRoutes() {
 
 function loadSuperAdminLeftMenu() {
 	$.get("superadmin/leftmenu.html", {
-		"_" : $.now()
+		"_": $.now()
 	}, function(data) {
 		$("#leftMenuContainer").append(data);
 		$("#leftMenuContainer li>div").click(function() {
@@ -68,7 +71,7 @@ function showSuperAdminHomPage() {
 
 function loadSuperAmdinHomePage() {
 	$.get("superadmin/home.html", {
-		"_" : $.now()
+		"_": $.now()
 	}, function(data) {
 		$("#pageContainer").append(data);
 		showSuperAdminHomPage();
@@ -86,6 +89,18 @@ function showCategoryMasterPage() {
 	showPage($("#divSuperAdminCategoryPage")[0]);
 	getCategory();
 	//$("#divAddNewCategoryPage").modal("show");
+}
+
+function showManageCenterPage() {
+	if ($("#divSuperAdminManageCenterPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/managecenter.js' + postUrl], function() {
+			loadManageCenterPage(true);
+		});
+		return;
+	}
+	getCenters();
+	updateLeftMenu("Manage Center");
+	showPage($("#divSuperAdminManageCenterPage")[0]);
 }
 
 function showExamMasterPage() {
@@ -117,19 +132,22 @@ function handleSuperAdminMenuClick(menuDiv) {
 	menuTitle = menuTitle.trim();
 	var previousHash = hasher.getHash();
 	console.info(menuTitle);
-	switch(menuTitle.toLowerCase()) {
-	case "home":
-		setHashInUrl('home');
-		break;
-	case "category master":
-		setHashInUrl('category');
-		break;
-	case  "exam master":
-		setHashInUrl('exam-master');
-		break;
-	case  "student details":
-		setHashInUrl('student-details');
-		break;
+	switch (menuTitle.toLowerCase()) {
+		case "home":
+			setHashInUrl('home');
+			break;
+		case "category master":
+			setHashInUrl('category');
+			break;
+		case "exam master":
+			setHashInUrl('exam-master');
+			break;
+		case "student details":
+			setHashInUrl('student-details');
+			break;
+		case "manage center":
+			setHashInUrl('manage-center');
+			break;
 	}
 	updateLeftMenu(menuTitle);
 }
