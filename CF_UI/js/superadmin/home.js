@@ -23,6 +23,9 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('student-details', function(query) {
 		showStudentDetailsPage();
 	});
+	crossroads.addRoute('staff-details', function(query) {
+		showStaffDetailsPage();
+	});
 	crossroads.bypassed.add(function() {
 		hasher.setHash('home');
 	});
@@ -127,6 +130,17 @@ function showStudentDetailsPage() {
 	showPage($("#divSuperAdminStudentDetailsPage")[0]);
 }
 
+function showStaffDetailsPage() {
+	if ($("#divSuperAdminStaffDetailsPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/staffdetails.js' + postUrl], function() {
+			loadStaffDetailsPage(true);
+		});
+		return;
+	}
+	updateLeftMenu("Staff Details");
+	showPage($("#divSuperAdminStaffDetailsPage")[0]);
+}
+
 function handleSuperAdminMenuClick(menuDiv) {
 	var menuTitle = $(menuDiv).text();
 	menuTitle = menuTitle.trim();
@@ -144,6 +158,9 @@ function handleSuperAdminMenuClick(menuDiv) {
 			break;
 		case "student details":
 			setHashInUrl('student-details');
+			break;
+		case "staff details":
+			setHashInUrl('staff-details');
 			break;
 		case "manage center":
 			setHashInUrl('manage-center');

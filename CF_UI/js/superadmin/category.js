@@ -98,10 +98,12 @@ function deleteCategory(id) {
 		}
 	});
 }
+var p = 0;
 
 function populateCategory(list) {
 	var tbody = $("#tblCategory tbody")[0];
 	$(tbody).empty();
+	console.info(list)
 	destroyDataTable("tblCategory");
 	for (var i = 0; i < list.length; i++) {
 		var tr = $("<tr>");

@@ -351,12 +351,13 @@ function initializeDataTable(tableId, isRenderMobileView, displayStart,
 	});
 	var iDisplayStart = displayStart == undefined ? 0 : displayStart;
 	try {
-		dataTableList[tableId] = $(table).DataTable({
+		dataTableList[tableId] = $(table).dataTable({
 			"sDom": '<"top"fp<"clear">>rt<"bottom"ip<"clear">>',
 			"aaSorting": [],
 			"bAutoWidth": false,
 			"responsive": true,
 			"destroy": true,
+			"bDestroy": true,
 			"iDisplayStart": iDisplayStart,
 			"fnDrawCallback": function(oSettings) {
 				//------------------------for removing scroll if no data available
@@ -395,7 +396,7 @@ function destroyDataTable(tableId) {
 				dataTableList[tableId].destroy();
 			}
 		} catch (err) {
-
+			console.info("asdasas")
 		}
 	}
 }

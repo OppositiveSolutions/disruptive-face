@@ -12,6 +12,8 @@ function loadStudentDetailPage(isShow) {
 		$("#divAddNewStudentDetailsPage").on("shown.bs.modal", function() {
 
 		});
+		populateStateDropdown($("#sltManageStudentsStates"));
+		populateManageStudentsCenter();
 		attachDatePickers($("#divAddNewStudentDetailsPage")[0]);
 		$("#btnStudentDetailsSave").click(function() {
 			var type = $(this).attr("type");
@@ -68,6 +70,13 @@ function editStudentDetails() {
 
 function validateAndReturnStudentInfo() {
 	var obj = {};
+	var centerCode = $("#sltManageStudentsCenterName").val();
+	if (centerCode == "Select") {
+		alert("Please select the center code");
+		return;
+	}
+	obj.center = {};
+	obj.center.centerCode = centerCode;
 	var firstName = $("#txtFirstName").val();
 	if (firstName == "") {
 		alert("Please enter first name");
@@ -110,6 +119,35 @@ function validateAndReturnStudentInfo() {
 		return;
 	}
 	obj.emailId = emailId;
+
+
+
+	obj.address = {};
+	obj.address.state = {}
+	var stateId = $("#sltManageStudentsStates").val();
+	if (stateId == "Select") {
+		alert("Please enter select the state");
+		return;
+	}
+	obj.address.state.stateId = stateId;
+	var city = $("#txtManageStudentsCity").val();
+	if (city == "") {
+		alert("Please enter a city");
+		return;
+	}
+	obj.address.city = city;
+	var streetAddress = $("#sltManageStudentsStreetAddress").val();
+
+	obj.address.streetAddress = streetAddress;
+	var pinCode = $("#txtManageStudentsPinCode").val();
+	if (pinCode == "") {
+		alert("Please enter a pin code");
+		return;
+	}
+	obj.address.pinCode = pinCode;
+
+
+
 	// var city = $("#city").val();
 	// if (city == "") {
 	// 	alert("Please enter city");
@@ -147,4 +185,22 @@ function validateAndReturnStudentInfo() {
 	// }
 	// obj.centerId = centerId;
 	return obj;
+}
+
+function populateManageStudentsCenter() {
+	$.ajax({
+		url: protocol + "//" + host + "/center",
+		type: "GET",
+		cache: false,
+		success: function(obj) {
+			var list = obj.data;
+			var optionSelect = $("<option>").html("Select");
+			$("#sltManageStudentsCenterName").append(optionSelect);
+			for (var i = 0; i < list.length; i++) {
+				var option = $("<option>").val(list[i].centerCode).html(list[i].centerCode);
+				$("#sltManageStudentsCenterName").append(option);
+			}
+		}
+	});
+
 }
