@@ -196,7 +196,7 @@ function populateManageStudentsCenter() {
 			var optionSelect = $("<option>").html("Select");
 			$("#sltManageStudentsCenterName").append(optionSelect);
 			for (var i = 0; i < list.length; i++) {
-				var option = $("<option>").val(list[i].centerCode).html(list[i].centerCode);
+				var option = $("<option>").val(list[i].centerId).html(list[i].centerCode);
 				$("#sltManageStudentsCenterName").append(option);
 			}
 		}
