@@ -76,7 +76,8 @@ function validateAndReturnStudentInfo() {
 		return;
 	}
 	obj.center = {};
-	obj.center.centerCode = centerCode;
+	obj.centerId = centerCode;
+	obj.center.centerCode = centerCode
 	var firstName = $("#txtFirstName").val();
 	if (firstName == "") {
 		alert("Please enter first name");
@@ -122,29 +123,27 @@ function validateAndReturnStudentInfo() {
 
 
 
-	obj.address = {};
-	obj.address.state = {}
 	var stateId = $("#sltManageStudentsStates").val();
 	if (stateId == "Select") {
 		alert("Please enter select the state");
 		return;
 	}
-	obj.address.state.stateId = stateId;
+	obj.stateId = stateId;
 	var city = $("#txtManageStudentsCity").val();
 	if (city == "") {
 		alert("Please enter a city");
 		return;
 	}
-	obj.address.city = city;
-	var streetAddress = $("#sltManageStudentsStreetAddress").val();
+	obj.city = city;
+	var address = $("#sltManageStudentsAddress").val();
 
-	obj.address.streetAddress = streetAddress;
+	obj.address = address;
 	var pinCode = $("#txtManageStudentsPinCode").val();
 	if (pinCode == "") {
 		alert("Please enter a pin code");
 		return;
 	}
-	obj.address.pinCode = pinCode;
+	obj.pinCode = pinCode;
 
 
 
