@@ -6,24 +6,49 @@ function loadMakeQPaperPage(obj, isShow) {
 		if (isShow) {
 			showMakeQuestionPage(obj);
 		}
-		$("#btnAddNewQuestionPaper").click(function() {
-			showQuestionCreateSection();
-
-		});
-		tinymce.init({
-			selector : '#textareaForQuestion',
-			height : 300,
-			plugins : ["advlist autolink lists charmap print preview ", "searchreplace visualblocks fullscreen", "insertdatetime  table contextmenu paste "],
-			toolbar : " undo redo | styleselect | bold italic charmap | alignleft aligncenter alignright alignjustify | bullist numlist | fullscreen  ",
-			content_css : ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
-			// language : 'ml_IN'
-		});
-
 		$("#btnMakeQuestionPaperQNext").click(function() {
-			alert(tinymce.get('textareaForQuestion').getContent());
-		});
+			saveQuestion();
+			alert(tinymce.get('textAreaForQuestion').getContent());
 
+		});
+		$("#divAddNewQPaperPage").on('hidden.bs.modal', function() {
+			$("#makeQuetionPageBody").find("textarea").each(function() {
+				var id = $(this).attr("id");
+				tinymce.get(id).remove();
+			});
+
+		});
 	});
+}
+
+function saveQuestion() {
+	var list = [{
+		"questionPaperSubCategoryId" : 4,
+		"questionNo" : 2,
+		"question" : "Your name?",
+		"options" : [{
+			"optionNo" : 1,
+			"option" : "Monique Alexander"
+		}, {
+			"optionNo" : 2,
+			"option" : "Ava Addams"
+		}, {
+			"optionNo" : 3,
+			"option" : "Kendra Lust"
+		}],
+		"correctOptionNo" : 2
+	}];
+	$.ajax({
+		url : protocol + "//" + host + "/question-paper/question",
+		type : "POST",
+		cache : false,
+		data : JSON.stringify(list),
+		contentType : "application/json; charset=utf-8",
+		success : function(returnMap) {
+			console.info(returnMap);
+		}
+	});
+
 }
 
 function showQuestionCreateSection() {
@@ -34,7 +59,7 @@ function showQuestionCreateSection() {
 			var id = $(this).attr("id");
 			tinymce.init({
 				selector : '#' + id,
-				height : 300,
+				height : 250,
 				plugins : ["advlist autolink lists charmap print preview ", "searchreplace visualblocks fullscreen", "insertdatetime  table contextmenu paste "],
 				toolbar : " undo redo | styleselect | bold italic charmap | alignleft aligncenter alignright alignjustify | bullist numlist | fullscreen  ",
 				content_css : ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
@@ -83,6 +108,7 @@ function createOptionTabsAccordingToOptionCount(optionCount, callBack) {
 			$(textAreaForOptions).attr("id", "textArea" + counter);
 			$(divForTabContent).html("").append(textAreaForOptions);
 		}
+
 	}
 	callBack();
 }
@@ -93,7 +119,7 @@ function initializeSetQPaperPage(obj) {
 }
 
 function getAllCategoriesForQuestionPaper(list) {
-	var mainDiv = $("#makeQPaperPageBody")[0];
+	var mainDiv = $("#makeQPaperPageBody").empty();
 	if (list.length != 0) {
 		for (var i = 0; i < list.length; i++) {
 			var index = i + 1;
@@ -141,15 +167,15 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 }
 
 function populateQuestionAndOptions(questionsList, targetDiv) {
-	var ulForQuestion=$("<ul>").addClass('noPadding QuestionUl');
+	var ulForQuestion = $("<ul>").addClass('noPadding QuestionUl');
 	$(targetDiv).append(ulForQuestion);
 	if (questionsList.length != 0) {
 		for (var k = 0; k < questionsList.length; k++) {
-			var divForQuestion = $("<li>").addClass("questionLi").html(questionsList[k].questionNo+") "+questionsList[k].question.question);
+			var divForQuestion = $("<li>").addClass("questionLi").html(questionsList[k].questionNo + ") " + questionsList[k].question.question);
 			$(ulForQuestion).append(divForQuestion);
-			var spanForEditANdDelete=$("<span>").addClass("pull-right editDeleteSpan");
-			var editIcon=$("<i>").addClass("fa fa-pencil");
-			var deleteIcon=$("<i>").addClass("fa fa-trash-o");
+			var spanForEditANdDelete = $("<span>").addClass("pull-right editDeleteSpan");
+			var editIcon = $("<i>").addClass("fa fa-pencil");
+			var deleteIcon = $("<i>").addClass("fa fa-trash-o");
 			$(spanForEditANdDelete).append(editIcon);
 			$(spanForEditANdDelete).append(deleteIcon);
 			$(divForQuestion).append(spanForEditANdDelete);
@@ -157,15 +183,15 @@ function populateQuestionAndOptions(questionsList, targetDiv) {
 			var optionsList = questionsList[k].question.options;
 			if (optionsList) {
 				for (var p = 0; p < optionsList.length; p++) {
-					var liForOption = $("<li>").html(optionsList[p].optionNo+") "+optionsList[p].option);
-                    $(liForOption).attr("questionNumber",optionsList[p].optionNo);
+					var liForOption = $("<li>").html(optionsList[p].optionNo + ") " + optionsList[p].option);
+					$(liForOption).attr("questionNumber", optionsList[p].optionNo);
 					$(liForOption).attr("optionId", optionsList[p].optionId);
 					$(ulForOptions).append(liForOption);
 				}
 			}
 			$(divForQuestion).append(ulForOptions);
-			var correctAnswer=$(ulForOptions).find("li[questionNumber="+questionsList[k].question.correctOptionNo+"]").html();
-			var pForAnswer=$("<p>").addClass("answerDiv").html(" Answer: "+correctAnswer);
+			var correctAnswer = $(ulForOptions).find("li[questionNumber=" + questionsList[k].question.correctOptionNo + "]").html();
+			var pForAnswer = $("<p>").addClass("answerDiv").html(" Answer: " + correctAnswer);
 			$(divForQuestion).append(pForAnswer);
 
 		}
