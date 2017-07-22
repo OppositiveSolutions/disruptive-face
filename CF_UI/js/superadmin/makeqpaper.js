@@ -8,8 +8,11 @@ function loadMakeQPaperPage(obj, isShow) {
 		}
 		$("#btnMakeQuestionPaperQNext").click(function() {
 			saveQuestion();
-			alert(tinymce.get('textAreaForQuestion').getContent());
+			$("#makeQuetionPageBody").find("textarea").each(function() {
+				
+			//	alert(tinymce.get('textAreaForQuestion').getContent());
 
+			});
 		});
 		$("#divAddNewQPaperPage").on('hidden.bs.modal', function() {
 			$("#makeQuetionPageBody").find("textarea").each(function() {
@@ -23,9 +26,10 @@ function loadMakeQPaperPage(obj, isShow) {
 
 function saveQuestion() {
 	var list = [{
+		"questionId":39,
 		"questionPaperSubCategoryId" : 4,
 		"questionNo" : 2,
-		"question" : "Your name?",
+		"question" : "Your name edited?",
 		"options" : [{
 			"optionNo" : 1,
 			"option" : "Monique Alexander"
