@@ -308,6 +308,48 @@ select.input-sm, .input-sm {
 	padding:15px 25px;
 	border-top: 4px solid #134272;
 }
+.fontFourteen
+{
+	font-size:13px !important;
+    color:#444;
+}
+.boldFont
+{
+	font-weight:bold;
+	color:#222;
+}
+.noPadding
+{
+	padding:0;
+}
+.QuestionUl li
+{
+	list-style: none;
+}
+.questionLi
+{
+	margin-top:20px;
+	color:#000;
+}
+.questionLi li
+{
+	color:#222;
+}
+.green{
+	color:#009933;
+}
+.answerDiv
+{
+	padding-top: 10px;
+}
+.editDeleteSpan
+{
+	border:1px solid #ddd;
+}
+.editDeleteSpan i
+{
+	padding-left:5px;
+}
 .postlogin-box .panel-body .form-control {
 	border: none;
     box-shadow: none;
@@ -406,6 +448,7 @@ select.input-sm, .input-sm {
 }
 #leftMenuContainer {
     background-color: #134272;
+    height:100vh;
 }
 #leftMenuContainer li> div:hover {
 	color:#c7c2c2;
