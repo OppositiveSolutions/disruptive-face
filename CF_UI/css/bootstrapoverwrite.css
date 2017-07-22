@@ -344,11 +344,17 @@ select.input-sm, .input-sm {
 }
 .editDeleteSpan
 {
-	border:1px solid #ddd;
+	
 }
 .editDeleteSpan i
 {
-	padding-left:5px;
+	padding:5px;
+	border:1px solid #ddd;
+	cursor:pointer;
+}
+.fixedWidthDiv100
+{
+	width:100px;
 }
 .postlogin-box .panel-body .form-control {
 	border: none;

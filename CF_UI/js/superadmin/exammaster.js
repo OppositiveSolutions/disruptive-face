@@ -400,6 +400,11 @@ function showMakeQuestionPage(obj) {
 		return;
 	}
 	showPage($("#divSuperAdminMakeQPaperPage")[0]);
+	$("#btnAddNewQuestionPaper").unbind("click");
+	$("#btnAddNewQuestionPaper").click(function() {
+			showQuestionCreateSection();
+
+		});
 	initializeSetQPaperPage(obj);
 }
 
