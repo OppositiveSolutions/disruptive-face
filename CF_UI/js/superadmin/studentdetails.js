@@ -12,6 +12,10 @@ function loadStudentDetailPage(isShow) {
 		$("#divAddNewStudentDetailsPage").on("shown.bs.modal", function() {
 
 		});
+		$("#divAddNewStudentDetailsPage").on("hidden.bs.modal", function() {
+			$("#btnStudentDetailsSave").removeAttr("type");
+			clearStudentManagementPage();
+		});
 		populateStateDropdown($("#sltManageStudentsStates"));
 		populateManageStudentsCenter();
 		attachDatePickers($("#divAddNewStudentDetailsPage")[0]);
@@ -24,6 +28,11 @@ function loadStudentDetailPage(isShow) {
 			}
 		});
 	});
+}
+
+function clearStudentManagementPage() {
+	$("#divAddNewStudentDetailsPage").find("input:text").val("");
+	$("#divAddNewStudentDetailsPage").find("select").val("Select");
 }
 
 function saveStudentDetails() {
@@ -39,7 +48,7 @@ function saveStudentDetails() {
 		contentType: "application/json; charset=utf-8",
 		success: function(obj) {
 			console.info(obj);
-			getStudentDetails();
+			getStudents();
 			$("#divAddNewStudentDetailsPage").modal("hide");
 		}
 	});
@@ -51,8 +60,8 @@ function editStudentDetails() {
 	if (obj == undefined) {
 		return;
 	}
-	var studentId = $("#btnStudentDetailsSave").attr("studentId");
-	obj.studentId = studentId;
+	var userId = $("#btnStudentDetailsSave").attr("userId");
+	obj.userId = userId;
 	$.ajax({
 		url: protocol + "//" + host + "/student",
 		type: "PUT",
@@ -61,7 +70,7 @@ function editStudentDetails() {
 		contentType: "application/json; charset=utf-8",
 		success: function(obj) {
 			console.info(obj);
-			getStudentDetails();
+			getStudents();
 			$("#divAddNewStudentDetailsPage").modal("hide");
 		}
 	});
@@ -201,5 +210,140 @@ function populateManageStudentsCenter() {
 			}
 		}
 	});
+
+}
+
+function getStudents() {
+	$.ajax({
+		url: protocol + "//" + host + "/student/pageSize/100/pageNo/1",
+		type: "GET",
+		cache: false,
+		success: function(obj) {
+			var list = obj.data.content;
+			populateStudentDetails(list);
+		}
+	});
+}
+
+
+
+function populateStudentDetails(list) {
+	var tbody = $("#tblStudentDetails tbody")[0];
+	$(tbody).empty();
+	destroyDataTable("tblStudentDetails");
+	for (var i = 0; i < list.length; i++) {
+		var tr = $("<tr>");
+		$("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
+		$(tr).data("obj", list[i]);
+		var tdForName = $("<td>");
+		$(tdForName).append(list[i].name);
+		$(tr).append(tdForName);
+
+
+		var tdForCreatedDate = $("<td>");
+		$(tdForCreatedDate).append(list[i].createdDate);
+		$(tr).append(tdForCreatedDate);
+
+
+		var tdForexpiryDate = $("<td>");
+		$(tdForexpiryDate).append(list[i].expiryDate);
+		$(tr).append(tdForexpiryDate);
+
+		var tdEmail = $("<td>");
+		$(tdEmail).append(list[i].emailId);
+		$(tr).append(tdEmail);
+
+		var tdForMobile = $("<td>");
+		$(tdForMobile).append(list[i].mobileNo);
+		$(tr).append(tdForMobile);
+		var status = "Active";
+		if (list[i].status == 0) {
+			status = "Deactive";
+		}
+
+		var tdForStatus = $("<td>");
+		$(tdForStatus).append(status);
+		$(tr).append(tdForStatus);
+
+		var settingsGear = createSettingsGearDiv();
+		$(settingsGear).removeClass("pull-right");
+		var tdForSettings = $("<td>").html(settingsGear);
+		$(tr).append(tdForSettings);
+		appendLiForStudentsSettings(settingsGear, list[i]);
+		$(tbody).append(tr);
+	}
+	initializeDataTable("tblStudentDetails")
+
+}
+
+function appendLiForStudentsSettings(div, obj) {
+	var ul = $(div).find("ul")[0];
+	$(ul).empty();
+	var liForEdit = createAndReturnLiForSettingsGear("Edit");
+	$(ul).append(liForEdit);
+	$(liForEdit).click(function() {
+		var obj = $(this).closest("tr").data("obj");
+		showAddNewStudentPage(obj);
+	});
+	var status = "Activate";
+	if (obj.status == 1) {
+		status = "Deactivate";
+	}
+	var liForUpdateStatus = createAndReturnLiForSettingsGear(status);
+	$(ul).append(liForUpdateStatus);
+	$(liForUpdateStatus).attr("status", obj.status);
+	$(liForUpdateStatus).click(function() {
+		var obj = $(this).closest("tr").data("obj");
+		var status = $(this).attr("status");
+		updateStudentStatus(obj.userId, status, $(this));
+	});
+	var liForDelete = createAndReturnLiForSettingsGear("Delete");
+	$(ul).append(liForDelete);
+	$(liForDelete).click(function() {
+		var obj = $(this).closest("tr").data("obj");
+		deleteACenter(obj.centerId);
+	});
+}
+
+function updateStudentStatus(userId, status, liStatus) {
+	$.ajax({
+		url: protocol + "//" + host + "/student/" + userId + "/expiry",
+		type: "PUT",
+		cache: false,
+		contentType: "text/plain",
+		success: function(obj) {
+			if (status == 1) {
+				$(liStatus).find("a").html("Deactivate");
+			} else {
+				$(liStatus).find("a").html("Activte")
+			}
+
+		}
+	});
+
+}
+
+function showAddNewStudentPage(obj) {
+	$("#divAddNewStudentDetailsPage").modal("show");
+	if (obj != undefined) {
+		populateStudnetAddForm(obj);
+		$("#btnStudentDetailsSave").attr("type", "edit");
+	}
+
+}
+
+function populateStudnetAddForm(obj) {
+	$("#sltManageStudentsCenterName").val(obj.centerId);
+	$("#txtFirstName").val(obj.firstName);
+	$("#txtLastName").val(obj.lastName);
+	$("input:radio[name='gendername'][value=" + obj.gender + "]").prop("checked", true);
+	$("#txtDob").val(obj.dob);
+	$("#txtQualification").val(obj.qualification);
+	$("#txtEmailId").val(obj.emailId);
+	$("#sltManageStudentsStates").val(obj.stateId);
+	$("#txtManageStudentsCity").val(obj.city);
+	$("#sltManageStudentsAddress").val(obj.address);
+	$("#txtManageStudentsPinCode").val(obj.pinCode);
+	$("#btnStudentDetailsSave").attr("userId", obj.userId)
 
 }

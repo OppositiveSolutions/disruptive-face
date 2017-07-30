@@ -26,6 +26,9 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('staff-details', function(query) {
 		showStaffDetailsPage();
 	});
+	crossroads.addRoute('testimonial', function(query) {
+		showTestimonialPage();
+	});
 	crossroads.bypassed.add(function() {
 		hasher.setHash('home');
 	});
@@ -126,6 +129,7 @@ function showStudentDetailsPage() {
 		});
 		return;
 	}
+	getStudents();
 	updateLeftMenu("Student Details");
 	showPage($("#divSuperAdminStudentDetailsPage")[0]);
 }
@@ -139,6 +143,18 @@ function showStaffDetailsPage() {
 	}
 	updateLeftMenu("Staff Details");
 	showPage($("#divSuperAdminStaffDetailsPage")[0]);
+}
+
+function showTestimonialPage() {
+	if ($("#divSuperadminTestimonialPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/testimonial.js' + postUrl], function() {
+			loadTestimonialPage(true);
+		});
+		return;
+	}
+	getTestimonials();
+	updateLeftMenu("Testimonial");
+	showPage($("#divSuperadminTestimonialPage")[0]);
 }
 
 function handleSuperAdminMenuClick(menuDiv) {
@@ -165,6 +181,10 @@ function handleSuperAdminMenuClick(menuDiv) {
 		case "manage center":
 			setHashInUrl('manage-center');
 			break;
+		case "testimonial":
+			setHashInUrl('testimonial');
+			break;
 	}
+
 	updateLeftMenu(menuTitle);
 }

@@ -203,7 +203,6 @@ function authenticate(username, password) {
 		},
 		success: function(statusMap) {
 			currentAccountDetails = statusMap.data;
-			currentAccountDetails.role = 1;
 			loadContainerPage();
 		}
 	});
@@ -216,18 +215,19 @@ function loadContainerPage() {
 		$("#loginPage").remove();
 		$("#container").remove();
 		$("body").append(data);
-		currentAccountDetails = {};
-		currentAccountDetails.role = "2";
 		initializePagesBasedOnRole();
-		$("#linkSignOut").click(function() {
+		$("#btnLogOut").click(function() {
 			logout();
 		});
+		console.info(currentAccountDetails);
+		$("#lblAccountHolderName").html(currentAccountDetails.firstName + " " + currentAccountDetails.lastName);
+		$("#emailid").html(currentAccountDetails.emailid);
 	});
 
 }
 
 function initializePagesBasedOnRole() {
-	switch (currentAccountDetails.role) {
+	switch (currentAccountDetails.role.toString()) {
 		case "1":
 			break;
 		case "2":
