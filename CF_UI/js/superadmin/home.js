@@ -29,6 +29,9 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('testimonial', function(query) {
 		showTestimonialPage();
 	});
+	crossroads.addRoute('video-tutorial', function(query) {
+		showVideoTutorialPage();
+	});
 	crossroads.bypassed.add(function() {
 		hasher.setHash('home');
 	});
@@ -145,6 +148,17 @@ function showStaffDetailsPage() {
 	showPage($("#divSuperAdminStaffDetailsPage")[0]);
 }
 
+function showVideoTutorialPage() {
+	if ($("#divSuperadminVideoTutorialPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/videotutorial.js' + postUrl], function() {
+			loadVideoTutorialPage(true);
+		});
+		return;
+	}
+	updateLeftMenu("Video Tutorial");
+	showPage($("#divSuperadminVideoTutorialPage")[0]);
+}
+
 function showTestimonialPage() {
 	if ($("#divSuperadminTestimonialPage")[0] == undefined) {
 		loadFilesAndExecutecallBack(['js/superadmin/testimonial.js' + postUrl], function() {
@@ -183,6 +197,9 @@ function handleSuperAdminMenuClick(menuDiv) {
 			break;
 		case "testimonial":
 			setHashInUrl('testimonial');
+			break;
+		case "video tutorial":
+			setHashInUrl('video-tutorial');
 			break;
 	}
 
