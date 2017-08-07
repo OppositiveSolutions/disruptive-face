@@ -228,9 +228,9 @@ function loadContainerPage() {
 
 function initializePagesBasedOnRole() {
 	switch (currentAccountDetails.role.toString()) {
-		case "1":
+		case STUDENT:
 			break;
-		case "2":
+		case ADMIN:
 			loadFilesAndExecutecallBack(['js/superadmin/home.js' + postUrl],
 				function() {
 					initializeSuperAdminRoutes();

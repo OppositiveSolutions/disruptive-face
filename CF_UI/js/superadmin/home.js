@@ -155,6 +155,7 @@ function showVideoTutorialPage() {
 		});
 		return;
 	}
+	getVideoTutorials();
 	updateLeftMenu("Video Tutorial");
 	showPage($("#divSuperadminVideoTutorialPage")[0]);
 }

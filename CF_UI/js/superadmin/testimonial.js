@@ -18,7 +18,7 @@ function loadTestimonialPage(isShow) {
     $("#btnNewTestimonialSave").click(function() {
       var type = $(this).attr("type");
       if (type == "edit") {
-        saveTestimonials();
+        editTestimonials();
       } else {
         saveTestimonials();
       }
@@ -34,6 +34,7 @@ function validateAndReturnTestimonialInfo() {
     return;
   }
   obj.content = content;
+  obj.date = "2017-09-12";
   return obj;
 }
 
@@ -145,7 +146,7 @@ function appendLiForTestimonialSettings(div) {
 function showTestimonialAddForm(obj) {
   $("#divSuperAdminAddNewTestimonial").modal("show");
   if (obj != undefined) {
-    ("#btnNewTestimonialSave").attr("type", "edit");
+    $("#btnNewTestimonialSave").attr("type", "edit");
     populateTestimonialAddForm(obj);
   }
 }
@@ -153,4 +154,5 @@ function showTestimonialAddForm(obj) {
 function populateTestimonialAddForm(obj) {
   $("#txtTestimonial").val(obj.content);
   $("#btnNewTestimonialSave").attr("testimonialId", obj.testimonialId);
+  $("#btnNewTestimonialSave").attr("type", "edit");
 }

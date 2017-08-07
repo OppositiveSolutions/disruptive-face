@@ -59,6 +59,7 @@ function saveVideoTutorial() {
     data: JSON.stringify(obj),
     contentType: "application/json; charset=utf-8",
     success: function(obj) {
+      getVideoTutorials();
       $("#divSuperAdminAddNewVideoURL").modal("hide");
     }
   });
@@ -70,7 +71,7 @@ function editVideoTutorial() {
   if (obj == undefined) {
     return;
   }
-  obj.videotutorialId = $("#btnNewVideoTutorialSave").attr("videotutorialId")
+  obj.videoTutorialId = $("#btnNewVideoTutorialSave").attr("videoTutorialId")
   $.ajax({
     url: protocol + "//" + host + "/video-tutorial",
     type: "PUT",
@@ -78,6 +79,7 @@ function editVideoTutorial() {
     data: JSON.stringify(obj),
     contentType: "application/json; charset=utf-8",
     success: function(obj) {
+      getVideoTutorials();
       $("#divSuperAdminAddNewVideoURL").modal("hide");
     }
   });
@@ -87,7 +89,7 @@ function editVideoTutorial() {
 function showAddNewVideoTutorialPage(obj) {
   $("#divSuperAdminAddNewVideoURL").modal("show");
   if (obj != undefined) {
-    populateAddNewVideoTutorialForm();
+    populateAddNewVideoTutorialForm(obj);
   }
 
 }
@@ -96,6 +98,86 @@ function populateAddNewVideoTutorialForm(obj) {
   $("#txtVideoTutorialName").val(obj.name);
   $("#txtVideoTutorialDescription").val(obj.description);
   $("#txtVideoTutorialURL").val(obj.url);
-  $("#btnNewVideoTutorialSave").attr("videotutorialId", obj.videotutorialId);
+  $("#btnNewVideoTutorialSave").attr("videoTutorialId", obj.videoTutorialId);
+  $("#btnNewVideoTutorialSave").attr("type", "edit");
 
+}
+
+function getVideoTutorials() {
+  $.ajax({
+    url: protocol + "//" + host + "/video-tutorial",
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      var list = obj.data;
+      populateVideoTutorials(list);
+    }
+  });
+}
+
+function deleteVideoTutorial(id) {
+  $.ajax({
+    url: protocol + "//" + host + "/video-tutorial/" + id,
+    type: "DELETE",
+    cache: false,
+    success: function(obj) {
+      getVideoTutorials();
+    }
+  });
+}
+
+function populateVideoTutorials(list) {
+  var tbody = $("#tblVideoTutorials tbody")[0];
+  $(tbody).empty();
+  console.info(list)
+  destroyDataTable("tblVideoTutorials");
+  for (var i = 0; i < list.length; i++) {
+    var tr = $("<tr>").data("obj", list[i]);
+    $("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
+    $(tr).data("obj", list[i]);
+    var tdForName = $("<td>");
+    $(tdForName).append("<b>" + list[i].name + "</b>");
+    $(tdForName).append("<br>" + list[i].description);
+    $(tr).append(tdForName);
+
+
+    var tdForUrl = $("<td>");
+    $(tdForUrl).append(list[i].url);
+    $(tr).append(tdForUrl);
+
+    var settingsGear = createSettingsGearDiv();
+    $(settingsGear).removeClass("pull-right");
+    var tdForSettings = $("<td>").html(settingsGear);
+    $(tr).append(tdForSettings);
+    appendLiForVideoTutorialSettings(settingsGear, list[i]);
+    $(tbody).append(tr);
+  }
+  initializeDataTable("tblVideoTutorials")
+
+}
+
+function appendLiForVideoTutorialSettings(div) {
+  var ul = $(div).find("ul")[0];
+  $(ul).empty();
+  var liForEdit = createAndReturnLiForSettingsGear("Edit");
+  $(ul).append(liForEdit);
+  $(liForEdit).click(function() {
+    var obj = $(this).closest("tr").data("obj");
+    showAddNewVideoTutorialPage(obj);
+  });
+  var liForDelete = createAndReturnLiForSettingsGear("Delete");
+  $(ul).append(liForDelete);
+  $(liForDelete).click(function() {
+    var obj = $(this).closest("tr").data("obj");
+    deleteVideoTutorial(obj.videoTutorialId);
+  });
+}
+
+function showAddNewCategoryPage(obj) {
+  $("#divAddNewCategoryPage").modal("show");
+  if (obj != undefined) {
+    $("#txtCategoryName").val(obj.name);
+    $("#btnAddNewCategorySave").attr("type", "edit");
+    $("#btnAddNewCategorySave").attr("categoryId", obj.categoryId);
+  }
 }
