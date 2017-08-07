@@ -23,7 +23,6 @@ function loadMakeQPaperPage(obj, isShow) {
 		});
 	});
 }
-
 function saveQuestion() {
 	var list = [{
 		"questionId":39,
@@ -52,9 +51,7 @@ function saveQuestion() {
 			console.info(returnMap);
 		}
 	});
-
 }
-
 function showQuestionCreateSection() {
 	var optionCount = 5;
 	$("#divAddNewQPaperPage").modal("show");
@@ -92,7 +89,12 @@ function createOptionTabsAccordingToOptionCount(optionCount, callBack) {
 		$(divToAppend).html("").append(divForTabContent);
 		var textAreaForOptions = $("<textarea>").addClass("form-control typeArea");
 		$(textAreaForOptions).attr("id", "textAreaForQuestion");
+		var inputDivForQuestion=$("<div>").addClass("form-group fixedWidthDiv100");
+		var inputForQuestion=$("<input>").addClass("form-control");
+		$(inputDivForQuestion).append(inputForQuestion);
+		$(divForTabContent).append(inputDivForQuestion);
 		$(divForTabContent).append(textAreaForOptions);
+		
 		for (var i = 0; i < optionCount; i++) {
 			var counter = i + 1;
 			var liForTabList = $("<li>");
