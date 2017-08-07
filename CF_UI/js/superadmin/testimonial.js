@@ -106,7 +106,6 @@ function deleteTestimonial(id) {
 function populateTestimonials(list) {
   var tbody = $("#tblTestimonial tbody")[0];
   $(tbody).empty();
-  console.info(list)
   destroyDataTable("tblTestimonial");
   for (var i = 0; i < list.length; i++) {
     var tr = $("<tr>");

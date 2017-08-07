@@ -32,6 +32,9 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('video-tutorial', function(query) {
 		showVideoTutorialPage();
 	});
+	crossroads.addRoute('announcements', function(query) {
+		showAnouncementsPage();
+	});
 	crossroads.bypassed.add(function() {
 		hasher.setHash('home');
 	});
@@ -98,6 +101,18 @@ function showCategoryMasterPage() {
 	showPage($("#divSuperAdminCategoryPage")[0]);
 	getCategory();
 	//$("#divAddNewCategoryPage").modal("show");
+}
+
+function showAnouncementsPage() {
+	if ($("#divSuperAdminAnouncementsPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/anouncements.js' + postUrl], function() {
+			loadAnouncementsPage(true);
+		});
+		return;
+	}
+	getAnnouncements();
+	updateLeftMenu("Anouncements");
+	showPage($("#divSuperAdminAnouncementsPage")[0]);
 }
 
 function showManageCenterPage() {
@@ -202,7 +217,11 @@ function handleSuperAdminMenuClick(menuDiv) {
 		case "video tutorial":
 			setHashInUrl('video-tutorial');
 			break;
+		case "announcements":
+			setHashInUrl('announcements');
+			break;
 	}
+
 
 	updateLeftMenu(menuTitle);
 }
