@@ -158,7 +158,7 @@ function populateSections(sectionsList) {
         for (var i = 0; i < sectionsList.length; i++) {
             var btnForSection = $("<button>").addClass("btn btn-white btn-sm").html(sectionsList[i].category.name);
             $(sectionDiv).append(btnForSection);
-            $(btnForSection).attr("categoryId", sectionsList[i].questionPaperCategoryId);
+            $(btnForSection).attr("categoryId", sectionsList[i].category.categoryId);
             $(btnForSection).data("categoryData", sectionsList[i]);
             $(btnForSection).click(function () {
                 $("#sectionContainer").find("button").removeClass("btn-primary active").addClass("btn-white");
@@ -182,7 +182,7 @@ function populateQuestions(categoryList) {
         for (var i = 0; i < categoryList.length; i++) {
             var subCategoryList = categoryList[i].questionPaperSubCategorys;
             for (var subCategory = 0; subCategory < subCategoryList.length; subCategory++) {
-                populateQUestionsOfSubCategory(subCategoryList[subCategory], categoryList[i].questionPaperCategoryId);
+                populateQUestionsOfSubCategory(subCategoryList[subCategory], categoryList[i].category.categoryId);
             }
 
         }
