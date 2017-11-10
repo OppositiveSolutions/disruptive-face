@@ -1,80 +1,161 @@
 function loadMakeQPaperPage(obj, isShow) {
 	$.get("superadmin/makeqpaper.html" + postUrl, {
-		"_" : $.now()
-	}, function(data) {
+		"_": $.now()
+	}, function (data) {
 		$("#pageContainer").append(data);
 		if (isShow) {
 			showMakeQuestionPage(obj);
 		}
-		$("#btnMakeQuestionPaperQNext").click(function() {
-			saveQuestion();
-			$("#makeQuetionPageBody").find("textarea").each(function() {
-				
-			//	alert(tinymce.get('textAreaForQuestion').getContent());
+		$("#btnAddNewQuestionPaper").unbind("click");
+		$("#btnAddNewQuestionPaper").click(function () {
 
-			});
 		});
-		$("#divAddNewQPaperPage").on('hidden.bs.modal', function() {
-			$("#makeQuetionPageBody").find("textarea").each(function() {
+		$("#btnMakeQuestionPaperQNext").click(function () {
+			saveQuestion();
+		});
+		$("#divAddNewQPaperPage").on('hidden.bs.modal', function () {
+			$("#makeQuetionPageBody").find("textarea").each(function () {
 				var id = $(this).attr("id");
 				tinymce.get(id).remove();
 			});
 
 		});
-	});
-}
-function saveQuestion() {
-	var list = [{
-		"questionId":39,
-		"questionPaperSubCategoryId" : 4,
-		"questionNo" : 2,
-		"question" : "Your name edited?",
-		"options" : [{
-			"optionNo" : 1,
-			"option" : "Monique Alexander"
-		}, {
-			"optionNo" : 2,
-			"option" : "Ava Addams"
-		}, {
-			"optionNo" : 3,
-			"option" : "Kendra Lust"
-		}],
-		"correctOptionNo" : 2
-	}];
-	$.ajax({
-		url : protocol + "//" + host + "/question-paper/question",
-		type : "POST",
-		cache : false,
-		data : JSON.stringify(list),
-		contentType : "application/json; charset=utf-8",
-		success : function(returnMap) {
-			console.info(returnMap);
-		}
-	});
-}
-function showQuestionCreateSection() {
-	var optionCount = 5;
-	$("#divAddNewQPaperPage").modal("show");
-	createOptionTabsAccordingToOptionCount(optionCount, function() {
-		$("#makeQuetionPageBody").find("textarea").each(function() {
-			var id = $(this).attr("id");
-			tinymce.init({
-				selector : '#' + id,
-				height : 250,
-				plugins : ["advlist autolink lists charmap print preview ", "searchreplace visualblocks fullscreen", "insertdatetime  table contextmenu paste "],
-				toolbar : " undo redo | styleselect | bold italic charmap | alignleft aligncenter alignright alignjustify | bullist numlist | fullscreen  ",
-				content_css : ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
-				// language : 'ml_IN'
-			});
+		$(document).on("click", "li.questionOptionTab", function () {
+			var targetDivId = $(this).find("a[role=tab]").attr("href");
+			var idOfTargetTextArea = $(targetDivId).find("textarea").attr("id");
+			tinyMCE.get(idOfTargetTextArea).focus();
 		});
 	});
+}
+
+function saveQuestion() {
+	var subCategoryId = $("#divAddNewQPaperPage").attr("subCategoryId");
+	var questionNumber = $("#txtQuestionNumber").val();
+	if (!questionNumber || questionNumber.trim() == "") {
+		alert("Enter the question number");
+		$("#txtQuestionNumber").focus();
+		return;
+	}
+	var question = tinymce.get('textAreaForQuestion').getContent();
+	if (!question || question.trim() == "") {
+		alert("Enter the question ");
+		$("a[href='#questionTab']").trigger("click");
+		return;
+	}
+	var questionId = $("#divAddNewQPaperPage").attr("questionId");
+	question = question.slice(3);
+	var options = [];
+	var hasAllOption = true;
+	$("#makeQuetionPageBody").find("textarea.option").each(function () {
+		var id = $(this).attr("id");
+		var optionNumber = $(this).attr("optionNumber");
+		var textAreaContent = tinymce.get(id).getContent();
+		if (!textAreaContent || textAreaContent.trim() == "") {
+			$("#makeQuetionPageBody").find("a[href='#option" + optionNumber + "']").trigger("click");
+			tinyMCE.get(id).focus();
+			hasAllOption = false;
+			return false;
+		}
+
+		textAreaContent = textAreaContent.slice(3);
+		var optionMap = {
+			optionNo: optionNumber,
+			option: textAreaContent
+		};
+		options.push(optionMap);
+	});
+	if (!hasAllOption) {
+		return;
+	}
+	var selectedOption = $("#selectCorrectOptionDiv").find("input:radio[name=selectedOption]:checked").val();
+	if (!selectedOption) {
+		alert("Select the correct answer option");
+		return;
+	}
+	var list = [{
+		questionPaperSubCategoryId: subCategoryId,
+		questionNo: questionNumber,
+		question: question,
+		options: options,
+		correctOptionNo: selectedOption
+	}];
+	if (questionId) {
+		list.questionId = questionId;
+	}
+
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/question",
+		type: "POST",
+		cache: false,
+		data: JSON.stringify(list),
+		contentType: "application/json; charset=utf-8",
+		success: function (returnMap) {
+			console.info(returnMap);
+			$("#divAddNewQPaperPage").modal("hide");
+			refreshQuestionPaperPage();
+		}
+	});
+
+}
+
+function showQuestionCreateSection(subCategoryId, obj, questionNo) {
+	$("#divAddNewQPaperPage").removeAttr("questionId");
+	var optionCount = $("#divAddNewQPaperPage").attr("optionsCount");
+	$("#divAddNewQPaperPage").modal("show");
+	$("#divAddNewQPaperPage").attr("subCategoryId", subCategoryId);
+	createOptionTabsAccordingToOptionCount(optionCount, function () {
+		$("#makeQuetionPageBody").find("textarea").each(function () {
+			var id = $(this).attr("id");
+			tinymce.init({
+				selector: '#' + id,
+				height: 250,
+				setup: function (ed) {
+					ed.on('keydown', function (e) {
+						if (e.keyCode == 9) {
+							e.preventDefault();
+							setFocusToNextTab();
+						}
+					});
+				},
+				plugins: ["advlist autolink lists charmap print preview ", "searchreplace visualblocks fullscreen", "insertdatetime  table contextmenu paste pramukhime  "],
+				toolbar: " undo redo | styleselect | bold italic charmap | alignleft aligncenter alignright alignjustify | bullist numlist | fullscreen  | pramukhime   pramukhimetogglelanguage ",
+				content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
+				// language : 'ml_IN'
+			});
+
+		});
+		setTimeout(function () {
+			if (obj) {
+				$("#divAddNewQPaperPage").attr("questionId", obj.questionId);
+				$("#txtQuestionNumber").val(questionNo);
+				tinymce.get('textAreaForQuestion').setContent(obj.question);
+				$("#selectCorrectOptionDiv").find("input:radio[name=selectedOption][value=" + obj.correctOptionNo + "]").prop("checked", true);
+				var optionListForPopulate = obj.options;
+				for (var i = 0; i < optionListForPopulate.length; i++) {
+					var idForOption = $("#makeQuetionPageBody").find("textarea.option[optionNumber=" + optionListForPopulate[i].optionNo + "]").attr("id");
+					tinymce.get(idForOption).setContent(optionListForPopulate[i].option);
+				}
+			}
+			$("#txtQuestionNumber").focus();
+		}, 1000);
+
+	});
+
+}
+
+function setFocusToNextTab() {
+	if ($("#makeQuetionPageBody").find("li.questionOptionTab:last").hasClass("active")) {
+		$("#makeQuetionPageBody").find("li.questionOptionTab:first").find("a[role=tab]").trigger("click");
+	} else {
+		$("#makeQuetionPageBody").find("li.questionOptionTab.active").next().find("a[role=tab]").trigger("click");
+	}
 }
 
 function createOptionTabsAccordingToOptionCount(optionCount, callBack) {
 	if (optionCount) {
 		var ulToAppend = $("#makeQuetionPageBody").find("ul.nav-tabs");
 		var divToAppend = $("#makeQuetionPageBody").find("div.tab-content");
-		var liForTabList = $("<li>").addClass("active");
+		var liForTabList = $("<li>").addClass("active questionOptionTab");
 		$(liForTabList).attr("role", "presentation");
 		var anchorForTabList = $("<a>").attr("href", "#questionTab").html("Question");
 		$(anchorForTabList).attr("aria-controls", "questionTab");
@@ -89,15 +170,26 @@ function createOptionTabsAccordingToOptionCount(optionCount, callBack) {
 		$(divToAppend).html("").append(divForTabContent);
 		var textAreaForOptions = $("<textarea>").addClass("form-control typeArea");
 		$(textAreaForOptions).attr("id", "textAreaForQuestion");
-		var inputDivForQuestion=$("<div>").addClass("form-group fixedWidthDiv100");
-		var inputForQuestion=$("<input>").addClass("form-control");
+		var inputDivForQuestion = $("<div>").addClass("form-group fixedWidthDiv200");
+		var inputForQuestion = $("<input>").addClass("form-control input-sm");
+		$(inputForQuestion).attr("placeholder", "Question Number");
+		$(inputForQuestion).attr("id", "txtQuestionNumber");
+		$(inputForQuestion).keydown(function (e) {
+			if (e.keyCode == 9) {
+				e.preventDefault();
+				setTabKeyPressDirectToQuestionArea();
+			}
+		});
+		var divForSelectCorrectOption = $("#selectCorrectOptionDiv");
+		var divForCOrrectAnswerRadioGroup = $("<div>").addClass("pull-right").html("Select Correct Option: ");
 		$(inputDivForQuestion).append(inputForQuestion);
-		$(divForTabContent).append(inputDivForQuestion);
+		$(divForSelectCorrectOption).html("").append(divForCOrrectAnswerRadioGroup);
+		$(divForSelectCorrectOption).append(inputDivForQuestion);
 		$(divForTabContent).append(textAreaForOptions);
-		
+
 		for (var i = 0; i < optionCount; i++) {
 			var counter = i + 1;
-			var liForTabList = $("<li>");
+			var liForTabList = $("<li>").addClass("questionOptionTab");
 			$(liForTabList).attr("role", "presentation");
 			var anchorForTabList = $("<a>").attr("href", "#option" + counter).html("option " + counter);
 			$(anchorForTabList).attr("aria-controls", "subCategory" + counter);
@@ -110,9 +202,19 @@ function createOptionTabsAccordingToOptionCount(optionCount, callBack) {
 			$(divForTabContent).attr("role", "tabpanel");
 			$(divForTabContent).attr("id", "option" + counter);
 			$(divToAppend).append(divForTabContent);
-			var textAreaForOptions = $("<textarea>").addClass("form-control typeArea");
+			var textAreaForOptions = $("<textarea>").addClass("form-control typeArea option");
 			$(textAreaForOptions).attr("id", "textArea" + counter);
+			$(textAreaForOptions).attr("optionNumber", counter);
 			$(divForTabContent).html("").append(textAreaForOptions);
+
+			var labelForRadio = $("<label>").addClass("selectedOptionRadio");
+			var radioForOption = $("<input>").attr("type", "radio");
+			$(radioForOption).attr("name", "selectedOption");
+			$(radioForOption).attr("value", counter);
+			$(labelForRadio).append(radioForOption);
+			$(labelForRadio).append(" Option" + counter);
+			$(divForCOrrectAnswerRadioGroup).append(labelForRadio);
+
 		}
 
 	}
@@ -121,7 +223,19 @@ function createOptionTabsAccordingToOptionCount(optionCount, callBack) {
 
 function initializeSetQPaperPage(obj) {
 	getAllCategoriesForQuestionPaper(obj.questionPaperCategorys);
-	//getAllSubCategoriesForQuestionPaper(obj);
+	$("#divAddNewQPaperPage").attr("optionsCount", obj.noOfOptions);
+
+}
+function refreshQuestionPaperPage() {
+	var currentSubCategoryId = $("#divAddNewQPaperPage").attr("subcategoryid");
+	alert(currentSubCategoryId);
+	console.info($("#makeQPaperPageBody").find("ul.QuestionUl[subcategoryid=currentSubCategoryId]").html());
+	$("#makeQPaperPageBody").find("ul[subcategoryid=currentSubCategoryId]").html("");
+}
+
+function setTabKeyPressDirectToQuestionArea(item) {
+	$("a[href='#questionTab']").trigger("click");
+	//tinyMCE.get("textAreaForQuestion").focus();
 }
 
 function getAllCategoriesForQuestionPaper(list) {
@@ -147,7 +261,6 @@ function getAllCategoriesForQuestionPaper(list) {
 			$(divPanel).append(divForCategoryCondent);
 			var divForPanelCategoryCondent = $("<div>").addClass("panel-body");
 			$(divForCategoryCondent).append(divForPanelCategoryCondent);
-
 			getSubCategoryForACategory(list[i].questionPaperSubCategorys, divForPanelCategoryCondent, list[i].correctAnswerMark);
 		}
 	}
@@ -166,40 +279,61 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 			}
 			var spanForMark = $("<span>").addClass("markSpan").html("Mark: (" + subCategoryList[j].noOfQuestions + " X " + correctAnswerMark + ")");
 			$(divSubCategoryTop).append(spanForMark);
+			var btnForAddQuestion = $("<button>").addClass("btn btn-default btn-sm pull-right").html("Add Question");
+			$(btnForAddQuestion).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
+			$(btnForAddQuestion).click(function () {
+				showQuestionCreateSection($(this).attr("subCategoryId"));
+			});
+			$(divSubCategoryTop).append(btnForAddQuestion);
 			$(categoryDiv).append(divSubCategoryTop);
-			populateQuestionAndOptions(subCategoryList[j].questions, categoryDiv);
+			populateQuestionAndOptions(subCategoryList[j], categoryDiv);
 		}
 	}
 }
 
-function populateQuestionAndOptions(questionsList, targetDiv) {
+function populateQuestionAndOptions(subCategory, targetDiv, ) {
+	var questionsList = subCategory.questions;
 	var ulForQuestion = $("<ul>").addClass('noPadding QuestionUl');
+	$(ulForQuestion).attr("subCategoryId", subCategory.questionPaperSubCategoryId);
 	$(targetDiv).append(ulForQuestion);
 	if (questionsList.length != 0) {
 		for (var k = 0; k < questionsList.length; k++) {
-			var divForQuestion = $("<li>").addClass("questionLi").html(questionsList[k].questionNo + ") " + questionsList[k].question.question);
+			var divForQuestion = $("<li>").addClass("questionLi").html("<p>" + questionsList[k].questionNo + ") " + questionsList[k].question.question);
 			$(ulForQuestion).append(divForQuestion);
-			var spanForEditANdDelete = $("<span>").addClass("pull-right editDeleteSpan");
+			var spanForEditAndDelete = $("<span>").addClass("pull-right editDeleteSpan");
+			$(spanForEditAndDelete).attr("subCategroyId", questionsList[k].questionPaperSubCategoryId);
+			$(spanForEditAndDelete).data("question", questionsList[k].question);
+			$(spanForEditAndDelete).attr("questionNo", questionsList[k].questionNo);
 			var editIcon = $("<i>").addClass("fa fa-pencil");
+			$(editIcon).click(function () {
+				var questionMap = $(this).parent().data("question");
+				var subCategoryId = $(this).parent().attr("subCategroyId");
+				var questionNo = $(this).parent().attr("questionNo");
+				showQuestionCreateSection(subCategoryId, questionMap, questionNo);
+			});
 			var deleteIcon = $("<i>").addClass("fa fa-trash-o");
-			$(spanForEditANdDelete).append(editIcon);
-			$(spanForEditANdDelete).append(deleteIcon);
-			$(divForQuestion).append(spanForEditANdDelete);
+			$(spanForEditAndDelete).append(editIcon);
+			$(spanForEditAndDelete).append(deleteIcon);
+			$(divForQuestion).append(spanForEditAndDelete);
 			var ulForOptions = $("<ul>").addClass("optionsList");
 			var optionsList = questionsList[k].question.options;
 			if (optionsList) {
 				for (var p = 0; p < optionsList.length; p++) {
-					var liForOption = $("<li>").html(optionsList[p].optionNo + ") " + optionsList[p].option);
+					var liForOption = $("<li>").html("<p>" + optionsList[p].optionNo + ") " + optionsList[p].option);
 					$(liForOption).attr("questionNumber", optionsList[p].optionNo);
 					$(liForOption).attr("optionId", optionsList[p].optionId);
 					$(ulForOptions).append(liForOption);
 				}
 			}
 			$(divForQuestion).append(ulForOptions);
-			var correctAnswer = $(ulForOptions).find("li[questionNumber=" + questionsList[k].question.correctOptionNo + "]").html();
+			var correctAnswer = $(ulForOptions).find("li[questionNumber=" + questionsList[k].question.correctOptionNo + "]").text();
 			var pForAnswer = $("<p>").addClass("answerDiv").html(" Answer: " + correctAnswer);
 			$(divForQuestion).append(pForAnswer);
 
 		}
 	}
+}
+
+function editQuestion(questionMap, subCategoryId) {
+
 }

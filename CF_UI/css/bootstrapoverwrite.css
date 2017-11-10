@@ -352,9 +352,13 @@ select.input-sm, .input-sm {
 	border:1px solid #ddd;
 	cursor:pointer;
 }
-.fixedWidthDiv100
+.fixedWidthDiv200
 {
-	width:100px;
+	width:200px;
+}
+.selectedOptionRadio
+{
+	padding-left:20px;
 }
 .postlogin-box .panel-body .form-control {
 	border: none;
