@@ -73,6 +73,7 @@ function saveQuestionInExam() {
         var questionNumber = $(this).attr("questionNumber");
         var questionId = $(this).attr("questionId");
         var status = $(this).attr("status");
+        var categoryId=$(this).attr("categoryId");
         var selectedOptionNumber = $(this).find("input:radio:checked").val();
         if (!selectedOptionNumber) {
             selectedOptionNumber = 0;
@@ -81,9 +82,10 @@ function saveQuestionInExam() {
             questionNo: +questionNumber,
             questionId: +questionId,
             status: +status,
-            optionNo: +selectedOptionNumber
+            optionNo: +selectedOptionNumber,
+            categoryId: +categoryId
         }
-        
+
         answerList.push(questionAnswerMap);
     });
 
