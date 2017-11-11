@@ -104,9 +104,9 @@ function saveQuestionInExam() {
 
         answerList.push(questionAnswerMap);
     });
-
+    var examId = $("#questionContainer").attr("examId");
     $.ajax({
-        url: protocol + "//" + host + "/exam/saveexam/1",
+        url: protocol + "//" + host + "/exam/saveexam/"+examId,
         type: "POST",
         cache: false,
         data: JSON.stringify(answerList),
