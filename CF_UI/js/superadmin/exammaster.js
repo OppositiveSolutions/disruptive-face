@@ -234,12 +234,15 @@ function saveExamMasterCategorytails(questionPaperId, callBack) {
 }
 
 function editExamMasterCategorytails(questionPaperId, callBack) {
+	if (!questionPaperId) {
+		questionPaperId = $("#divAddNewExamMasterPage").attr("questionPaperId");
+	}
 	var obj = validateAndReturnExamMasterCategoryDetails(questionPaperId);
 	if (obj == undefined) {
 		return;
 	}
 	$.ajax({
-		url: protocol + "//" + host + "/question-paper/category",
+		url: protocol + "//" + host + "/question-paper/" + questionPaperId + "/category",
 		type: "PUT",
 		cache: false,
 		data: JSON.stringify(obj),
@@ -551,6 +554,7 @@ function populateExamMasterExamForm(obj) {
 	$("#txtExamMasterExamCode").val(obj.examCode);
 	$("#txtExamMasterCourseName").val(obj.courseName);
 	$("#btnExamMasterExamDetailsNext").attr("questionPaperId", obj.questionPaperId);
+	$("#divAddNewExamMasterPage").attr("questionPaperId", obj.questionPaperId);
 	obj.duration = parseInt(obj.duration);
 	var hours = obj.duration / 60;
 	hours = parseInt(hours);
