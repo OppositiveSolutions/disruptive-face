@@ -1,9 +1,10 @@
 var protocol = "http:";
 var host = "localhost:8080/cf-restful"
 $(document).ready(function () {
-    getAllCategoriesOfQUestionPaper(getUrlParameter('testId'));
+    createExamForTest();
     $("#examContainer").hide();
     $("#btnStartExam").click(function () {
+
         startExam();
     });
     $("#btnNextQuestion").click(function () {
@@ -20,6 +21,21 @@ $(document).ready(function () {
     });
 
 });
+function createExamForTest() {
+    var testId = getUrlParameter('testId');
+    var isDemo = getUrlParameter('isDemo');
+    $.ajax({
+        url: protocol + "//" + host + "/exam/" + testId + "/create/" + isDemo,
+        type: "POST",
+        cache: false,
+        success: function (returnMap) {
+            var examId = returnMap.data;
+            getAllCategoriesOfQUestionPaper(examId);
+            $("#questionContainer").attr("examId", examId);
+        }
+    });
+
+}
 function setCounter(duration) {
     var durationForExam = duration * 60 * 1000;
     var countDownDate = (new Date()).getTime() + durationForExam;
@@ -73,7 +89,7 @@ function saveQuestionInExam() {
         var questionNumber = $(this).attr("questionNumber");
         var questionId = $(this).attr("questionId");
         var status = $(this).attr("status");
-        var categoryId=$(this).attr("categoryId");
+        var categoryId = $(this).attr("categoryId");
         var selectedOptionNumber = $(this).find("input:radio:checked").val();
         if (!selectedOptionNumber) {
             selectedOptionNumber = 0;
@@ -143,12 +159,22 @@ function populateExamStartPage(examMap) {
     }
 }
 function startExam() {
-    $("#examContainer").show();
-    $("#examIntroduction").hide();
-    var examMap = $("#examContainer").data("examMap");
-    populateSections(examMap.questionPaperCategorys);
-    populateQuestions(examMap.questionPaperCategorys);
-    $("#sectionContainer").find("button:first").trigger("click");
+    var examId = $("#questionContainer").attr("examId");
+    var url = protocol + "//" + host + "/exam/" + examId + "/startexam/1"
+    $.ajax({
+        url: url,
+        type: "POST",
+        cache: false,
+        success: function (map) {
+            $("#examContainer").show();
+            $("#examIntroduction").hide();
+            var examMap = $("#examContainer").data("examMap");
+            populateSections(examMap.questionPaperCategorys);
+            populateQuestions(examMap.questionPaperCategorys);
+            $("#sectionContainer").find("button:first").trigger("click");
+
+        }
+    });
 
 }
 
@@ -193,10 +219,29 @@ function showQuestion(firstQuestionNumber) {
     var currentQuestionDiv = $("#questionContainer").find("div[questionNumber=" + firstQuestionNumber + "]");
     $(currentQuestionDiv).removeClass("hide");
     var selectedCategory = $(currentQuestionDiv).attr("categoryId");
-    $("#sectionContainer").find("button").removeClass("btn-primary active").addClass("btn-white");
-    $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").addClass("btn-primary active").removeClass("btn-white");
+    detectCategoryChanges(selectedCategory);
     $("#questionContainer").attr("currentQuestion", firstQuestionNumber);
     setStatusForQuestion(firstQuestionNumber);
+
+}
+function detectCategoryChanges(selectedCategory) {
+    var currentCategory = $("#sectionContainer").find("button.active").attr("categoryId");
+    if (currentCategory != selectedCategory) {
+        $("#sectionContainer").find("button").removeClass("btn-primary active").addClass("btn-white");
+        $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").addClass("btn-primary active").removeClass("btn-white");
+        addCategoryChange(selectedCategory);
+    }
+}
+function addCategoryChange(selectedCategory) {
+    var examId = $("#questionContainer").attr("examId");
+    var url = protocol + "//" + host + "/exam/save/" + examId + "/time/" + selectedCategory;
+    $.ajax({
+        url: url,
+        type: "POST",
+        cache: false,
+        success: function (map) {
+        }
+    });
 }
 
 function populateQUestionsOfSubCategory(subCategory, categoryId) {

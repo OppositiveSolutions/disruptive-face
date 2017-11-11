@@ -26,6 +26,8 @@ function populateMytestTable(list) {
         $(tbody).empty();
         for (var i = 0; i < list.length; i++) {
             var tr = $("<tr>");
+            $(tr).attr("isDemo", list[i].is_demo);
+            $(tr).attr("testId", list[i].test_id);
             $(tr).data("map", list[i]);
             var tdForIndex = $("<td>").html(i + 1);
             $(tr).append(tdForIndex);
@@ -37,7 +39,9 @@ function populateMytestTable(list) {
             $(tr).append(tdForAction);
             $(tbody).append(tr);
             $(btnForTest).click(function () {
-                window.open('startexam.html?testId=1', 'mywindow', 'width=1300,height=800')
+                var testId = $(this).closest("tr").attr("testId");
+                var isDemo = $(this).closest("tr").attr("isDemo");
+                window.open('startexam.html?testId='+testId+'&isDemo='+isDemo, 'mywindow', 'width=1300,height=800')
 
             });
         }

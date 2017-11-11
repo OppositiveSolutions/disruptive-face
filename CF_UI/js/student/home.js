@@ -67,6 +67,8 @@ function showStudentProfile() {
 		loadStudentProfilePage();
 		return;
 	}
+	google.charts.load('current', { 'packages': ['corechart'] });
+	google.charts.setOnLoadCallback(drawChart);
 	showPage($("#studentProfilePage")[0]);
 
 }
@@ -83,10 +85,10 @@ function loadStudentProfilePage() {
 
 function showMyTestPage() {
 	if ($("#mytestpage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/student/mytest.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/student/mytest.js' + postUrl], function () {
 			loadMyTestPage();
 		});
-		
+
 		return;
 	}
 	showPage($("#mytestpage")[0]);
@@ -95,9 +97,22 @@ function showMyTestPage() {
 }
 
 function initializeStudentPage() {
+	google.charts.setOnLoadCallback(drawAreaChart);
+	getExamProgressOfStudent();
 	getBundleList($("#onlineTestPackages"));
 	getResultList();
 }
+function getExamProgressOfStudent() {
+	var progressMap = [['Date', 'progress'],
+	['9th April', 63], ['24th May', 86], ['20th June', 36], ['19th July', 63], ['24th Aug', 86], ['30 Sep', 36]];
+	var options = {
+		title: 'Performance',
+		hAxis: { title: 'Exams', titleTextStyle: { color: '#333' } },
+		vAxis: { minValue: 0, title: 'Progress' }
+	};
+	drawAreaChart(progressMap,options);
+}
+
 
 function getResultList() {
 	var list = [{

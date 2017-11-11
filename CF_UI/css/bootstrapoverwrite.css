@@ -5,7 +5,7 @@ html, body {
 body, input, button, select, textarea {
 	font-family:'Open Sans',sans-serif,Arial;
 	color:#333333;
-        background-color: #f9f9fa;
+        background-color: #ebedf4;
 }
 .main-content {
 	margin-left:214px;
