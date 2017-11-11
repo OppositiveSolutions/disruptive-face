@@ -106,7 +106,7 @@ function saveQuestionInExam() {
     });
     var examId = $("#questionContainer").attr("examId");
     $.ajax({
-        url: protocol + "//" + host + "/exam/saveexam/"+examId,
+        url: protocol + "//" + host + "/exam/saveexam/" + examId,
         type: "POST",
         cache: false,
         data: JSON.stringify(answerList),
@@ -187,8 +187,6 @@ function populateSections(sectionsList) {
             $(btnForSection).attr("categoryId", sectionsList[i].category.categoryId);
             $(btnForSection).data("categoryData", sectionsList[i]);
             $(btnForSection).click(function () {
-                $("#sectionContainer").find("button").removeClass("btn-primary active").addClass("btn-white");
-                $(this).addClass("btn-primary active").removeClass("btn-white");
                 var categoryData = $(this).data("categoryData");
                 selectionOfCategories(categoryData);
             });
@@ -227,9 +225,9 @@ function showQuestion(firstQuestionNumber) {
 function detectCategoryChanges(selectedCategory) {
     var currentCategory = $("#sectionContainer").find("button.active").attr("categoryId");
     if (currentCategory != selectedCategory) {
+        addCategoryChange(selectedCategory);
         $("#sectionContainer").find("button").removeClass("btn-primary active").addClass("btn-white");
         $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").addClass("btn-primary active").removeClass("btn-white");
-        addCategoryChange(selectedCategory);
     }
 }
 function addCategoryChange(selectedCategory) {
