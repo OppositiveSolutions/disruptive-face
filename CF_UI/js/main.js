@@ -204,7 +204,7 @@ function authenticate(username, password) {
 		success: function (statusMap) {
 			currentAccountDetails = statusMap.data;
 			currentAccountDetails.role = statusMap.data.role;
-			loadContainerPage();
+			loadContainerPage(statusMap);
 		}
 	});
 }
@@ -217,6 +217,7 @@ function loadContainerPage(statusMap) {
 		$("#container").remove();
 		$("body").append(data);
 		currentAccountDetails = {};
+		currentAccountDetails=statusMap.data;
 		console.info(statusMap.data);
 		currentAccountDetails.role = statusMap.data.role;
 		initializePagesBasedOnRole();
@@ -231,6 +232,7 @@ function loadContainerPage(statusMap) {
 }
 
 function initializePagesBasedOnRole() {
+	console.info(currentAccountDetails);
 	switch (currentAccountDetails.role.toString()) {
 		case STUDENT:
 			loadFilesAndExecutecallBack(['js/student/home.js' + postUrl], function () {

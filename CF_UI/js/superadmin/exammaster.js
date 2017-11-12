@@ -369,7 +369,6 @@ function appendLiForExamSettings(div) {
 	$(ul).append(liForEdit);
 	$(liForEdit).unbind("click");
 	$(liForEdit).click(function () {
-		alert("adasdas")
 		var obj = $(this).closest("tr").data("obj");
 		populateExamMasterExamForm(obj);
 	});

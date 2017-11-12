@@ -112,9 +112,72 @@ function saveQuestionInExam() {
         data: JSON.stringify(answerList),
         contentType: "application/json; charset=utf-8",
         success: function (returnMap) {
+            if (returnMap.data) {
+                alert("saved successfully");
+                showExamResultScoreBoard(examId);
+            }
         }
     });
 
+
+}
+function showExamResultScoreBoard(examId) {
+    var url = protocol + "//" + host + "/result/" + examId + "/scoregraph";
+    $.ajax({
+        url: url,
+        type: "GET",
+        cache: false,
+        success: function (list) {
+            populateResultScoreSheet(list.data);
+
+        }
+    });
+}
+function populateResultScoreSheet(list) {
+    if (!list.length) {
+        return;
+    }
+    populateTotalStatus(list);
+    $("#divShowExamResultStatus").modal('show');
+    var tbody = $("#tblSesultStatus").find("tbody");
+    $(tbody).empty();
+    for (var i = 0; i < list.length; i++) {
+        var tr = $('<tr>');
+        var tdSection = $('<td>').html(list[i].categoryName);
+        $(tr).append(tdSection);
+        var tdAttempted = $('<td>').html(list[i].totalAttended + " / " + list[i].noOfQuestions);
+        $(tr).append(tdAttempted);
+        var tdCorrect = $('<td>').html(list[i].correctMark);
+        $(tr).append(tdCorrect);
+        var tdWrong = $('<td>').html(list[i].negativeMark);
+        $(tr).append(tdWrong);
+        var tdScore = $('<td>').html(list[i].totalMark);
+        $(tr).append(tdScore);
+        var percentage = list[i].totalMark / list[i].totalPossibleMark * 100;
+        var tdPercentage = $('<td>').html(percentage);
+        $(tr).append(tdPercentage);
+        var tdTime = $('<td>').html(list[i].timeTakenMin + " " + list[i].timeTakenSec);
+        $(tr).append(tdTime);
+        $(tbody).append(tr);
+    }
+    //for()
+
+}
+function populateTotalStatus(list) {
+
+    var totalAttempted = 0;
+    var totalAvailable = 0;
+    var totalCorrectAnswer = 0;
+    var totalWrongAnswer = 0;
+    var totalScore = 0;
+    for (var i = 0; i < list.length; i++) {
+        totalAttempted += list[i].totalAttended;
+        totalAvailable += list[i].noOfQuestions;
+        totalCorrectAnswer += list[i].correctMark;
+        totalWrongAnswer += list[i].negativeMark;
+        totalScore += list[i].totalMark;
+    }
+    
 
 }
 function getAllCategoriesOfQUestionPaper(testId) {

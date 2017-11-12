@@ -98,21 +98,41 @@ function showMyTestPage() {
 
 function initializeStudentPage() {
 	google.charts.setOnLoadCallback(drawAreaChart);
-	getExamProgressOfStudent();
 	getBundleList($("#onlineTestPackages"));
 	getResultList();
+	getExamProgressOfStudent();
 }
 function getExamProgressOfStudent() {
-	var progressMap = [['Date', 'progress'],
-	['9th April', 63], ['24th May', 86], ['20th June', 36], ['19th July', 63], ['24th Aug', 86], ['30 Sep', 36]];
+	console.info(currentAccountDetails);
+	var userId = currentAccountDetails.userId;
+	var url = protocol + "//" + host + "/result/" + userId + "/scorecard";
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		success: function (list) {
+			createProgressGraph(list.data);
+		}
+	});
+}
+function createProgressGraph(list) {
+console.info(list);
+	var progressMap = [['Date', 'progress']];
+	for (var i = 0; i < list.length && i<10; i++) {
+		
+		var arrayForItem = [];
+		arrayForItem.push(list[i].examCode);
+		arrayForItem.push(list[i].totalMark);
+		progressMap.push(arrayForItem);
+	}
+	console.info(progressMap);
 	var options = {
 		title: 'Performance',
 		hAxis: { title: 'Exams', titleTextStyle: { color: '#333' } },
 		vAxis: { minValue: 0, title: 'Progress' }
 	};
-	drawAreaChart(progressMap,options);
+	drawAreaChart(progressMap, options);
 }
-
 
 function getResultList() {
 	var list = [{

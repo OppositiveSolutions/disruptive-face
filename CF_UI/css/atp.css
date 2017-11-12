@@ -66,7 +66,108 @@
 {
 	color:red;
 }
+.overAllStatus{
+	background: #fff;	
+	padding:0;
+}
 .progressBar{
 	width:100%;
+	background: #fff;
+}
+.row-progressbar{
+
+}
+.panel{
+	padding:0;
+	    margin-bottom: 10px;
+}
+.prgressbar-parent{
+	height:15px;
+	background:#f5f5f5;
+	padding:0;
+	z-index:90;
+	margin-top: 5px;
+	border-radius: 5px;
+}
+.progressBar-graph{
+	width:100%;
     height:300px;	
+}
+.prgressbar-child{
+height:15px;
+background: #4e6a84;
+z-index:100;
+position:absolute;
+border-radius: 5px;
+}
+.statusDetails{
+	    margin-top: 50px;
+    text-align: center;
+	margin-bottom: 40px;
+}
+.statusDetails p{
+	    margin-bottom: 0px;
+}
+.statusDetails i{
+	color:#999;
+}
+.statusDetails span{
+    font-size: 20px;
+}
+.statusDetails .highlight{
+	color:#4d6984;
+}
+.bundleList{
+	padding:5px;
+	text-align: left;
+	    padding-top: 10px;
+	display: block;
+	width:100%;
+	height:45px;
+	border-left:3px solid #4e6a84;
+	    border-bottom: 2px solid #e6e8ea;
+}
+.bundleList span{
+    width: 30px;
+    height: 30px;
+    padding-top: 5px;
+	margin-top: -5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    float: right;
+    border-radius: 5px;
+	    background: #4e6a84;
+    color: #fff;
+}
+.bundleList i{
+	color:#999;
+	padding-left:10px;
+	padding-right:10px;
+}
+.bundleCollection .panel-body{
+	padding:0;
+	height:188px;
+	overflow: auto;
+}
+.statusTblForResult{
+	background: #fff;
+}
+#tblSesultStatus{
+	width:100%;
+}
+#tblSesultStatus th{
+	border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+	background: #4d6984;
+	color:#fff;
+}
+#tblSesultStatus td{
+	border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+#divShowExamResultStatus .modal-body {
+	background: #fff;
 }
