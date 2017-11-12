@@ -156,7 +156,7 @@ function populateResultScoreSheet(list) {
         var percentage = list[i].totalMark / list[i].totalPossibleMark * 100;
         var tdPercentage = $('<td>').html(percentage);
         $(tr).append(tdPercentage);
-        var tdTime = $('<td>').html(list[i].timeTakenMin + " " + list[i].timeTakenSec);
+        var tdTime = $('<td>').html(list[i].timeTakenMin + "min " + list[i].timeTakenSec+"sec");
         $(tr).append(tdTime);
         $(tbody).append(tr);
     }
@@ -177,7 +177,10 @@ function populateTotalStatus(list) {
         totalWrongAnswer += list[i].negativeMark;
         totalScore += list[i].totalMark;
     }
-    
+    $("#totalAttempted").html(totalAttempted+" / "+totalAvailable);
+    $("#totalCorrectAnswer").html(totalCorrectAnswer);
+    $("#totalWrongAnswer").html(totalWrongAnswer);
+    $("#totalScore").html(totalScore);
 
 }
 function getAllCategoriesOfQUestionPaper(testId) {

@@ -171,3 +171,16 @@ border-radius: 5px;
 #divShowExamResultStatus .modal-body {
 	background: #fff;
 }
+#divShowExamResultStatus .modal-content{
+    left: -150px;
+}
+.currentResult div.col-sm-3{
+	text-align: center;
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.currentResult span{
+    font-size: 20px;
+	padding: 5px;
+	color: #4d6984;
+}
