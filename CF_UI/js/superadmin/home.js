@@ -1,10 +1,10 @@
 function loadSuperAdminView() {
 	loadSuperAdminLeftMenu();
+	showExamMasterPage();
 }
 
 function initializeSuperAdminRoutes() {
 	crossroads.addRoute('dashboard', function(query) {
-		alert("dash");
 
 	});
 
