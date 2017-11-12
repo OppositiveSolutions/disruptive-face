@@ -92,7 +92,7 @@ function saveQuestion() {
 		success: function (returnMap) {
 			console.info(returnMap);
 			$("#divAddNewQPaperPage").modal("hide");
-			//refreshQuestionPaperPage();
+			refreshQuestionPaperPage();
 		}
 	});
 
