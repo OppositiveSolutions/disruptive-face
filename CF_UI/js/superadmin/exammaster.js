@@ -332,6 +332,7 @@ function populateExamMasterExams(list) {
 		var tr = $("<tr>");
 		$("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
 		$(tr).data("obj", list[i]);
+		$(tr).attr("questionId",list[i].questionPaperId)
 		var tdForExamCode = $("<td>");
 		$(tdForExamCode).append(list[i].examCode);
 		$(tr).append(tdForExamCode);
@@ -376,7 +377,8 @@ function appendLiForExamSettings(div) {
 	$(ul).append(liForSetQuestions);
 	$(liForSetQuestions).click(function () {
 		var obj = $(this).closest("tr").data("obj");
-		showMakeQuestionPage(obj);
+		var questionId=$(this).closest("tr").attr("questionId");
+		showMakeQuestionPage(obj,questionId);
 	});
 
 	var liForManageSolution = createAndReturnLiForSettingsGear("Manage Solution");
@@ -394,10 +396,10 @@ function appendLiForExamSettings(div) {
 	});
 }
 
-function showMakeQuestionPage(obj) {
+function showMakeQuestionPage(obj,questionId) {
 	if ($("#divSuperAdminMakeQPaperPage")[0] == undefined) {
 		loadFilesAndExecutecallBack(['js/superadmin/makeqpaper.js' + postUrl, 'tinymce/js/tinymce/tinymce.min.js' + postUrl], function () {
-			loadMakeQPaperPage(obj, true);
+			loadMakeQPaperPage(obj, questionId,true);
 		});
 		return;
 	}
@@ -407,7 +409,7 @@ function showMakeQuestionPage(obj) {
 		showQuestionCreateSection();
 
 	});
-	initializeSetQPaperPage(obj);
+	initializeSetQPaperPage(obj,questionId);
 }
 
 function createAndReturnPanelDiv(panelTitle) {
