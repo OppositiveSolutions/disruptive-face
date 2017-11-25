@@ -184,3 +184,77 @@ border-radius: 5px;
 	padding: 5px;
 	color: #4d6984;
 }
+#resultPanelBody{
+	padding:0;
+	background: #eaecf3;
+}
+#resultPanelBody .row{
+	background: #fff;
+	margin-bottom:10px;
+}
+#resultLeftmenu{
+	padding:0;
+    box-shadow: 2px 2px 2px #ddd;
+}
+#resultLeftmenu ul{
+	overflow: auto;
+	    padding: 0;
+    color: #666;
+	font-size: 13px;
+}
+#resultLeftmenu ul li{
+	    padding: 10px;
+    list-style: none;
+	padding-left: 20px;
+    cursor: pointer;
+}
+
+
+#tblMyResultsStatus{
+	width:100%;
+}
+#tblMyResultsStatus th{
+	border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+	background: #4d6984;
+	color:#fff;
+}
+#tblMyResultsStatus td{
+	border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+}
+#resultBarChart{
+	padding-top:10px;
+}
+.statusTblForResults{
+	padding:10px;
+}
+.myResultContent{
+	padding:10px;
+	padding-left:20px;
+	background: #ebedf4;
+	padding-top: 0px;
+}
+.myResultContent div.col-sm-3{
+	text-align: center;
+	padding-top:10px;
+}
+.myResultContent span{
+    font-size: 20px;
+	padding: 5px;
+	color: #4d6984;
+}
+.examLeftMenuHead{
+	background: #4d6984;
+	padding:10px;
+	color: #fff;
+	padding-left: 20px;
+	border-bottom: 1px solid #fff;
+}
+.selection{
+	    border-left: 4px solid #4d6984;
+    color: #4e6a84;
+	font-weight:bold;
+}

@@ -16,6 +16,9 @@ function initializeStudentRoutes() {
 	crossroads.addRoute('mytests', function (query) {
 		showMyTestPage();
 	});
+	crossroads.addRoute('myresults', function (query) {
+		showMyResultPage()
+	});
 
 	crossroads.routed.add(console.log, console);
 	//log all routes
@@ -68,7 +71,7 @@ function showStudentProfile() {
 		return;
 	}
 	google.charts.load('current', { 'packages': ['corechart'] });
-	google.charts.setOnLoadCallback(drawChart);
+	google.charts.setOnLoadCallback(drawAreaChart);
 	showPage($("#studentProfilePage")[0]);
 
 }
@@ -95,10 +98,21 @@ function showMyTestPage() {
 	updateLeftMenu("My test");
 	getAllTestList();
 }
+function showMyResultPage() {
+	if ($("#myresultpage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/student/myresults.js' + postUrl], function () {
+			loadMyResultsPage();
+		});
+
+		return;
+	}
+	showPage($("#myresultpage")[0]);
+	updateLeftMenu("My results");
+	initializeStudentResultPage();
+}
 
 function initializeStudentPage() {
 	google.charts.setOnLoadCallback(drawAreaChart);
-	getBundleList($("#onlineTestPackages"));
 	getResultList();
 	getExamProgressOfStudent();
 }
@@ -116,10 +130,10 @@ function getExamProgressOfStudent() {
 	});
 }
 function createProgressGraph(list) {
-console.info(list);
+	console.info(list);
 	var progressMap = [['Date', 'progress']];
-	for (var i = 0; i < list.length && i<10; i++) {
-		
+	for (var i = 0; i < list.length && i < 10; i++) {
+
 		var arrayForItem = [];
 		arrayForItem.push(list[i].examCode);
 		arrayForItem.push(list[i].totalMark);
@@ -202,16 +216,10 @@ function loadStudentHomePage() {
 	}, function (data) {
 		$("#pageContainer").append(data);
 		showStudentHomPage();
-		$("#btnPurchaseNewBundle").click(function () {
-			showBundlePurchasePage($("#modalContainerForBundlePurchaseList"));
-
-		});
+		
 	});
 }
-function showBundlePurchasePage(div) {
-	$("#modalPurchaseNewBundle").modal("show");
-	getBundleList(div);
-}
+
 
 function handleStudentMenuClick(menuDiv) {
 	var menuTitle = $(menuDiv).text();
@@ -229,8 +237,8 @@ function handleStudentMenuClick(menuDiv) {
 		case "my tests":
 			setHashInUrl('mytests');
 			break;
-		case "student details":
-			setHashInUrl('student-details');
+		case "my results":
+			setHashInUrl('myresults');
 			break;
 		case "staff details":
 			setHashInUrl('staff-details');
@@ -242,124 +250,5 @@ function handleStudentMenuClick(menuDiv) {
 	updateLeftMenu(menuTitle);
 }
 
-function getBundleList(div) {
-	list = [{
-		bundle_id: 1,
-		bundle_category_id: 1,
-		name: "Bundle For Psc",
-		description: "Contains Questions for psc class clears the bottom-margin of each panel",
-		mrp: 30,
-		selling_price: 28,
-		imageUrl: "bundle1.jpg",
-		is_available: true,
-		coaching_type: 1,
-		discount_percent: null,
-		validity_days: 60
-	}, {
-		bundle_id: 2,
-		bundle_category_id: 2,
-		name: "Bundle For IBPS",
-		description: "Contains Questions for Bank class clears the bottom-margin of each panel",
-		mrp: 30,
-		selling_price: 28,
-		imageUrl: "bundle2.png",
-		is_available: true,
-		coaching_type: 1,
-		discount_percent: null,
-		validity_days: 60
-	}, {
-		bundle_id: 1,
-		bundle_category_id: 1,
-		name: "Bundle For Psc",
-		description: "Contains Questions for psc class clears the bottom-margin of each panel ",
-		mrp: 30,
-		selling_price: 28,
-		imageUrl: "bundle1.jpg",
-		is_available: true,
-		coaching_type: 1,
-		discount_percent: null,
-		validity_days: 60
-	}, {
-		bundle_id: 2,
-		bundle_category_id: 2,
-		name: "Bundle For IBPS",
-		description: "Contains Questions for Bank class clears the bottom-margin of each panel",
-		mrp: 30,
-		selling_price: 28,
-		imageUrl: "bundle2.png",
-		is_available: true,
-		coaching_type: 1,
-		discount_percent: null,
-		validity_days: 60
-	}, {
-		bundle_id: 1,
-		bundle_category_id: 1,
-		name: "Bundle For Psc",
-		description: "Contains Questions for psc class clears the bottom-margin of each panel:",
-		mrp: 30,
-		selling_price: 28,
-		imageUrl: "bundle1.jpg",
-		is_available: true,
-		coaching_type: 1,
-		discount_percent: null,
-		validity_days: 60
-	}, {
-		bundle_id: 2,
-		bundle_category_id: 2,
-		name: "Bundle For IBPS",
-		description: "Contains Questions for Bank class clears the bottom-margin of each panel:",
-		mrp: 30,
-		selling_price: 28,
-		imageUrl: "bundle2.png",
-		is_available: true,
-		coaching_type: 1,
-		discount_percent: null,
-		validity_days: 60
-	}, {
-		bundle_id: 1,
-		bundle_category_id: 1,
-		name: "Bundle For Psc",
-		description: "Contains Questions for psc class clears the bottom-margin of each panel  clears the bottom-margin of each panel",
-		mrp: 30,
-		selling_price: 28,
-		imageUrl: "bundle1.jpg",
-		is_available: true,
-		coaching_type: 1,
-		discount_percent: null,
-		validity_days: 60
-	}];
-	populateBundleList(list, div);
-}
 
-function populateBundleList(list, div) {
-	var mainDiv = div;
-	$(mainDiv).empty();
-	if (list.length != 0) {
-		for (var i = 0; i < list.length; i++) {
-			populateTileForBundle(list[i], mainDiv);
-		}
-	}
-}
 
-function populateTileForBundle(bundleMap, div) {
-	var divForTileContainer = $("<div>").addClass("col-md-4 bundleContainer");
-	$(div).append(divForTileContainer);
-	var containerRow = $("<div>").addClass("row");
-	$(divForTileContainer).append(containerRow);
-	var divImageContainer = $("<div>").addClass("col-md-4 leftContainer");
-	$(divImageContainer).css("background", "url(images/" + bundleMap.imageUrl + ")");
-	$(divImageContainer).css("background-size", "cover");
-	$(divImageContainer).css("background-position", "center");
-	var divRightContainer = $("<div>").addClass("col-md-8 rightContainer");
-	$(containerRow).append(divImageContainer);
-	$(containerRow).append(divRightContainer);
-	var spanForName = $("<span>").addClass("spanForName").html(bundleMap.name);
-	var spanForDescription = $("<span>").addClass("spanForDescription").html(bundleMap.description.substring(0, 90));
-	$(divRightContainer).append(spanForName);
-	$(divRightContainer).append(spanForDescription);
-
-}
-
-function listAllPurchaseNewBundle() {
-
-}
