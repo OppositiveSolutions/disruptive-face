@@ -1,5 +1,5 @@
 var DEFAULT_HASH = 'home';
-$(document).ready(function() {
+$(document).ready(function () {
 	initialize();
 	checkSession();
 });
@@ -10,13 +10,13 @@ function checkSession() {
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function(statusMap) {
+		success: function (statusMap) {
 			currentAccountDetails = statusMap.data;
 			if (statusMap.status == STATUS_OK) {
-				loadContainerPage();
+				loadContainerPage(statusMap);
 			}
 		},
-		error: function() {
+		error: function () {
 			setHashInUrl('login');
 		}
 	});
@@ -29,14 +29,14 @@ if (!hasher.getHash()) {
 	console.info(hasher.getHash());
 	// hasher.setHash(DEFAULT_HASH);
 }
-var loginRoute = crossroads.addRoute('login', function(query) {
+var loginRoute = crossroads.addRoute('login', function (query) {
 	var session = false;
 	var url = protocol + "//" + host + "/login";
 	$.ajax({
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function(statusMap) {
+		success: function (statusMap) {
 			currentAccountDetails = statusMap.data;
 			if (statusMap.status == STATUS_OK) {
 				setHashInUrl('home');
@@ -203,20 +203,25 @@ function authenticate(username, password) {
 		},
 		success: function(statusMap) {
 			currentAccountDetails = statusMap.data;
-			loadContainerPage();
+			currentAccountDetails.role = statusMap.data.role;
+			loadContainerPage(statusMap);
 		}
 	});
 }
 
-function loadContainerPage() {
+function loadContainerPage(statusMap) {
 	$.get("container.html", {
 		"_": $.now()
-	}, function(data) {
+	}, function (data) {
 		$("#loginPage").remove();
 		$("#container").remove();
 		$("body").append(data);
+		currentAccountDetails = {};
+		currentAccountDetails=statusMap.data;
+		console.info(statusMap.data);
+		currentAccountDetails.role = statusMap.data.role;
 		initializePagesBasedOnRole();
-		$("#btnLogOut").click(function() {
+		$("#btnLogOut").click(function () {
 			logout();
 		});
 		console.info(currentAccountDetails);
@@ -229,6 +234,10 @@ function loadContainerPage() {
 function initializePagesBasedOnRole() {
 	switch (currentAccountDetails.role.toString()) {
 		case STUDENT:
+			loadFilesAndExecutecallBack(['js/student/home.js' + postUrl], function () {
+				initializeStudentRoutes();
+				loadStudentView();
+			});
 			break;
 		case ADMIN:
 			loadFilesAndExecutecallBack(['js/superadmin/home.js' + postUrl],
