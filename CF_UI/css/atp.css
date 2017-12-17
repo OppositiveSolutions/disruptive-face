@@ -1,0 +1,315 @@
+.fontWeightBold {
+	font-weight:bold;
+}
+.bundleContainerBody {
+	max-height:200px;
+	overflow:auto;
+	padding-top:6px;
+}
+.bundleContainer .row {
+	border:1px solid #ddd;
+	max-width:300px;
+	margin-top:10px;
+	box-shadow: 2px 2px 2px  #ddd;
+}
+.leftContainer {
+	height:80px;
+	padding:0;
+	border-right:1px solid #ddd;
+}
+.rightContainer {
+	height:80px;
+	padding:10px;
+}
+.spanForDescription {
+	font-size:13px;
+	bottom:5px;
+	position:absolute;
+	width:100%;
+	left:5px;
+	color:#666;
+	 line-height: 15px
+}
+.spanForName
+{
+	font-weight:bold;
+}
+.examResultListTile
+{
+	padding:0;
+	margin-top:10px;
+	border: 1px solid #ddd;
+	font-size:13px;
+}
+.examResultExamName
+{
+	display:block;
+	font-weight:bold;
+}
+.summaryContainerBody
+{
+	padding-top:0px;
+}
+.markSpan
+{
+	background:#849fbb;
+	text-align:center;
+	color:white;
+	padding:5px;
+	font-size:20px;
+}
+.green 
+{
+	color:green;
+}
+.red
+{
+	color:red;
+}
+.overAllStatus{
+	background: #fff;	
+	padding:0;
+}
+.progressBar{
+	width:100%;
+	background: #fff;
+}
+.row-progressbar{
+
+}
+.panel{
+	padding:0;
+	    margin-bottom: 10px;
+}
+.prgressbar-parent{
+	height:15px;
+	background:#f5f5f5;
+	padding:0;
+	z-index:90;
+	margin-top: 5px;
+	border-radius: 5px;
+}
+.progressBar-graph{
+	width:100%;
+    height:300px;	
+}
+.prgressbar-child{
+height:15px;
+background: #4e6a84;
+z-index:100;
+position:absolute;
+border-radius: 5px;
+}
+.statusDetails{
+	    margin-top: 50px;
+    text-align: center;
+	margin-bottom: 40px;
+}
+.statusDetails p{
+	    margin-bottom: 0px;
+}
+.statusDetails i{
+	color:#999;
+}
+.statusDetails span{
+    font-size: 20px;
+}
+.statusDetails .highlight{
+	color:#4d6984;
+}
+.bundleList{
+	padding:5px;
+	text-align: left;
+	    padding-top: 10px;
+	display: block;
+	width:100%;
+	height:45px;
+	border-left:3px solid #4e6a84;
+	    border-bottom: 2px solid #e6e8ea;
+}
+.bundleList span{
+    width: 30px;
+    height: 30px;
+    padding-top: 5px;
+	margin-top: -5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    float: right;
+    border-radius: 5px;
+	    background: #4e6a84;
+    color: #fff;
+}
+.bundleList i{
+	color:#999;
+	padding-left:10px;
+	padding-right:10px;
+}
+.bundleCollection .panel-body{
+	padding:0;
+	height:188px;
+	overflow: auto;
+}
+.statusTblForResult{
+	background: #fff;
+}
+#tblSesultStatus{
+	width:100%;
+}
+#tblSesultStatus th{
+	border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+	background: #4d6984;
+	color:#fff;
+}
+#tblSesultStatus td{
+	border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+#divShowExamResultStatus .modal-body {
+	background: #fff;
+}
+#divShowExamResultStatus .modal-content{
+    left: -150px;
+}
+.currentResult div.col-sm-3{
+	text-align: center;
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.currentResult span{
+    font-size: 20px;
+	padding: 5px;
+	color: #4d6984;
+}
+#resultPanelBody{
+	padding:0;
+	background: #eaecf3;
+}
+#resultPanelBody .row{
+	background: #fff;
+	margin-bottom:10px;
+}
+#resultLeftmenu{
+	padding:0;
+    box-shadow: 2px 2px 2px #ddd;
+}
+#resultLeftmenu ul{
+	overflow: auto;
+	    padding: 0;
+    color: #666;
+	font-size: 13px;
+}
+#resultLeftmenu ul li{
+	    padding: 10px;
+    list-style: none;
+	padding-left: 20px;
+    cursor: pointer;
+}
+
+
+#tblMyResultsStatus{
+	width:100%;
+}
+#tblMyResultsStatus th{
+	border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+	background: #4d6984;
+	color:#fff;
+}
+#tblMyResultsStatus td{
+	border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+}
+#resultBarChart{
+	padding-top:10px;
+}
+.statusTblForResults{
+	padding:10px;
+}
+.myResultContent{
+	padding:10px;
+	padding-left:20px;
+	background: #ebedf4;
+	padding-top: 0px;
+}
+.myResultContent div.col-sm-3{
+	text-align: center;
+	padding-top:10px;
+}
+.myResultContent span{
+    font-size: 20px;
+	padding: 5px;
+	color: #4d6984;
+}
+.examLeftMenuHead{
+	background: #4d6984;
+	padding:10px;
+	color: #fff;
+	padding-left: 20px;
+	border-bottom: 1px solid #fff;
+}
+.selection{
+	    border-left: 4px solid #4d6984;
+    color: #4e6a84;
+	font-weight:bold;
+}
+
+.itemTile{
+	padding: 10px;
+}
+.itemDetailContainer{
+	    border: 1px solid #ddd;
+    padding: 10px;
+}
+.itemDetailContainer p:first-child{
+	    font-weight: 600;
+}
+.itemDetailContainer .iconSpan{
+	display: block;
+    text-align: center;
+    font-size: 48px;
+    color: #555;
+}
+.itemDetailContainer .pforName{
+	    font-weight: 600;
+    text-align: center;
+}
+.itemDetailContainer .descriptionP{
+	color: #555;
+	    min-height: 80px;
+}
+.itemDetailContainer .offerBlock{
+	    color: #F44336;
+    padding: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+.itemDetailContainer .prizeBlock{
+	    color: #2E7D32;
+    padding: 5px;
+    font-weight: bold;
+    float: right;
+    position: relative;
+	font-size:17px;
+}
+.itemDetailContainer .mrpBlock{
+	  
+    padding: 5px;
+    font-weight: bold;
+    float: right;
+    text-decoration: line-through;
+}
+.itemDetailContainer .buyBtn{
+	    margin-top: 5px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+.itemDetailContainer .buyBtn .btn:hover{
+	background: #4d6984;
+	color: white;
+}

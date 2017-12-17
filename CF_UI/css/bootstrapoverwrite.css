@@ -5,10 +5,10 @@ html, body {
 body, input, button, select, textarea {
 	font-family:'Open Sans',sans-serif,Arial;
 	color:#333333;
-        background-color: #f9f9fa;
+        background-color: #ebedf4;
 }
 .main-content {
-	margin-left:275px;
+	margin-left:217px;
 	padding:0;
 	min-height:100%;
 }
@@ -352,9 +352,13 @@ select.input-sm, .input-sm {
 	border:1px solid #ddd;
 	cursor:pointer;
 }
-.fixedWidthDiv100
+.fixedWidthDiv200
 {
-	width:100px;
+	width:200px;
+}
+.selectedOptionRadio
+{
+	padding-left:20px;
 }
 .postlogin-box .panel-body .form-control {
 	border: none;
@@ -449,11 +453,11 @@ select.input-sm, .input-sm {
 	margin-top: 5px;
 }
 #leftMenuContainer ul li> div.activeMenu {
-	background: #022548;
+	background: #293c4e;
     color: #fff;
 }
 #leftMenuContainer {
-    background-color: #134272;
+    background-color: #4d6984!important;
     height:100vh;
 }
 #leftMenuContainer li> div:hover {
@@ -512,9 +516,9 @@ img#imgProfilePic {
 }
 .panel-default > .panel-heading .btn-sm {
     margin-top: -5px;
-    background-color: #849fbb;
+    background-color: #4d6984;
     color: #fff;
-    border-color: #849fbb;
+    border-color: #4d6984;
 }
 .panel-title {
 	font-size:16px;
@@ -616,6 +620,7 @@ img#imgProfilePic {
 }
 .mainContentArea {
 	padding:10px 17px;
+	padding-top:0px;
 }
 /*-------------------------------*/
 .navbar .logoContainer-admin  .login-logo p {
@@ -674,7 +679,7 @@ ul#notificationList {
 .navbar-fixed-top #leftSidePanel.side-nav {
 	position:fixed;
 	top:0;
-	width:275px;
+	width:215px;
 	padding:0 10px;
 	border:none;
 	border-radius:0;

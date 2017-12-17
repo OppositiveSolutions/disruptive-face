@@ -1,0 +1,224 @@
+#examContainerPage .topRow
+{
+    background: #134272;
+    height:70px;
+    color: white;
+    font-size:26px;
+
+}
+.instructionDiv
+{
+    padding:20px;
+}
+.examName
+{
+    padding:10px;
+}
+.companyLogo
+{
+    padding:10px;
+}
+#tblForExamIntroductionCategoryList
+{
+ background: white;
+}
+.categoryListInIntroductionPage
+{
+   
+   padding-top:20px;
+}.underline
+{
+    text-decoration: underline;
+}
+.categoryListInIntroductionPage table th
+{
+    text-align: center;
+ border:1px solid #000;
+ padding:5px;
+}
+.categoryListInIntroductionPage table td
+{
+    text-align: center;
+ border:1px solid #000;
+ padding:5px;
+}
+.categoryListInIntroductionPage table 
+{
+    width:100%;
+}
+.plain
+{
+    background: #cecece;
+}
+.red 
+{
+    background:red;
+}
+.green
+{
+    background:green;
+}
+.violet{
+    background:violet;
+}
+.statusLegend
+{
+    width:200px;
+    height:60px;
+    text-align: center;
+    padding: 10px;
+    color:black;
+}
+.attemptStatusLegends ul li
+{
+list-style: none;
+padding-top:10px;
+}
+
+.sectionContainer{
+    padding-top:5px;
+}
+.sectionContainer button {
+    margin-left:5px;
+}
+.examStatusContainer
+{
+    height:88vh;
+    background:#eee;
+    padding: 0;
+    
+}
+.statusContainer
+{
+    display: block;
+    margin-top:10px;
+    height:320px;
+    overflow: auto;
+}
+
+.descriptionContainer
+{
+    height: 450px;
+    overflow: auto;
+}
+.questionContainer ul li 
+{
+    list-style: none;
+}
+.questionContainer p
+{
+   margin:0;
+}
+.questionContainer label
+{
+  font-weight: normal;
+
+}
+.questionContainer
+{
+    padding: 10px ;
+    background: #fff;
+    margin-top:10px;
+    margin-bottom:10px;
+    height:450px;
+    overflow: auto;
+    box-shadow:2px 2px 2px #ddd;
+
+}
+.questionNumberDivision
+{
+    padding:5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.divForDescription
+{
+    border-right:1px solid #ddd;
+    min-height:390px;
+    padding-top:15px;
+}
+
+.hide{
+    display: none;
+}
+.questionSpan
+{
+    padding:10px;
+    margin-top: 10px;
+}
+
+.statusTile
+{
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    margin:10px 10px 0;
+    border: 1px solid #ddd;
+    min-width: 40px;
+    background: white;
+    cursor: pointer;
+    border-radius:5px;          
+}
+.redTile
+{
+    background: #e60000;
+    color:white;
+}
+.violetTile
+{
+    background: #9c36c0;
+    color:white;
+}
+.greenTile
+{
+    background: green;
+    color:white;
+}
+.blueTile
+{
+   background: #3778bd;
+    color:white;
+}
+#CountDown {
+    padding: 10px;
+    padding-top: 5px;
+    display: block;
+    background: white;
+    padding-bottom: 20px;
+
+
+}
+.timerSpanGroup
+{
+    display: inline-block;
+      color:white;
+     background: #444444;
+     border-radius: 5px;
+}
+#CountDown span
+{
+     display: inline-block;
+    text-align: center;
+    padding: 5px;
+    min-width: 30px;
+    cursor: pointer;
+   
+}
+.statusLegends 
+{
+    border-top:1px solid #ddd; 
+     border-bottom:1px solid #ddd; 
+     padding-bottom: 10px;
+    margin-top:10px;
+}
+.statusLegends ul
+{
+    padding:0;
+}
+.statusLegends ul li{
+    display: inline-block;
+}
+.finishArea
+{
+    padding:10px;
+}

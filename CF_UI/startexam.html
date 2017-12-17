@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Career Focus</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/bootstrapoverwrite.css?m=679">
+	<link rel="stylesheet" href="css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="css/jquery.datetimepicker.css">
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/constants.js"></script>
+	<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="js/jquery.mask.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/moment-with-locales.js"></script>
+	<script src="js/constants.js?v=dafas"></script>
+	<script src="js/utility.js?v=asldas"></script>
+	<script src="js/startexam.js?v=0003"></script>
+	<link rel="stylesheet" href="css/atp.css?j=0003">
+	<link rel="stylesheet" href="css/startexam.css?j=0005">
+
+</head>
+
+<body>
+	<script src="js/bootstrap.js"></script>
+	<div class="container-fluid" id="examContainerPage">
+		<div class="row topRow">
+			<div class="col-md-3 examName" id="examName">
+				IBPS SSO
+			</div>
+			<div class="col-md-3 companyLogo pull-right">
+				Career Focus
+			</div>
+		</div>
+		<div class="row" id="examIntroduction">
+			<div class="col-md-10 instructionDiv">
+				<div class=" text-center fontWeightBold underline">
+					Please read the following instructions carefully
+
+				</div>
+				<div class "fontWeightBold">
+					Total Number of questions: <span id="totalNumberOfQuestions"></span><br/> Total time available: <span id="totalTimeAvailable"></span>
+				</div>
+				<div class=" categoryListInIntroductionPage">
+					<table id="tblForExamIntroductionCategoryList">
+
+						<thead>
+							<tr>
+								<th>Section
+								</th>
+								<th>Section Name
+								</th>
+								<th>Total Number of Questions
+								</th>
+								<th>Max Score
+								</th>
+								<th>Marks for Correct Answer
+								</th>
+								<th>Negetive Marking for Wrong Anwer
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-6 attemptStatusLegends">
+					<ul>
+						<li><span class="statusTile plain">1</span> You have not visted the question yet.
+						</li>
+						<li><span class="statusTile redTile">3</span> You have not answered the question yet.
+						</li>
+						<li><span class="statusTile greenTile">5</span> You have answered the question.
+						</li>
+						<li><span class="statusTile violetTile">7</span> You have marked the question for review.
+						</li>
+
+					</ul>
+
+
+
+
+				</div>
+
+			</div>
+			<div class="col-md-12 text-center">
+				<button class="btn btn-default" id="btnStartExam">Start Exam</button>
+			</div>
+		</div>
+		<div class="row" id="examContainer">
+			<div class="col-md-9" id="examContainerDiv">
+				<div class="sectionContainer" id="sectionContainer">
+
+				</div>
+				<div class="row questionContainer " id="questionContainer">
+
+					<!--<div class="col-md-12 questionNumberDiv" id="questionNumberDiv">
+						Question Number: <span></span>
+					</div>
+					<div class=" descriptionContainer " id="descriptionContainer">
+
+					</div>
+					<div class="questionOptionContainer" id="questionOptionContainer">
+					</div>-->
+				</div>
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<button class="btn btn-default pull-left" id="btnPreviousQuestion"> Previous </button>
+						<button class="btn btn-default " id="btnReviewNextQuestion"> Review & Next </button>
+						<button class="btn btn-default pull-right" id="btnNextQuestion"> Save & Next </button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 examStatusContainer" id="examStatusContainer">
+
+				<div id="CountDown">
+					Time Left :
+					<div class="timerSpanGroup pull-right">
+						<span id="hourSpan"></span>:
+						<span id="minuteSpan"></span>:
+						<span id="secondsSpan"></span>
+					</div>
+				</div>
+				<div class="statusContainer" id="statusTable">
+
+
+				</div>
+				<div class="statusLegends">
+					<ul>
+						<li><span class="statusTile plain">1</span>Not visted
+						</li>
+						<li><span class="statusTile redTile">3</span>Not answered
+						</li>
+						<li><span class="statusTile greenTile">5</span>Answered
+						</li>
+						<li><span class="statusTile violetTile">7</span>Marked for review
+						</li>
+
+					</ul>
+
+
+
+
+				</div>
+				<div class="finishArea">
+					<button class="btn btn-default pull-right" id="btnFinishExam"> Submit </button>
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+
+		<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divShowExamResultStatus">
+			<div class="modal-dialog">
+				<div class="modal-content modal-lg">
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+						<h4 class="modal-title">Exam Result</h4>
+					</div>
+					<div class="modal-body currentResult">
+						<div class="row">
+							<div class="col-sm-3">
+								<i class="fa fa-file-text fa-lg"></i><span id="totalAttempted">
+</span>
+								<p> Attempted</p>
+							</div>
+							<div class="col-sm-3">
+								<i class="fa fa-calendar-check-o fa-lg"></i> <span id="totalCorrectAnswer">
+</span>
+								<p> Correct Mark</p>
+
+							</div>
+							<div class="col-sm-3">
+								<i class="fa fa-calendar-times-o fa-lg"></i><span id="totalWrongAnswer">
+</span>
+								<p> Wrong Mark</p>
+							</div>
+							<div class="col-sm-3">
+								<i class="fa  fa-trophy fa-lg"></i> <span id="totalScore">
+</span>
+								<p> Total Score</p>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12  statusTblForResult">
+								<table class="" id="tblSesultStatus">
+									<thead>
+										<tr>
+											<th>
+												Section
+											</th>
+											<th>
+												Attempted
+											</th>
+											<th>
+												Correct
+											</th>
+											<th>
+												Wrong
+											</th>
+											<th>
+												Score
+											</th>
+											<th>
+												Percentile
+											</th>
+											<th>
+												Time
+											</th>
+
+										</tr>
+
+									</thead>
+									<tbody>
+
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

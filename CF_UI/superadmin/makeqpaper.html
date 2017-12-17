@@ -1,13 +1,10 @@
 <div id="divSuperAdminMakeQPaperPage" class="page">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<button class="btn btn-sm btn-white pull-right" id="btnAddNewQuestionPaper">
-				Create  New Question
-			</button>
 			<h3 class="panel-title">Set Question Papers</h3>
 		</div>
 		<div class="panel-body" id="makeQPaperPageBody">
-			
+
 		</div>
 	</div>
 </div>
@@ -21,6 +18,7 @@
 				<h4 class="modal-title">Add New Question Paper</h4>
 			</div>
 			<div class="modal-body" id="makeQuetionPageBody">
+				<div id="selectCorrectOptionDiv"></div>
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active">
 						<a href="#divCategoryTabForMakeQPaper" aria-controls="divCategoryTabForMakeQPaperc" role="tab" data-toggle="tab">Question</a>
@@ -28,26 +26,26 @@
 				</ul>
 				<div role="tabpanel">
 					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane active"  id="divCategoryTabForMakeQPaper">
+						<div role="tabpanel" class="tab-pane active" id="divCategoryTabForMakeQPaper">
 							<div class="">
 								<textarea id="textareaForQuestion" row="10" class="form-control typeArea">
 									</textarea>
 							</div>
-							
+
 						</div>
-						
-				</div>
+
+					</div>
 				</div>
 				<div class="text-center margintopfifteen">
-								<button class="btn btn-default" id="btnMakeQuestionPaperQNext">
-									Next
-								</button>
-								<button class="btn btn-default" id="btnExamMasterCategoryDetailsBack">
-									Back
-								</button>
-							</div>
-					</div>
-			
+					<button class="btn btn-default" id="btnMakeQuestionPaperQNext">
+						Next
+					</button>
+					<button class="btn btn-default" data-dismiss="modal">
+						Back
+					</button>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </div>
