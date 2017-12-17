@@ -1,10 +1,10 @@
 function loadSuperAdminView() {
 	loadSuperAdminLeftMenu();
+	showExamMasterPage();
 }
 
 function initializeSuperAdminRoutes() {
 	crossroads.addRoute('dashboard', function(query) {
-		alert("dash");
 
 	});
 
@@ -34,6 +34,9 @@ function initializeSuperAdminRoutes() {
 	});
 	crossroads.addRoute('announcements', function(query) {
 		showAnouncementsPage();
+	});
+	crossroads.addRoute('bundles', function(query) {
+		showBundlesPage();
 	});
 	crossroads.bypassed.add(function() {
 		hasher.setHash('home');
@@ -115,6 +118,18 @@ function showAnouncementsPage() {
 	showPage($("#divSuperAdminAnouncementsPage")[0]);
 }
 
+function showBundlesPage() {
+	if ($("#divSuperAdminBundlesPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/bundles.js' + postUrl], function() {
+			loadBundlesPage(true);
+		});
+		return;
+	}
+
+	updateLeftMenu("Bundles");
+	showPage($("#divSuperAdminBundlesPage")[0]);
+}
+
 function showManageCenterPage() {
 	if ($("#divSuperAdminManageCenterPage")[0] == undefined) {
 		loadFilesAndExecutecallBack(['js/superadmin/managecenter.js' + postUrl], function() {
@@ -159,6 +174,7 @@ function showStaffDetailsPage() {
 		});
 		return;
 	}
+	getStaff();
 	updateLeftMenu("Staff Details");
 	showPage($("#divSuperAdminStaffDetailsPage")[0]);
 }
@@ -219,6 +235,9 @@ function handleSuperAdminMenuClick(menuDiv) {
 			break;
 		case "announcements":
 			setHashInUrl('announcements');
+			break;
+		case "bundles":
+			setHashInUrl('bundles');
 			break;
 	}
 
