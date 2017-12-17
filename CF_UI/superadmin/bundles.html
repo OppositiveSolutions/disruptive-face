@@ -1,0 +1,77 @@
+<div id="divSuperAdminBundlesPage" class="page">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button class="btn btn-sm btn-white pull-right" id="btnAddNewBundle">
+				Add New Category
+			</button>
+			<h3 class="panel-title">Category Master</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table-responsive noSwipe assignManagementTable">
+				<table id="tblAnnouncements" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="slNo">No</th>
+							<th>Category Name</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewBundlePage">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title">Add New Anouncement</h4>
+				</div>
+        <div class="modal-body">
+          <div class="form-group">
+          <label>Name </label>
+            <input type="text"  id="txtBundleName" class="form-control input-sm mandatory"/></div>
+            <div class="form-group">
+            <label>Category </label>
+            <select type="text"  id="sltBundleCategory" class="form-control input-sm mandatory">
+					<option value="1">AAAA</option><option value="2">BBBB</option><option value="3">CCCC</option><option value="4">DDDD</option><option value="5">EEEE</option></select>
+            </div>
+<div class="form-group">
+<label>Description </label>
+<textarea type="text"  id="txtBundleDescription" class="form-control input-sm mandatory"/></textarea>
+</div>
+<div class="form-group">
+<label>MRP </label>
+<input type="text"  id="txtBundleMrp" class="form-control input-sm mandatory"/>
+</div>
+<div class="form-group">
+<label>Selling Price </label>
+<input type="text"  id="txtBundleSellingPrice" class="form-control input-sm mandatory"/>
+</div>
+<div class="form-group">
+<label>Discount Price </label>
+<input type="text"  id="txtBundleDiscountPrice" class="form-control input-sm mandatory"/>
+</div>
+<div class="form-group">
+<label>Image URL </label>
+<input type="text"  id="txtBundleImageUrl" class="form-control input-sm mandatory"/>
+</div>
+
+          </div>
+					<div class="modal-footer">
+					<div class="text-center">
+						<button class="btn btn-default" id="btnAddNewBundleSave">
+							Add
+						</button>
+						<button class="btn btn-default"  data-dismiss="modal">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

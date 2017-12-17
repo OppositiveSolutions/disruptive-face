@@ -39,21 +39,30 @@ function validateAndReturnAnouncementInfo() {
     return;
   }
   obj.description = description;
+  var formdata = new FormData();
+  var file = $("#fileAnnouncementImage")[0].files[0];
+  formdata.append("file", file);
+  var announcement = {
+    description: description,
+    name: name
+  }
+  formdata.append("announcement", JSON.stringify(announcement));
   obj.isCurrent = true;
-  return obj;
+  return formdata;
 }
 
 function saveAnouncement() {
-  var obj = validateAndReturnAnouncementInfo();
-  if (obj == undefined) {
+  var formdata = validateAndReturnAnouncementInfo();
+  if (formdata == undefined) {
     return;
   }
   $.ajax({
     url: protocol + "//" + host + "/announcement",
     type: "POST",
+    processData: false,
+    contentType: false,
     cache: false,
-    data: JSON.stringify(obj),
-    contentType: "application/json; charset=utf-8",
+    data: formdata,
     success: function(obj) {
       getVideoTutorials();
       $("#divAddNewAnoucementPage").modal("hide");
@@ -75,7 +84,7 @@ function editAnouncement() {
     data: JSON.stringify(obj),
     contentType: "application/json; charset=utf-8",
     success: function(obj) {
-      getVideoTutorials();
+      getAnnouncements();
       $("#divAddNewAnoucementPage").modal("hide");
     }
   });
@@ -85,12 +94,12 @@ function editAnouncement() {
 function showAddNewAnnouncementPage(obj) {
   $("#divAddNewAnoucementPage").modal("show");
   if (obj != undefined) {
-    populateAddNewVideoTutorialForm(obj);
+    populateAddNewAnnouncementForm(obj);
   }
 
 }
 
-function populateAddNewVideoTutorialForm(obj) {
+function populateAddNewAnnouncementForm(obj) {
   $("#txtAnouncementName").val(obj.name);
   $("#txtAnouncementDescription").val(obj.description);
   $("#btnNewVideoTutorialSave").attr("announcementId", obj.announcementId);

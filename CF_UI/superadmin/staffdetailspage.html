@@ -1,14 +1,14 @@
 <div id="divSuperAdminStaffDetailsPage" class="page">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<button class="btn btn-sm btn-white pull-right" id="btnAddNewStudentDetails">
+			<button class="btn btn-sm btn-white pull-right" id="btnAddNewStaffDetails">
 				Add Student Details
 			</button>
 			<h3 class="panel-title">Staff Details</h3>
 		</div>
 		<div class="panel-body">
 			<div class="table-responsive noSwipe assignManagementTable">
-				<table id="tblStudentDetails" class="table table-bordered table-striped slNo">
+				<table id="tblStaffDetails" class="table table-bordered table-striped slNo">
 					<thead>
 						<tr>
 							<th class="slNo">No</th>
@@ -21,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewStudentDetailsPage">
+	<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewStaffDetailsPage">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -35,62 +35,62 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label> Center </label>
-								<select id="sltManageStudentsCenterName" class="form-control input-sm mandatory" ></select>
+								<select id="sltManageStaffCenterName" class="form-control input-sm mandatory" ></select>
 							</div>
 							<div class="form-group">
 								<label> First Name </label>
-								<input type="text" id="txtFirstName" class="form-control input-sm mandatory" />
+								<input type="text" id="txtStaffFirstName" class="form-control input-sm mandatory" />
 							</div>
 							<div class="form-group">
 								<label> Last Name </label>
-								<input type="text" id="txtLastName" class="form-control input-sm mandatory" />
+								<input type="text" id="txtStaffLastName" class="form-control input-sm mandatory" />
 							</div>
 
 							<div class="form-group">
 								<label> DOB </label>
-								<input type="text" id="txtDob" class="form-control input-sm mandatory date	" />
+								<input type="text" id="txtStaffDob" class="form-control input-sm mandatory date	" />
 							</div>
 							<div class="form-group">
 								<label> Gender </label>
-								<label><input type="radio" name="gendername" value="Male" class="form-control input-sm mandatory"/> Male</label>
-								<label><input type="radio" name="gendername" value="Female" class="form-control input-sm mandatory"/> Female</label>
+								<label><input type="radio" name="Staffgendername" value="Male" class="form-control input-sm mandatory"/> Male</label>
+								<label><input type="radio" name="Staffgendername" value="Female" class="form-control input-sm mandatory"/> Female</label>
 							</div>
 							<div class="form-group">
 								<label> Educational Qualification </label>
-								<input type="text" id="txtQualification" class="form-control input-sm mandatory" />
+								<input type="text" id="txtStaffQualification" class="form-control input-sm mandatory" />
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label> Street Address </label>
-								<input type="text" id="sltManageStudentsStreetAddress" class="form-control input-sm mandatory" >
+								<label> Salary </label>
+								<input type="text" id="sltManageStaffSalary" class="form-control input-sm mandatory" >
 							</div>
 							<div class="form-group">
 								<label> State </label>
-								<select id="sltManageStudentsStates" class="form-control input-sm mandatory" ></select>
+								<select id="sltManageStaffStates" class="form-control input-sm mandatory" ></select>
 							</div>
 							<div class="form-group">
 								<label> City </label>
-								<input type="text" id="txtManageStudentsCity" class="form-control input-sm mandatory" />
+								<input type="text" id="txtManageStaffCity" class="form-control input-sm mandatory" />
 							</div>
 							<div class="form-group">
 								<label> Pin Code </label>
-								<input type="text" id="txtManageStudentsPinCode" class="form-control input-sm mandatory" />
+								<input type="text" id="txtManageStaffPinCode" class="form-control input-sm mandatory" />
 							</div>
 							<div class="form-group">
 								<label> EmailId </label>
-								<input type="text" id="txtEmailId" class="form-control input-sm mandatory" />
+								<input type="text" id="txtStaffEmailId" class="form-control input-sm mandatory" />
 							</div>
 							<div class="form-group">
 								<label> Confirm EmailId </label>
-								<input type="text" id="txtConfirmEmailId" class="form-control input-sm mandatory" />
+								<input type="text" id="txtStaffConfirmEmailId" class="form-control input-sm mandatory" />
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<div class="text-center">
-						<button class="btn btn-default" id="btnStudentDetailsSave">
+						<button class="btn btn-default" id="btnStaffDetailsSave">
 							Save
 						</button>
 						<button class="btn btn-default" data-dismiss="modal">
