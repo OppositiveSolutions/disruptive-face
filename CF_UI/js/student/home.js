@@ -17,8 +17,15 @@ function initializeStudentRoutes() {
 		showMyTestPage();
 	});
 	crossroads.addRoute('myresults', function (query) {
-		showMyResultPage()
+		showMyResultPage();
 	});
+	crossroads.addRoute('videotutorials', function (query) {
+		showMyTutorialPage();
+	});
+	crossroads.addRoute('buybundles', function (query) {
+		showMyBundlePurchasePage();
+	});
+
 
 	crossroads.routed.add(console.log, console);
 	//log all routes
@@ -110,7 +117,30 @@ function showMyResultPage() {
 	updateLeftMenu("My results");
 	initializeStudentResultPage();
 }
+function showMyTutorialPage() {
+	if ($("#myTutorialPage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/student/tutorial.js' + postUrl], function () {
+			loadMyTutorialPage();
+		});
 
+		return;
+	}
+	showPage($("#myTutorialPage")[0]);
+	updateLeftMenu("video tutorial");
+	initializeMyTutorialsResultPage();
+}
+function showMyBundlePurchasePage() {
+	if ($("#allBundlePage")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/student/bundle.js' + postUrl], function () {
+			loadAllBundlePage();
+		});
+
+		return;
+	}
+	showPage($("#allBundlePage")[0]);
+	updateLeftMenu("buy practice test");
+	initializePurchasePage();
+}
 function initializeStudentPage() {
 	google.charts.setOnLoadCallback(drawAreaChart);
 	getResultList();
@@ -119,7 +149,7 @@ function initializeStudentPage() {
 function getExamProgressOfStudent() {
 	console.info(currentAccountDetails);
 	var userId = currentAccountDetails.userId;
-	var url = protocol + "//" + host + "/result/" + userId + "/scorecard";
+	var url = protocol + "//" + host + "/result/scorecard";
 	$.ajax({
 		url: url,
 		type: "GET",
@@ -216,7 +246,7 @@ function loadStudentHomePage() {
 	}, function (data) {
 		$("#pageContainer").append(data);
 		showStudentHomPage();
-		
+
 	});
 }
 
@@ -232,7 +262,6 @@ function handleStudentMenuClick(menuDiv) {
 			break;
 		case "my profile":
 			setHashInUrl('Profile');
-			showStudentProfile();
 			break;
 		case "my tests":
 			setHashInUrl('mytests');
@@ -240,11 +269,11 @@ function handleStudentMenuClick(menuDiv) {
 		case "my results":
 			setHashInUrl('myresults');
 			break;
-		case "staff details":
-			setHashInUrl('staff-details');
+		case "video tutorials":
+			setHashInUrl('videotutorials');
 			break;
-		case "manage center":
-			setHashInUrl('manage-center');
+		case "buy practice test":
+			setHashInUrl('buybundles');
 			break;
 	}
 	updateLeftMenu(menuTitle);

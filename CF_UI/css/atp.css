@@ -258,3 +258,58 @@ border-radius: 5px;
     color: #4e6a84;
 	font-weight:bold;
 }
+
+.itemTile{
+	padding: 10px;
+}
+.itemDetailContainer{
+	    border: 1px solid #ddd;
+    padding: 10px;
+}
+.itemDetailContainer p:first-child{
+	    font-weight: 600;
+}
+.itemDetailContainer .iconSpan{
+	display: block;
+    text-align: center;
+    font-size: 48px;
+    color: #555;
+}
+.itemDetailContainer .pforName{
+	    font-weight: 600;
+    text-align: center;
+}
+.itemDetailContainer .descriptionP{
+	color: #555;
+	    min-height: 80px;
+}
+.itemDetailContainer .offerBlock{
+	    color: #F44336;
+    padding: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+.itemDetailContainer .prizeBlock{
+	    color: #2E7D32;
+    padding: 5px;
+    font-weight: bold;
+    float: right;
+    position: relative;
+	font-size:17px;
+}
+.itemDetailContainer .mrpBlock{
+	  
+    padding: 5px;
+    font-weight: bold;
+    float: right;
+    text-decoration: line-through;
+}
+.itemDetailContainer .buyBtn{
+	    margin-top: 5px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+.itemDetailContainer .buyBtn .btn:hover{
+	background: #4d6984;
+	color: white;
+}

@@ -1,5 +1,4 @@
 function loadMyResultsPage() {
-
     $.get("student/myresults.html", {
         "_": $.now()
     }, function (data) {
@@ -13,8 +12,7 @@ function initializeStudentResultPage() {
     getExamList();
 }
 function getExamList() {
-    var userId = currentAccountDetails.userId;
-    var url = protocol + "//" + host + "/result/" + userId + "/scorecard";
+    var url = protocol + "//" + host + "/result/scorecard";
     $.ajax({
         url: url,
         type: "GET",

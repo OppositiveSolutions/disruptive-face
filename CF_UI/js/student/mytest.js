@@ -8,7 +8,7 @@ function loadMyTestPage() {
     });
 }
 function getAllTestList() {
-    var url = protocol + "//" + host + "/test/1/all/1";
+    var url = protocol + "//" + host + "/test/all/1";
     $.ajax({
         url: url,
         type: "GET",
