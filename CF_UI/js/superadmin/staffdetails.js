@@ -101,7 +101,7 @@ function validateAndReturnStaffInfo() {
     return;
   }
   obj.gender = gender;
-  var dob = $("#txtDob").val();
+  var dob = $("#txtStaffDob").val();
   if (dob == "") {
     alert("Please enter DOB");
     return;

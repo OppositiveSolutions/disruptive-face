@@ -25,7 +25,9 @@ function initializeStudentRoutes() {
 	crossroads.addRoute('buybundles', function (query) {
 		showMyBundlePurchasePage();
 	});
-
+	crossroads.addRoute('announcements', function (query) {
+		showStudentsAnnouncementsPage();
+	});
 
 	crossroads.routed.add(console.log, console);
 	//log all routes
@@ -275,9 +277,22 @@ function handleStudentMenuClick(menuDiv) {
 		case "buy practice test":
 			setHashInUrl('buybundles');
 			break;
+			case "announcements":
+				setHashInUrl('announcements');
+				break;
 	}
 	updateLeftMenu(menuTitle);
 }
 
+function showStudentsAnnouncementsPage(){
+	if ($("#divStudentAnnouncements")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/student/announcements.js' + postUrl], function () {
+			loadStudentAnnouncementsPage();
+		});
 
-
+		return;
+	}
+	showPage($("#divStudentAnnouncements")[0]);
+	updateLeftMenu("announcements");
+	initializeStudentAnnouncementPage();
+}
