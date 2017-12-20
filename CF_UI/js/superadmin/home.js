@@ -1,6 +1,6 @@
 function loadSuperAdminView() {
 	loadSuperAdminLeftMenu();
-	showExamMasterPage();
+	//showExamMasterPage();
 }
 
 function initializeSuperAdminRoutes() {
