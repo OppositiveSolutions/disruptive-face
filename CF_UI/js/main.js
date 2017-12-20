@@ -2,7 +2,6 @@ var DEFAULT_HASH = 'home';
 $(document).ready(function () {
 	initialize();
 	checkSession();
-	alert("adad")
 });
 
 function checkSession() {
