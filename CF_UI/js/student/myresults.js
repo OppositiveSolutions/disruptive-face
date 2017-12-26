@@ -61,11 +61,11 @@ function showMyResultExamResultScoreBoard(examId) {
 }
 function populateResultGraph(list) {
 
-    var graphData = [['Category', 'Total Possible Mark', 'Right Answer Mark', 'Wrong Anser Mark']];
+    var graphData = [['Category', 'Total  Mark', 'Right Answer Mark', 'Wrong Answer Mark']];
     for (var i = 0; i < list.length; i++) {
         var categoryDetails = [];
         categoryDetails.push(list[i].categoryName);
-        categoryDetails.push(list[i].totalPossibleMark);
+        categoryDetails.push(list[i].totalMark);
         categoryDetails.push(list[i].correctMark);
         categoryDetails.push(list[i].negativeMark);
         graphData.push(categoryDetails);

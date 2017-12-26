@@ -57,8 +57,6 @@ function populateBundleForCategory(list, div) {
         var divInnerForItemsDetails = $("<div>").addClass("itemDetailContainer");
         $(divForBundleTile).append(divInnerForItemsDetails);
 
-        var iconSpan = $("<span>").addClass("iconSpan").html('<i class="fa fa-th-large"></i>');
-        $(divInnerForItemsDetails).append(iconSpan);
 
         var pForName = $("<p>").addClass("pforName").html(list[i].name);
         $(divInnerForItemsDetails).append(pForName);

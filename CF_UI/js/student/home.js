@@ -13,6 +13,9 @@ function initializeStudentRoutes() {
 	crossroads.bypassed.add(function () {
 		hasher.setHash('home');
 	});
+	crossroads.addRoute('myprofile', function (query) {
+		showStudentProfile();
+	});
 	crossroads.addRoute('mytests', function (query) {
 		showMyTestPage();
 	});
@@ -68,6 +71,8 @@ function showStudentHomPage() {
 		loadStudentHomePage();
 		return;
 	}
+	google.charts.load('current', { 'packages': ['corechart'] });
+	google.charts.setOnLoadCallback(drawAreaChart);
 	updateLeftMenu("Home");
 	showPage($("#studentHome")[0]);
 	initializeStudentPage();
@@ -76,24 +81,16 @@ function showStudentHomPage() {
 
 function showStudentProfile() {
 	if ($("#studentProfilePage")[0] == undefined) {
-		loadStudentProfilePage();
+		loadFilesAndExecutecallBack(['js/student/myprofile.js' + postUrl], function () {
+			loadStudentProfilePage();
+		});
 		return;
 	}
-	google.charts.load('current', { 'packages': ['corechart'] });
-	google.charts.setOnLoadCallback(drawAreaChart);
 	showPage($("#studentProfilePage")[0]);
-
+    initializeStudentProfilePage();
 }
 
-function loadStudentProfilePage() {
-	$.get("student/myprofile.html", {
-		"_": $.now()
-	}, function (data) {
-		$("#pageContainer").append(data);
-		showStudentProfile();
-	});
 
-}
 
 function showMyTestPage() {
 	if ($("#mytestpage")[0] == undefined) {
@@ -263,7 +260,7 @@ function handleStudentMenuClick(menuDiv) {
 			setHashInUrl('home');
 			break;
 		case "my profile":
-			setHashInUrl('Profile');
+			setHashInUrl('myprofile');
 			break;
 		case "my tests":
 			setHashInUrl('mytests');
@@ -277,14 +274,14 @@ function handleStudentMenuClick(menuDiv) {
 		case "buy practice test":
 			setHashInUrl('buybundles');
 			break;
-			case "announcements":
-				setHashInUrl('announcements');
-				break;
+		case "announcements":
+			setHashInUrl('announcements');
+			break;
 	}
 	updateLeftMenu(menuTitle);
 }
 
-function showStudentsAnnouncementsPage(){
+function showStudentsAnnouncementsPage() {
 	if ($("#divStudentAnnouncements")[0] == undefined) {
 		loadFilesAndExecutecallBack(['js/student/announcements.js' + postUrl], function () {
 			loadStudentAnnouncementsPage();
