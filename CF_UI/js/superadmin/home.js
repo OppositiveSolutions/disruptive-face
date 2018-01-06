@@ -4,41 +4,44 @@ function loadSuperAdminView() {
 }
 
 function initializeSuperAdminRoutes() {
-	crossroads.addRoute('dashboard', function(query) {
+	crossroads.addRoute('dashboard', function (query) {
 
 	});
 
-	crossroads.addRoute('home', function(query) {
+	crossroads.addRoute('home', function (query) {
 		showSuperAdminHomPage();
 	});
-	crossroads.addRoute('category', function(query) {
+	crossroads.addRoute('category', function (query) {
 		showCategoryMasterPage();
 	});
-	crossroads.addRoute('exam-master', function(query) {
+	crossroads.addRoute('exam-master', function (query) {
 		showExamMasterPage();
 	});
-	crossroads.addRoute('manage-center', function(query) {
+	crossroads.addRoute('manage-center', function (query) {
 		showManageCenterPage();
 	});
-	crossroads.addRoute('student-details', function(query) {
+	crossroads.addRoute('student-details', function (query) {
 		showStudentDetailsPage();
 	});
-	crossroads.addRoute('staff-details', function(query) {
+	crossroads.addRoute('staff-details', function (query) {
 		showStaffDetailsPage();
 	});
-	crossroads.addRoute('testimonial', function(query) {
+	crossroads.addRoute('testimonial', function (query) {
 		showTestimonialPage();
 	});
-	crossroads.addRoute('video-tutorial', function(query) {
+	crossroads.addRoute('video-tutorial', function (query) {
 		showVideoTutorialPage();
 	});
-	crossroads.addRoute('announcements', function(query) {
+	crossroads.addRoute('announcements', function (query) {
 		showAnouncementsPage();
 	});
-	crossroads.addRoute('bundles', function(query) {
+	crossroads.addRoute('bundles', function (query) {
 		showBundlesPage();
 	});
-	crossroads.bypassed.add(function() {
+	crossroads.addRoute('achievers', function (query) {
+		showAddAchiverPage();
+	});
+	crossroads.bypassed.add(function () {
 		hasher.setHash('home');
 	});
 	crossroads.routed.add(console.log, console);
@@ -66,9 +69,9 @@ function initializeSuperAdminRoutes() {
 function loadSuperAdminLeftMenu() {
 	$.get("superadmin/leftmenu.html", {
 		"_": $.now()
-	}, function(data) {
+	}, function (data) {
 		$("#leftMenuContainer").append(data);
-		$("#leftMenuContainer li>div").click(function() {
+		$("#leftMenuContainer li>div").click(function () {
 			handleSuperAdminMenuClick($(this)[0]);
 		});
 	});
@@ -87,7 +90,7 @@ function showSuperAdminHomPage() {
 function loadSuperAmdinHomePage() {
 	$.get("superadmin/home.html", {
 		"_": $.now()
-	}, function(data) {
+	}, function (data) {
 		$("#pageContainer").append(data);
 		showSuperAdminHomPage();
 	});
@@ -95,7 +98,7 @@ function loadSuperAmdinHomePage() {
 
 function showCategoryMasterPage() {
 	if ($("#divSuperAdminCategoryPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/category.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/category.js' + postUrl], function () {
 			loadCategoryMasterPage(true);
 		});
 		return;
@@ -108,7 +111,7 @@ function showCategoryMasterPage() {
 
 function showAnouncementsPage() {
 	if ($("#divSuperAdminAnouncementsPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/anouncements.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/anouncements.js' + postUrl], function () {
 			loadAnouncementsPage(true);
 		});
 		return;
@@ -120,7 +123,7 @@ function showAnouncementsPage() {
 
 function showBundlesPage() {
 	if ($("#divSuperAdminBundlesPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/bundles.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/bundles.js' + postUrl], function () {
 			loadBundlesPage(true);
 		});
 		return;
@@ -130,9 +133,21 @@ function showBundlesPage() {
 	showPage($("#divSuperAdminBundlesPage")[0]);
 }
 
+function showAddAchiverPage() {
+	if ($("#addAchivers")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/achievers.js' + postUrl], function () {
+			loadAchieversPage(true);
+		});
+		return;
+	}
+
+	updateLeftMenu("Achievers");
+	showPage($("#addAchivers")[0]);
+}
+
 function showManageCenterPage() {
 	if ($("#divSuperAdminManageCenterPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/managecenter.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/managecenter.js' + postUrl], function () {
 			loadManageCenterPage(true);
 		});
 		return;
@@ -144,7 +159,7 @@ function showManageCenterPage() {
 
 function showExamMasterPage() {
 	if ($("#divSuperAdminExamMasterPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/exammaster.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/exammaster.js' + postUrl], function () {
 			loadExamMasterPage(true);
 		});
 		return;
@@ -157,7 +172,7 @@ function showExamMasterPage() {
 
 function showStudentDetailsPage() {
 	if ($("#divSuperAdminStudentDetailsPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/studentdetails.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/studentdetails.js' + postUrl], function () {
 			loadStudentDetailPage(true);
 		});
 		return;
@@ -169,7 +184,7 @@ function showStudentDetailsPage() {
 
 function showStaffDetailsPage() {
 	if ($("#divSuperAdminStaffDetailsPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/staffdetails.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/staffdetails.js' + postUrl], function () {
 			loadStaffDetailsPage(true);
 		});
 		return;
@@ -181,7 +196,7 @@ function showStaffDetailsPage() {
 
 function showVideoTutorialPage() {
 	if ($("#divSuperadminVideoTutorialPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/videotutorial.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/videotutorial.js' + postUrl], function () {
 			loadVideoTutorialPage(true);
 		});
 		return;
@@ -193,7 +208,7 @@ function showVideoTutorialPage() {
 
 function showTestimonialPage() {
 	if ($("#divSuperadminTestimonialPage")[0] == undefined) {
-		loadFilesAndExecutecallBack(['js/superadmin/testimonial.js' + postUrl], function() {
+		loadFilesAndExecutecallBack(['js/superadmin/testimonial.js' + postUrl], function () {
 			loadTestimonialPage(true);
 		});
 		return;
@@ -238,6 +253,9 @@ function handleSuperAdminMenuClick(menuDiv) {
 			break;
 		case "bundles":
 			setHashInUrl('bundles');
+			break;
+		case "achievers":
+			setHashInUrl('achievers');
 			break;
 	}
 

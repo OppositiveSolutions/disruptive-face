@@ -313,3 +313,9 @@ border-radius: 5px;
 	background: #4d6984;
 	color: white;
 }
+.fileNameSpan{
+	word-wrap: break-word;
+	margin-top:10px;
+	margin-bottom: 10px;
+	display: block;
+}

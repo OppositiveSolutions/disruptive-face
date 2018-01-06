@@ -48,7 +48,6 @@ function saveEditedPersonalInfo() {
     //         $("#editStudentDetailsModal").modal("hide");
     //     }
     // });
-
 }
 function enableEditMyProfile() {
     var userData = $("#editMyprofileBtn").data("userData");
