@@ -1,0 +1,62 @@
+<div id="addAchivers" class="page">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button class="btn btn-sm btn-white pull-right" id="btnAddNewStudentDetails">
+				Add New Achiever
+			</button>
+            <h3 class="panel-title">Achievers</h3>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive noSwipe assignManagementTable">
+                <table id="tblAchieversDetails" class="table table-bordered table-striped slNo">
+                    <thead>
+                        <tr>
+                            <th class="slNo">No</th>
+                            <th>Achiever Name</th>
+                            <th>Contact Number</th>
+                            <th>Description</th>
+                            <th>Image</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewAchieverPage">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+                <h4 class="modal-title">Add New Achiever</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label> Name </label>
+                    <input type="text" class="form-control " id="achiverName" />
+                </div>
+                <div class="form-group">
+                    <label> Contact Number </label>
+                    <input type="text" class="form-control " id="achiverContact" />
+                </div>
+                <div class="form-group">
+                    <label> Description </label>
+                    <input type="text" class="form-control " id="achiverDescription" />
+                </div>
+                <div class="form-group">
+                    <label> Upload Image <br/></label>
+                    <label for="achieverPhotoUpload" class="btn btn-sm  btn-white"> Choose</label>
+                    <input type="file" id="achieverPhotoUpload" style="display: none" />
+                    <span class="fileNameSpan" id="filenameSpan"></span>
+                </div>
+                <div class=" text-center">
+                    <button class="btn  btn-default" id="saveAchiever">Save</button>
+                    <button class="btn  btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
