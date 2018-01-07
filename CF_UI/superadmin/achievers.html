@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewAchieverPage">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal" aria-label="Close">
@@ -44,18 +44,18 @@
                 </div>
                 <div class="form-group">
                     <label> Description </label>
-                    <input type="text" class="form-control " id="achiverDescription" />
+                    <textarea class="form-control " id="achiverDescription"></textarea>
                 </div>
                 <div class="form-group">
-                    <label> Upload Image <br/></label>
+                    <label> Upload Image (minimum:130px X 130px)<br/></label>
                     <label for="achieverPhotoUpload" class="btn btn-sm  btn-white"> Choose</label>
                     <input type="file" id="achieverPhotoUpload" style="display: none" />
                     <span class="fileNameSpan" id="filenameSpan"></span>
                 </div>
-                <div class=" text-center">
-                    <button class="btn  btn-default" id="saveAchiever">Save</button>
-                    <button class="btn  btn-default" data-dismiss="modal">Close</button>
-                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn  btn-default" id="saveAchiever">Save</button>
+                <button class="btn  btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -170,8 +170,13 @@ function loadLoginPage() {
 		$("#lblForgotPassword").on("mousedown", function () {
 			loadForgotPasswordPage();
 		});
+		$("#txtEmailId").unbind("keydown");
+		$("#txtEmailId").keydown(function (event) {
+			$("#loginStatus").html("");
+		});
 		$("#txtPassword").unbind("keydown");
 		$("#txtPassword").keydown(function (event) {
+			$("#loginStatus").html("");
 			if (event.keyCode == 13) {
 				var username = $("#txtEmailId").val().trim();
 				var password = $("#txtPassword").val();
@@ -202,9 +207,16 @@ function authenticate(username, password) {
 			password: password
 		},
 		success: function (statusMap) {
-			currentAccountDetails = statusMap.data;
-			currentAccountDetails.role = statusMap.data.role;
-			loadContainerPage(statusMap);
+			if (statusMap.status == 200) {
+				$("#loginStatus").html("");
+				currentAccountDetails = statusMap.data;
+				currentAccountDetails.role = statusMap.data.role;
+				loadContainerPage(statusMap);
+			} else if (statusMap.status == 49) {
+				$("#loginStatus").html("Invalid Login");
+			} else {
+				$("#loginStatus").html("Error Try again later");
+			}
 		}
 	});
 }
@@ -217,7 +229,7 @@ function loadContainerPage(statusMap) {
 		$("#container").remove();
 		$("body").append(data);
 		currentAccountDetails = {};
-		currentAccountDetails=statusMap.data;
+		currentAccountDetails = statusMap.data;
 		console.info(statusMap.data);
 		currentAccountDetails.role = statusMap.data.role;
 		initializePagesBasedOnRole();

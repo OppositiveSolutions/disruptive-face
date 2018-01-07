@@ -143,6 +143,7 @@ function showAddAchiverPage() {
 
 	updateLeftMenu("Achievers");
 	showPage($("#addAchivers")[0]);
+	initializeAchiverPage();
 }
 
 function showManageCenterPage() {

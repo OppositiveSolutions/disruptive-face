@@ -1,5 +1,5 @@
 <div id="divSuperadminTestimonialPage" class="page">
-  <div class="panel panel-default">
+	<div class="panel panel-default">
 		<div class="panel-heading">
 			<button class="btn btn-sm btn-white pull-right" id="btnAddNewTestimonial">
 				Add New Testimonial
@@ -21,6 +21,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divSuperAdminAddNewTestimonial">
 		<div class="modal-dialog ">
 			<div class="modal-content">
@@ -31,19 +32,32 @@
 					<h4 class="modal-title">Add New Testimonial</h4>
 				</div>
 				<div class="modal-body">
-					<label>Testimonial </label>
-						<textarea  id="txtTestimonial" class="form-control input-sm mandatory"/></textarea>
-
+					<div class="form-group">
+						<label> Name </label>
+						<input type="text" class="form-control " id="testimonialName" />
 					</div>
-					<div class="modal-footer">
-					<div class="text-center">
-						<button class="btn btn-default" id="btnNewTestimonialSave">
-							Add
-						</button>
-						<button class="btn btn-default"  data-dismiss="modal">
-							Close
-						</button>
+					<div class="form-group">
+						<label> Contact Number </label>
+						<input type="text" class="form-control " id="testimonialContact" />
 					</div>
+					<div class="form-group">
+						<label> Personal Description </label>
+						<textarea class="form-control " id="testimonialDescription"></textarea>
+					</div>
+					<div class="form-group">
+						<label> Testimonial Content </label>
+						<textarea class="form-control " id="testimonialContent"></textarea>
+					</div>
+					<div class="form-group">
+						<label> Upload Image (minimum:130px X 130px)<br/></label>
+						<label for="testimonialPhotoUpload" class="btn btn-sm  btn-white"> Choose</label>
+						<input type="file" id="testimonialPhotoUpload" style="display: none" />
+						<span class="fileNameSpan" id="filenameSpanTestimonial"></span>
+					</div>
+				</div>
+				<div class="modal-footer text-center">
+					<button class="btn  btn-default" id="btnNewTestimonialSave">Save</button>
+					<button class="btn  btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>

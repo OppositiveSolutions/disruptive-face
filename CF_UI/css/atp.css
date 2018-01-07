@@ -319,3 +319,7 @@ border-radius: 5px;
 	margin-bottom: 10px;
 	display: block;
 }
+#loginStatus{
+	font-weight: bold;
+	color:red;
+}

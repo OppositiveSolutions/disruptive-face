@@ -1,21 +1,21 @@
 function loadTestimonialPage(isShow) {
   $.get("superadmin/testimonial.html" + postUrl, {
     "_": $.now()
-  }, function(data) {
+  }, function (data) {
     $("#pageContainer").append(data);
     if (isShow) {
       showTestimonialPage();
     }
-    $("#btnAddNewTestimonial").click(function() {
+    $("#btnAddNewTestimonial").click(function () {
       $("#divSuperAdminAddNewTestimonial").modal("show");
     });
-    $("#divSuperAdminAddNewTestimonial").on("shown.bs.modal", function() {
+    $("#divSuperAdminAddNewTestimonial").on("shown.bs.modal", function () {
 
     });
-    $("#divAddNewStudentDetailsPage").on("hidden.bs.modal", function() {
+    $("#divAddNewStudentDetailsPage").on("hidden.bs.modal", function () {
       $("#btnStudentDetailsSave").removeAttr("type");
     });
-    $("#btnNewTestimonialSave").click(function() {
+    $("#btnNewTestimonialSave").click(function () {
       var type = $(this).attr("type");
       if (type == "edit") {
         editTestimonials();
@@ -28,35 +28,57 @@ function loadTestimonialPage(isShow) {
 
 function validateAndReturnTestimonialInfo() {
   var obj = {};
-  var content = $("#txtTestimonial").val();
+  var name = $("#testimonialName").val();
+  if (name == "") {
+    alert("Please enter a name");
+    return;
+  }
+  obj.name = name;
+  var phnNo = $("#testimonialContact").val();
+  if (phnNo == "") {
+    alert("Please enter contact information");
+    return;
+  }
+  obj.contact = phnNo;
+  var description = $("#testimonialDescription").val();
+  if (description == "") {
+    alert("Please enter testimonial description");
+    return;
+  }
+  obj.description = description;
+  var content = $("#testimonialContent").val();
   if (content == "") {
-    alert("Please enter testimonial");
+    alert("Please enter testimonial content");
     return;
   }
   obj.content = content;
-  obj.date = "2017-09-12";
-  return obj;
+  var formdata = new FormData();
+  var file = $("#testimonialPhotoUpload")[0].files[0];
+  formdata.append("file", file);
+  formdata.append("testimonial", JSON.stringify(obj));
+  return formdata;
+
 }
 
 function saveTestimonials() {
-  var obj = validateAndReturnTestimonialInfo();
-  if (obj == undefined) {
+  var formdata = validateAndReturnTestimonialInfo();
+  if (formdata == undefined) {
     return;
   }
   $.ajax({
     url: protocol + "//" + host + "/testimonial",
     type: "POST",
+    processData: false,
+    contentType: false,
     cache: false,
-    data: JSON.stringify(obj),
-    contentType: "application/json; charset=utf-8",
-    success: function(obj) {
-      console.info(obj);
-      getTestimonials();
-      $("#divSuperAdminAddNewTestimonial").modal("hide");
+    data: formdata,
+    success: function (obj) {
+
     }
   });
 
 }
+
 
 function editTestimonials() {
   var obj = validateAndReturnTestimonialInfo();
@@ -71,7 +93,7 @@ function editTestimonials() {
     cache: false,
     data: JSON.stringify(obj),
     contentType: "application/json; charset=utf-8",
-    success: function(obj) {
+    success: function (obj) {
       console.info(obj);
       getTestimonials();
       $("#divSuperAdminAddNewTestimonial").modal("hide");
@@ -85,7 +107,7 @@ function getTestimonials() {
     url: protocol + "//" + host + "/testimonial",
     type: "GET",
     cache: false,
-    success: function(obj) {
+    success: function (obj) {
       var list = obj.data;
       populateTestimonials(list);
     }
@@ -97,7 +119,7 @@ function deleteTestimonial(id) {
     url: protocol + "//" + host + "/testimonial/" + id,
     type: "DELETE",
     cache: false,
-    success: function(obj) {
+    success: function (obj) {
       getTestimonials();
     }
   });
@@ -130,13 +152,13 @@ function appendLiForTestimonialSettings(div) {
   $(ul).empty();
   var liForEdit = createAndReturnLiForSettingsGear("Edit");
   $(ul).append(liForEdit);
-  $(liForEdit).click(function() {
+  $(liForEdit).click(function () {
     var obj = $(this).closest("tr").data("obj");
     showTestimonialAddForm(obj);
   });
   var liForDelete = createAndReturnLiForSettingsGear("Delete");
   $(ul).append(liForDelete);
-  $(liForDelete).click(function() {
+  $(liForDelete).click(function () {
     var obj = $(this).closest("tr").data("obj");
     deleteTestimonial(obj.testimonialId);
   });
