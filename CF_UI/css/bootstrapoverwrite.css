@@ -31,6 +31,30 @@ body, input, button, select, textarea {
 #loadingPanelContainer #loadingPanel {
 	top:30%;
 }
+
+#loadingPanelContainer {
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	z-index:-1;
+}
+#loadingPanelContainer.showOnTop {
+	z-index:9999;
+}
+#loadingPanelContainer #loadingPanel {
+	top:20%;
+}
+#loadingPanel {
+    background:#FFFFFF;
+        border-radius: 100%;
+	color:#5EB601;
+	left:50%;
+	position:fixed;
+	text-align:center;
+	z-index:10000;
+}
 #container {
 	width:100%;
 	float:left;
@@ -344,7 +368,7 @@ select.input-sm, .input-sm {
 }
 .editDeleteSpan
 {
-	
+
 }
 .editDeleteSpan i
 {
@@ -683,7 +707,7 @@ ul#notificationList {
 	padding:0 10px;
 	border:none;
 	border-radius:0;
-	box-shadow:2px 0 2px 0 rgba(0, 0, 0, 0.14); 
+	box-shadow:2px 0 2px 0 rgba(0, 0, 0, 0.14);
 /*	border-right:1px solid #dddddd;
 	background:#fbfbfb;*/
 }
