@@ -26,6 +26,7 @@ function initializeStudentProfilePage() {
     });
 }
 function saveEditedPersonalInfo() {
+    var userData = $("#editMyprofileBtn").data("userData");
     var postMap = {};
     postMap.address = $("#sltManageStudentsAddressMyProfile").val();
     postMap.city = $("#txtManageStudentsCityMyProfile").val();
@@ -37,17 +38,17 @@ function saveEditedPersonalInfo() {
     postMap.pinCode = $("#txtManageStudentsPinCode").val();
     postMap.qualification = $("#txtQualificationMyProfile").val();
     postMap.stateId = $("#sltManageStudentsStatesMyProfile").val();
-
-    // $.ajax({
-    //     url: protocol + "//" + host + "/student",
-    //     type: "POST",
-    //     cache: false,
-    //     data: JSON.stringify(postMap),
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function (obj) {
-    //         $("#editStudentDetailsModal").modal("hide");
-    //     }
-    // });
+    postMap.userId = userData.userId;
+    $.ajax({
+        url: protocol + "//" + host + "/student",
+        type: "POST",
+        cache: false,
+        data: JSON.stringify(postMap),
+        contentType: "application/json; charset=utf-8",
+        success: function (obj) {
+            $("#editStudentDetailsModal").modal("hide");
+        }
+    });
 }
 function enableEditMyProfile() {
     var userData = $("#editMyprofileBtn").data("userData");

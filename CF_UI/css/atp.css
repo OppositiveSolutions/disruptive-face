@@ -323,3 +323,10 @@ border-radius: 5px;
 	font-weight: bold;
 	color:red;
 }
+.bannerImage{
+	width:100%;
+}
+#bannerImageContainer{
+	max-height:300px;
+	overflow-y: scroll;
+}

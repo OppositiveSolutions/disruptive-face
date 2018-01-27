@@ -87,7 +87,7 @@ function showStudentProfile() {
 		return;
 	}
 	showPage($("#studentProfilePage")[0]);
-    initializeStudentProfilePage();
+	initializeStudentProfilePage();
 }
 
 
@@ -144,6 +144,9 @@ function initializeStudentPage() {
 	google.charts.setOnLoadCallback(drawAreaChart);
 	getResultList();
 	getExamProgressOfStudent();
+	getAccuracyOfTheStudent();
+	getCOmpletionStatusOfTheStudent();
+	getAvrgeTimeForStudent();
 }
 function getExamProgressOfStudent() {
 	console.info(currentAccountDetails);
@@ -155,6 +158,58 @@ function getExamProgressOfStudent() {
 		cache: false,
 		success: function (list) {
 			createProgressGraph(list.data);
+		}
+	});
+}
+
+function getAccuracyOfTheStudent() {
+	var url = protocol + "//" + host + "/result/accuracy";
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		success: function (map) {
+			if (map && map.data) {
+				$("#spanStudentAccuracy").html(Math.round(map.data * 10) / 10);
+			}
+		}
+	});
+}
+function getCOmpletionStatusOfTheStudent() {
+	var url = protocol + "//" + host + "/result/examcount";
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		success: function (map) {
+			if (map && map.data) {
+				var examCount = map.data;
+				$("#spanUserExamCount").html(examCount.examCount);
+				$("#spanUserTestCount").html("/" + examCount.testCount);
+				populateCompletionStatusBar(examCount);
+			}
+		}
+	});
+}
+function populateCompletionStatusBar(examCount) {
+	var examStatusPercentage = "100";
+	if (examCount.examCount < examCount.testCount) {
+		examStatusPercentage = (examCount.examCount / examCount.testCount) * 100;
+	}
+	$("#progressBArFIllSpan").css("width", + examStatusPercentage + "%");
+	$("#labelprogressBArFIllSpan").html(examStatusPercentage + "%");
+
+}
+function getAvrgeTimeForStudent() {
+	var url = protocol + "//" + host + "/result/avgtime";
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		success: function (map) {
+			if (map && map.data) {
+				$("#spanAvrgTimeUser").html(Math.round(map.data * 10) / 10);
+			}
 		}
 	});
 }

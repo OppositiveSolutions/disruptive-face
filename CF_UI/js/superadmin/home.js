@@ -41,9 +41,14 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('achievers', function (query) {
 		showAddAchiverPage();
 	});
+	crossroads.addRoute('banner-images', function (query) {
+		showAddBannerImagePage();
+	});
 	crossroads.bypassed.add(function () {
 		hasher.setHash('home');
 	});
+
+
 	crossroads.routed.add(console.log, console);
 	//log all routes
 	//setup hasher
@@ -85,6 +90,7 @@ function showSuperAdminHomPage() {
 	}
 	updateLeftMenu("Home");
 	showPage($("#superAdminHome")[0]);
+	showExamMasterPage();
 }
 
 function loadSuperAmdinHomePage() {
@@ -132,6 +138,18 @@ function showBundlesPage() {
 	updateLeftMenu("Bundles");
 	showPage($("#divSuperAdminBundlesPage")[0]);
 }
+function showAddBannerImagePage() {
+	if ($("#addBannerImages")[0] == undefined) {
+		loadFilesAndExecutecallBack(['js/superadmin/bannerimage.js' + postUrl], function () {
+			loadBannerImagePage(true);
+		});
+		return;
+	}
+
+	updateLeftMenu("Banner Images");
+	showPage($("#addBannerImages")[0]);
+	initializeBannerPage();
+}
 
 function showAddAchiverPage() {
 	if ($("#addAchivers")[0] == undefined) {
@@ -141,7 +159,7 @@ function showAddAchiverPage() {
 		return;
 	}
 
-	updateLeftMenu("Achievers");
+	updateLeftMenu("Banner Images");
 	showPage($("#addAchivers")[0]);
 	initializeAchiverPage();
 }
@@ -257,6 +275,9 @@ function handleSuperAdminMenuClick(menuDiv) {
 			break;
 		case "achievers":
 			setHashInUrl('achievers');
+			break;
+		case "banner images":
+			setHashInUrl('banner-images');
 			break;
 	}
 
