@@ -1,0 +1,72 @@
+<div id="addBannerImages" class="page">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button class="btn btn-sm btn-white pull-right" id="btnAddNewBannerImage">
+				Add New Banner
+			</button>
+            <h3 class="panel-title">Achievers</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row" id="bannerImageContainer">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button class="btn btn-sm btn-white pull-right" id="btnaddAdvertisement">
+				Add New Advertisement
+			</button>
+            <h3 class="panel-title">Advertisement</h3>
+        </div>
+        <div class="panel-body" id="addAdvertisement">
+        </div>
+    </div>
+</div>
+<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewBannerPage">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+                <h4 class="modal-title">Add New Banner</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label> Upload Image <br/></label>
+                    <label for="bannerUploadPIc" class="btn btn-sm  btn-white"> Choose</label>
+                    <input type="file" id="bannerUploadPIc" style="display: none" />
+                    <span class="fileNameSpan" id="filenameSpanBanner"></span>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn  btn-default" id="saveBannerImage">Save</button>
+                <button class="btn  btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddAdvertisementPage">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+                <h4 class="modal-title">Add New Advertisement</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Enter content</label>
+                    <textarea id="textAdvertisement" class="form-control" row="4"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn  btn-default" id="saveNewAdvertisement">Save</button>
+                <button class="btn  btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
