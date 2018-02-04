@@ -41,7 +41,7 @@ function saveEditedPersonalInfo() {
     postMap.userId = userData.userId;
     $.ajax({
         url: protocol + "//" + host + "/student",
-        type: "POST",
+        type: "PUT",
         cache: false,
         data: JSON.stringify(postMap),
         contentType: "application/json; charset=utf-8",

@@ -5,7 +5,7 @@ function loadAchieversPage() {
         $("#pageContainer").append(data);
         showAddAchiverPage();
         $("#btnAddNewStudentDetails").click(function () {
-            $("#divAddNewAchieverPage").modal("show");
+            initializeAddNewAchiever();
         });
         $("#saveAchiever").click(function () {
             saveAchievement();
@@ -23,6 +23,15 @@ function initializeAchiverPage() {
             populateAchieversDetails(data.data);
         }
     });
+}
+function initializeAddNewAchiever() {
+    $("#filenameSpan").html("");
+    $("#achieverPhotoUpload").val("");
+    $("#achiverDescription").val("");
+    $("#achiverContact").val("");
+    $("#achiverName").val("");
+    $("#divAddNewAchieverPage").modal("show");
+
 }
 function populateAchieversDetails(list) {
     if (!list.length) {
@@ -47,8 +56,32 @@ function populateAchieversDetails(list) {
         $(imgForTd).attr("width", "100px");
         $(tdForimg).append(imgForTd);
         $(tr).append(tdForimg);
+        var btnForDelete = $("<button>").addClass("btn btn-default btn-sm").html("Delete");
+        $(tdForDelete).append(btnForDelete);
+        var tdForDelete = $("<td>").append(btnForDelete);
+        $(btnForDelete).click(function () {
+            if (confirm("Are you sure you want to delete the achiever")) {
+                var achieverData = $(this).closest("tr").data("achiever");
+                deleteAchiever(achieverData);
+            }
+        });
+        $(tr).append(tdForDelete);
         $(tbody).append(tr);
     }
+}
+
+function deleteAchiever(achieverData) {
+    if (!achieverData) {
+        return;
+    }
+    $.ajax({
+        url: protocol + "//" + host + "/achievers/" + achieverData.achieverId,
+        type: "DELETE",
+        success: function (obj) {
+            initializeAchiverPage();
+        }
+    });
+
 }
 
 function validateAndReturnAchievementInfo() {
@@ -61,13 +94,17 @@ function validateAndReturnAchievementInfo() {
     obj.name = name;
     var phnNo = $("#achiverContact").val();
     if (phnNo == "") {
-        alert("Please enter achiever description");
+        alert("Please enter achiever contact info");
         return;
     }
     obj.contact = phnNo;
     var description = $("#achiverDescription").val();
     if (description == "") {
         alert("Please enter achiever description");
+        return;
+    }
+    if ($("#achieverPhotoUpload").val() == "") {
+        alert("choose achiever image");
         return;
     }
     obj.description = description;
@@ -90,7 +127,8 @@ function saveAchievement() {
         cache: false,
         data: formdata,
         success: function (obj) {
-
+            $("#divAddNewAchieverPage").modal("hide");
+            initializeAchiverPage();
         }
     });
 

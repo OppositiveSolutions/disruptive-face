@@ -4,14 +4,17 @@ function loadStudentView() {
 
 function initializeStudentRoutes() {
 	crossroads.addRoute('dashboard', function (query) {
-		alert("dash");
 
 	});
 	crossroads.addRoute('home', function (query) {
 		showStudentHomPage();
 	});
 	crossroads.bypassed.add(function () {
-		hasher.setHash('home');
+		
+	//	hasher.setHash('home');
+	});
+	crossroads.addRoute('home', function (query) {
+		showStudentHomPage();
 	});
 	crossroads.addRoute('myprofile', function (query) {
 		showStudentProfile();

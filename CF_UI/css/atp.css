@@ -324,9 +324,24 @@ border-radius: 5px;
 	color:red;
 }
 .bannerImage{
-	width:100%;
+	max-width:100%;
+	max-height:120px;
 }
 #bannerImageContainer{
 	max-height:300px;
 	overflow-y: scroll;
+}
+.deleteBannerBtn{
+	margin-top: 10px;
+}
+.deleteBtnContainer{
+	text-align: center;
+	display: block;
+}
+.advertisementDiv{
+	padding-top:10px;
+}
+.deleteSPanAdvertisement{
+	margin-right: 10px;
+	color: red;
 }

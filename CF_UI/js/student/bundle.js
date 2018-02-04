@@ -4,6 +4,7 @@ function loadAllBundlePage() {
     }, function (data) {
         $("#pageContainer").append(data);
         showMyBundlePurchasePage();
+        
     });
 }
 function initializePurchasePage() {

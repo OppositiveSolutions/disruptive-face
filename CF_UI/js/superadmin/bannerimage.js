@@ -8,6 +8,8 @@ function loadBannerImagePage() {
             saveBannerImage();
         });
         $("#btnAddNewBannerImage").click(function () {
+            $("#bannerUploadPIc").val("");
+            $("#filenameSpanBanner").html("");
             $("#divAddNewBannerPage").modal("show");
         });
         $("#btnaddAdvertisement").click(function () {
@@ -18,6 +20,20 @@ function loadBannerImagePage() {
         });
         $("#bannerUploadPIc").change(function () {
             $("#filenameSpanBanner").html($("#bannerUploadPIc")[0].files[0].name);
+            console.info($("#bannerUploadPIc")[0].files);
+            if ($("#bannerUploadPIc")[0].files && $("#bannerUploadPIc")[0].files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var imgPreviewBanner = $("<img>");
+                    $(imgPreviewBanner).attr('src', e.target.result);
+                    $(imgPreviewBanner).attr('width', "100%");
+                    $("#filenameSpanBanner").append(imgPreviewBanner)
+                };
+
+                reader.readAsDataURL($("#bannerUploadPIc")[0].files[0]);
+            }
+
         });
     });
 }
@@ -63,9 +79,27 @@ function populateAdvertisementDetails(data) {
     var div = $("#addAdvertisement");
     $(div).empty();
     for (var i = 0; i < data.length; i++) {
-        var divForAdvertisement = $("<div>").addClass("advertisementDiv").html(i+1 + ". " + data[i].announcement);
+        var deleteSpan = $("<button>").addClass("btn btn-white btn-sm deleteSPanAdvertisement").html("x");
+        $(deleteSpan).attr("announcementId", data[i].sliderAnnouncementId)
+        $(deleteSpan).click(function () {
+            if (confirm("Are you sure you want to delete the announcement")) {
+                deleteAnnouncement($(this).attr("announcementId"));
+            }
+        });
+        var divForAdvertisement = $("<div>").addClass("advertisementDiv").html(deleteSpan);
+        $(divForAdvertisement).append(data[i].announcement);
         $(div).append(divForAdvertisement);
     }
+}
+
+function deleteAnnouncement(announcementId) {
+    $.ajax({
+        url: protocol + "//" + host + "/advertisement/announcement/" + announcementId,
+        type: "DELETE",
+        success: function (obj) {
+            getAdvertisements();
+        }
+    });
 }
 function getBannerImages() {
     $.ajax({
@@ -86,8 +120,29 @@ function populateBannerDetails(list) {
         var imgBanner = $("<img>").attr("src", "data:image/png;base64," + list[i].image);
         $(imgBanner).addClass("bannerImage")
         $(divForImage).append(imgBanner);
+        var spanForImgDelete = $("<span>").addClass("deleteBtnContainer");
+        var btnForDelete = $("<button>").addClass("btn btn-sm btn-white deleteBannerBtn").html("Delete");
+        $(btnForDelete).attr("imgId", list[i].sliderImageId);
+        $(spanForImgDelete).append(btnForDelete);
+        $(btnForDelete).click(function () {
+            if (confirm("Are you sure you want to delete the banner image")) {
+                deleteBannerImage($(this).attr("imgId"));
+            }
+        });
+        $(divForImage).append(spanForImgDelete);
         $(bannerimageContainer).append(divForImage);
     }
+}
+
+function deleteBannerImage(imgId) {
+    $.ajax({
+        url: protocol + "//" + host + "/advertisement/image/" + imgId,
+        type: "DELETE",
+        success: function (obj) {
+            getBannerImages();
+        }
+    });
+
 }
 
 function validateAndReturnBannerImageInfo() {
@@ -109,7 +164,7 @@ function saveBannerImage() {
         cache: false,
         data: formdata,
         success: function (obj) {
-            $("#divAddNewBannerPage").modal("show");
+            $("#divAddNewBannerPage").modal("hide");
             initializeBannerPage();
         }
     });

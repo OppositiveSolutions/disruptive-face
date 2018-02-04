@@ -1,4 +1,5 @@
 var DEFAULT_HASH = 'home';
+var doValidateResponse = true;
 $(document).ready(function () {
 	initialize();
 	checkSession();
@@ -17,7 +18,11 @@ function checkSession() {
 			}
 		},
 		error: function () {
-			setHashInUrl('login');
+
+			var locationString = window.location.toString();
+			if (locationString.indexOf("signup.html") == -1) {
+				setHashInUrl('login');
+			}
 		}
 	});
 
@@ -102,6 +107,10 @@ function initialize() {
 				loadingMsg = "Loading data";
 			}
 			isAjaxProgress = true;
+			doValidateResponse = true;
+			if (settings.url.toString().indexOf("login") != -1 || settings.url.toString().indexOf("logout") != -1) {
+				doValidateResponse = false;
+			}
 			showLoadingMessage();
 		}).ajaxStop(function () {
 			isAjaxProgress = false;
@@ -116,7 +125,10 @@ function initialize() {
 			// if (index > -1) {
 			// $.xhrPool.splice(index, 1);
 			// }
-			hideLoadingMessage()
+			hideLoadingMessage();
+			if (result.status == 401 && doValidateResponse) {
+				logout();
+			}
 
 			try {
 				var responseText = result.responseText.trim();
