@@ -2,7 +2,10 @@ var DEFAULT_HASH = 'home';
 var doValidateResponse = true;
 $(document).ready(function () {
 	initialize();
-	checkSession();
+	var locationString = window.location.toString();
+	if (locationString.indexOf("signup") == -1) {
+		checkSession();
+	}
 });
 
 function checkSession() {
@@ -20,7 +23,7 @@ function checkSession() {
 		error: function () {
 
 			var locationString = window.location.toString();
-			if (locationString.indexOf("signup.html") == -1) {
+			if (locationString.indexOf("signup") == -1) {
 				setHashInUrl('login');
 			}
 		}
