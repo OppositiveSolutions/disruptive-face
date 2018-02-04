@@ -183,7 +183,7 @@ function validateAndReturnStudentInfo() {
 	// 	alert("Please enter city");
 	// 	return;
 	// }
-	// obj.mobileNo = mobileNo;
+	// obj.mobileNo = mobileNo; 
 	// var centerId = $("#centerId").val();
 	// if (centerId == "") {
 	// 	alert("Please enter city");

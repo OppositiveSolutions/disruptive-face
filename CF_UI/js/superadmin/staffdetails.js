@@ -329,7 +329,6 @@ function showAddNewStaffPage(obj) {
     populateStaffAddForm(obj);
     $("#btnStaffDetailsSave").attr("type", "edit");
   }
-
 }
 
 function populateStaffAddForm(obj) {
