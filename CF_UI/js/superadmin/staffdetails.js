@@ -229,7 +229,7 @@ function getStaff() {
     type: "GET",
     cache: false,
     success: function(obj) {
-      var list = obj.data.content;
+      var list = obj.data;
       populateStaffDetails(list);
     }
   });
@@ -246,16 +246,16 @@ function populateStaffDetails(list) {
     $("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
     $(tr).data("obj", list[i]);
     var tdForName = $("<td>");
-    $(tdForName).append(list[i].name);
+    $(tdForName).append(list[i].firstName + " " + list[i].lastName);
     $(tr).append(tdForName);
 
     var tdEmail = $("<td>");
-    $(tdEmail).append(list[i].emailId);
+    $(tdEmail).append(list[i].username);
     $(tr).append(tdEmail);
 
-    var tdForMobile = $("<td>");
-    $(tdForMobile).append(list[i].mobileNo);
-    $(tr).append(tdForMobile);
+    // var tdForMobile = $("<td>");
+    // $(tdForMobile).append(list[i].mobileNo);
+    // $(tr).append(tdForMobile);
     var status = "Active";
     if (list[i].status == 0) {
       status = "Deactive";
@@ -339,7 +339,7 @@ function populateStaffAddForm(obj) {
   $("input:radio[name='Staffgendername'][value=" + obj.gender + "]").prop("checked", true);
   $("#txtStaffDob").val(obj.dob);
   $("#txtStaffQualification").val(obj.qualification);
-  $("#txtStaffEmailId").val(obj.emailId);
+  $("#txtStaffEmailId").val(obj.username);
   $("#sltManageStaffStates").val(obj.stateId);
   $("#txtManageStaffCity").val(obj.city);
   $("#sltManageStaffAddress").val(obj.address);

@@ -130,8 +130,6 @@ function validateAndReturnStudentInfo() {
 	}
 	obj.emailId = emailId;
 
-
-
 	var stateId = $("#sltManageStudentsStates").val();
 	if (stateId == "Select") {
 		alert("Please enter select the state");
@@ -219,7 +217,7 @@ function getStudents() {
 		type: "GET",
 		cache: false,
 		success: function(obj) {
-			var list = obj.data.content;
+			var list = obj.data;
 			populateStudentDetails(list);
 		}
 	});
@@ -236,7 +234,7 @@ function populateStudentDetails(list) {
 		$("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
 		$(tr).data("obj", list[i]);
 		var tdForName = $("<td>");
-		$(tdForName).append(list[i].name);
+		$(tdForName).append(list[i].firstName + " " + list[i].lastName);
 		$(tr).append(tdForName);
 
 
@@ -250,11 +248,11 @@ function populateStudentDetails(list) {
 		$(tr).append(tdForexpiryDate);
 
 		var tdEmail = $("<td>");
-		$(tdEmail).append(list[i].emailId);
+		$(tdEmail).append(list[i].username);
 		$(tr).append(tdEmail);
 
 		var tdForMobile = $("<td>");
-		$(tdForMobile).append(list[i].mobileNo);
+		$(tdForMobile).append(list[i].phoneNo);
 		$(tr).append(tdForMobile);
 		var status = "Active";
 		if (list[i].status == 0) {
@@ -339,7 +337,7 @@ function populateStudnetAddForm(obj) {
 	$("input:radio[name='gendername'][value=" + obj.gender + "]").prop("checked", true);
 	$("#txtDob").val(obj.dob);
 	$("#txtQualification").val(obj.qualification);
-	$("#txtEmailId").val(obj.emailId);
+	$("#txtEmailId").val(obj.username);
 	$("#sltManageStudentsStates").val(obj.stateId);
 	$("#txtManageStudentsCity").val(obj.city);
 	$("#sltManageStudentsAddress").val(obj.address);
