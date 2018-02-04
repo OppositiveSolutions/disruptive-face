@@ -9,6 +9,7 @@ function loadStaffDetailsPage(isShow) {
     $("#btnAddNewStaffDetails").click(function() {
       $("#divAddNewStaffDetailsPage").modal("show");
     });
+    makeNumericTextBox($("#divAddNewStaffDetailsPage")[0])
     $("#divAddNewStaffDetailsPage").on("shown.bs.modal", function() {
 
     });
@@ -124,6 +125,19 @@ function validateAndReturnStaffInfo() {
     alert("Please enter emailId");
     return;
   }
+  if (!isEmail(emailId)) {
+    alert("Please enter a valid emailId")
+    return;
+  }
+  var confirmEmailId = $("#txtStaffConfirmEmailId").val();
+  if (confirmEmailId == "") {
+    alert("Please enter the email id again to confirm");
+    return;
+  }
+  if (emailId != confirmEmailId) {
+    alert("confirm email id not matching");
+    return;
+  }
   obj.emailId = emailId;
 
 
@@ -235,16 +249,6 @@ function populateStaffDetails(list) {
     $(tdForName).append(list[i].name);
     $(tr).append(tdForName);
 
-
-    var tdForCreatedDate = $("<td>");
-    $(tdForCreatedDate).append(list[i].createdDate);
-    $(tr).append(tdForCreatedDate);
-
-
-    var tdForexpiryDate = $("<td>");
-    $(tdForexpiryDate).append(list[i].expiryDate);
-    $(tr).append(tdForexpiryDate);
-
     var tdEmail = $("<td>");
     $(tdEmail).append(list[i].emailId);
     $(tr).append(tdEmail);
@@ -322,13 +326,13 @@ function updateStafftatus(userId, status, liStatus) {
 function showAddNewStaffPage(obj) {
   $("#divAddNewStaffDetailsPage").modal("show");
   if (obj != undefined) {
-    populateStudnetAddForm(obj);
+    populateStaffAddForm(obj);
     $("#btnStaffDetailsSave").attr("type", "edit");
   }
 
 }
 
-function populateStudnetAddForm(obj) {
+function populateStaffAddForm(obj) {
   $("#sltManageStaffCenterName").val(obj.centerId);
   $("#txtStaffFirstName").val(obj.firstName);
   $("#txtStaffLastName").val(obj.lastName);

@@ -9,10 +9,13 @@ function loadBundlesPage(isShow) {
     $("#btnAddNewBundle").click(function() {
       $("#divAddNewBundlePage").modal("show");
     });
-    $("#divAddNewAnoucementPage").on("shown.bs.modal", function() {
+    $("#divAddNewBundlePage").on("shown.bs.modal", function() {
 
     });
-    $("#divAddNewAnoucementPage").on("hidden.bs.modal", function() {});
+    $("#divAddNewBundlePage").on("hidden.bs.modal", function() {
+      $("#divAddNewBundlePage").find("input").val("");
+      $("#divAddNewBundlePage").find("textarea").val("");
+    });
     $("#btnAddNewBundleSave").click(function() {
       var type = $(this).attr("type");
       if (type == "edit") {
@@ -85,7 +88,7 @@ function saveBundle() {
     data: JSON.stringify(obj),
     contentType: "application/json; charset=utf-8",
     success: function(obj) {
-      getVideoTutorials();
+      getAllBundles();
       $("#divAddNewBundlePage").modal("hide");
     }
   });
@@ -100,12 +103,12 @@ function editBundle() {
   obj.bundleId = $("#btnAddNewBundleSave").attr("bundleId")
   $.ajax({
     url: protocol + "//" + host + "/bundle",
-    type: "POST",
+    type: "PUT",
     cache: false,
     data: JSON.stringify(obj),
     contentType: "application/json; charset=utf-8",
     success: function(obj) {
-      getVideoTutorials();
+      getAllBundles();
       $("#divAddNewBundlePage").modal("hide");
     }
   });
@@ -114,16 +117,103 @@ function editBundle() {
 
 function showAddNewBundlePage(obj) {
   $("#divAddNewBundlePage").modal("show");
+  $("#btnAddNewBundleSave").removeAttr("type");
   if (obj != undefined) {
+    $("#btnAddNewBundleSave").removeAttr("type", "edit");
     populateAddNewBundlesPage(obj);
   }
 
 }
 
 function populateAddNewBundlesPage(obj) {
-  $("#txtAnouncementName").val(obj.name);
-  $("#txtAnouncementDescription").val(obj.description);
+  $("#txtBundleName").val(obj.name);
+  $("#txtBundleDescription").val(obj.description);
   $("#btnAddNewBundleSave").attr("bundleId", obj.bundleId);
   $("#btnAddNewBundleSave").attr("type", "edit");
+  $("#txtBundleMrp").val(obj.mrp);
+  $("#txtBundleSellingPrice").val(obj.sellingPrice);
+  $("#txtBundleDiscountPrice").val(obj.discountPercent);
+  $("#txtBundleImageUrl").val(obj.imageUrl);
 
+}
+
+function getAllBundles() {
+  $.ajax({
+    url: protocol + "//" + host + "/bundle",
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      var list = obj.data;
+      populateBundleDetails(list);
+    }
+  });
+}
+
+function deleteBundle(bundleId) {
+  $.ajax({
+    url: protocol + "//" + host + "/bundle/delete/" + bundleId,
+    type: "DELETE",
+    cache: false,
+    success: function(obj) {
+      getAllBundles();
+    }
+  });
+}
+
+
+
+function populateBundleDetails(list) {
+  var tbody = $("#tblBundles tbody")[0];
+  $(tbody).empty();
+  destroyDataTable("tblBundles");
+  for (var i = 0; i < list.length; i++) {
+    var tr = $("<tr>");
+    $("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
+    $(tr).data("obj", list[i]);
+    var tdForName = $("<td>");
+    $(tdForName).append(list[i].name);
+    $(tr).append(tdForName);
+
+    var tdEmail = $("<td>");
+    $(tdEmail).append(list[i].mrp);
+    $(tr).append(tdEmail);
+
+    // var tdForMobile = $("<td>");
+    // $(tdForMobile).append(list[i].mobileNo);
+    // $(tr).append(tdForMobile);
+    // var status = "Active";
+    // if (list[i].status == 0) {
+    //   status = "Deactive";
+    // }
+    //
+    // var tdForStatus = $("<td>");
+    // $(tdForStatus).append(status);
+    // $(tr).append(tdForStatus);
+
+    var settingsGear = createSettingsGearDiv();
+    $(settingsGear).removeClass("pull-right");
+    var tdForSettings = $("<td>").html(settingsGear);
+    $(tr).append(tdForSettings);
+    appendLiForBundleSettings(settingsGear, list[i]);
+    $(tbody).append(tr);
+  }
+  initializeDataTable("tblBundles")
+
+}
+
+function appendLiForBundleSettings(div, obj) {
+  var ul = $(div).find("ul")[0];
+  $(ul).empty();
+  var liForEdit = createAndReturnLiForSettingsGear("Edit");
+  $(ul).append(liForEdit);
+  $(liForEdit).click(function() {
+    var obj = $(this).closest("tr").data("obj");
+    showAddNewBundlePage(obj);
+  });
+  var liForDelete = createAndReturnLiForSettingsGear("Delete");
+  $(ul).append(liForDelete);
+  $(liForDelete).click(function() {
+    var obj = $(this).closest("tr").data("obj");
+    deleteBundle(obj.bundleId);
+  });
 }

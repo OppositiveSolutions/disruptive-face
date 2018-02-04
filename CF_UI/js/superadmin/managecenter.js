@@ -9,6 +9,7 @@ function loadManageCenterPage(isShow) {
     $("#btnAddNewCenter").click(function() {
       $("#divSuperAdminAddNewCenterPage").modal("show");
     });
+    makeNumericTextBox($("#divSuperAdminAddNewCenterPage")[0])
     populateStateDropdown($("#sltManageCenterState"));
     $("#divAddNewCategoryPage").on("shown.bs.modal", function() {
 
@@ -19,7 +20,7 @@ function loadManageCenterPage(isShow) {
     $("#btnAddNewCenterSave").click(function() {
       var type = $(this).attr("type");
       if (type == "edit") {
-        editCategory();
+        editManageCenter();
       } else {
         saveManageCenter();
       }
@@ -75,12 +76,6 @@ function populateCenters(list) {
 
 function validateManageCenterPage() {
   var obj = {};
-  var centerName = $("#txtAddNewCenterName").val();
-  if (centerName == "") {
-    alert("Please enter the center name");
-    return;
-  }
-  obj.centerName = centerName;
   var centerCode = $("#txtAddNewCenterCode").val();
   if (centerCode == "") {
     alert("Please enter the center code");
@@ -130,7 +125,7 @@ function saveManageCenter() {
   });
 }
 
-function saveManageCenter() {
+function editManageCenter() {
   var obj = validateManageCenterPage();
   if (obj == undefined) {
     return;
@@ -186,7 +181,8 @@ function showAddNewCenterPage(obj) {
 function populateManageCenterPage(obj) {
   $("#txtAddNewCenterName").val(obj.centerName);
   $("#txtAddNewCenterCode").val(obj.centerCode);
-  $("#sltManageCenterState").val(obj.address.stateId);
+  if (obj.address.states != undefined)
+    $("#sltManageCenterState").val(obj.address.states.stateId);
   $("#txtAddNewCenterCity").val(obj.address.city);
   $("#txtAddNewCenterPinCode").val(obj.address.pinCode);
   $("#btnAddNewCenterSave").attr("centerId", obj.centerId);
