@@ -85,15 +85,17 @@ function populateStudentData(data) {
     if (userDetails) {
         var address = userDetails.address[0];
         $("#studentAddress").html(address.streetAddress);
-        $("#studentState").html(address.states.name);
+        if (address.states) {
+            $("#studentState").html(address.states.name);
+        }
         $("#studentCity").html(address.city);
         $("#studentPin").html(address.pinCode);
+        $("#studentFirstName").html(userDetails.firstName);
+        $("#studentLastName").html(userDetails.lastName);
+        $("#studentDob").html(userDetails.dob);
+        $("#studentGender").html(userDetails.gender);
+        $("#studentEmail").html(userDetails.username);
     }
-    $("#studentFirstName").html(userDetails.firstName);
-    $("#studentLastName").html(userDetails.lastName);
-    $("#studentDob").html(userDetails.dob);
-    $("#studentGender").html(userDetails.gender);
-    $("#studentEmail").html(userDetails.username);
     $("#studentQualification").html(data.qualification);
 
 }
