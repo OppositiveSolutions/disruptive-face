@@ -12,6 +12,7 @@ function loadStudentDetailPage(isShow) {
 		$("#divAddNewStudentDetailsPage").on("shown.bs.modal", function() {
 
 		});
+		makeNumericTextBox($("#divAddNewStudentDetailsPage")[0])
 		$("#divAddNewStudentDetailsPage").on("hidden.bs.modal", function() {
 			$("#btnStudentDetailsSave").removeAttr("type");
 			clearStudentManagementPage();
@@ -178,12 +179,16 @@ function validateAndReturnStudentInfo() {
 	// 	return;
 	// }
 	// obj.emailId = emailId;
-	// var mobileNo = $("#mobileNo").val();
-	// if (mobileNo == "") {
-	// 	alert("Please enter city");
-	// 	return;
-	// }
-	// obj.mobileNo = mobileNo; 
+	var phoneNo = $("#txtPhone").val();
+	if (phoneNo == "") {
+		alert("Please enter mobile number");
+		return;
+	}
+	obj.phoneNo = phoneNo;
+	if (!isMobileNo(phoneNo)) {
+		alert("Please enter a valid mobile number");
+		return;
+	}
 	// var centerId = $("#centerId").val();
 	// if (centerId == "") {
 	// 	alert("Please enter city");
@@ -338,6 +343,7 @@ function populateStudnetAddForm(obj) {
 	$("#txtDob").val(obj.dob);
 	$("#txtQualification").val(obj.qualification);
 	$("#txtEmailId").val(obj.username);
+	$("#txtPhone").val(obj.phoneNo);
 	$("#sltManageStudentsStates").val(obj.stateId);
 	$("#txtManageStudentsCity").val(obj.city);
 	$("#sltManageStudentsAddress").val(obj.address);
