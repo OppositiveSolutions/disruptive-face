@@ -41,7 +41,7 @@ function initializeSuperAdminRoutes() {
 	crossroads.addRoute('achievers', function(query) {
 		showAddAchiverPage();
 	});
-	crossroads.addRoute('banner-images', function(query) {
+	crossroads.addRoute('advertisement', function(query) {
 		showAddBannerImagePage();
 	});
 	crossroads.bypassed.add(function() {
@@ -277,8 +277,8 @@ function handleSuperAdminMenuClick(menuDiv) {
 		case "achievers":
 			setHashInUrl('achievers');
 			break;
-		case "banner images":
-			setHashInUrl('banner-images');
+		case "advertisement":
+			setHashInUrl('advertisement');
 			break;
 	}
 
