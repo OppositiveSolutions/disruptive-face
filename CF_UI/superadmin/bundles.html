@@ -75,4 +75,53 @@
 			</div>
 		</div>
 	</div>
+
+
+	<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divManageQuestionPaper">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title">Manage Question Papers</h4>
+				</div>
+        <div class="modal-body">
+          <div class="form-group">
+          <label>Name </label>
+          <p id="pForBundleName"></p></div>
+            <!-- <div class="form-group">
+            <label>Category </label>
+            <p id="pForCategoryName"></p>
+            </div> -->
+					<div class="form-group">
+						<label>Question Papers</label>
+						<p id="pForBundleName"></p>
+						<select class="form-control" id="sltBundleQuestionPaper" style="width:85%;float:left"></select><button id="btnAddedQuestionPaperToBundle" class="btn btn-grey" style="height:35px;margin-left:10px">Add</button>
+					</div>
+					<table id="tblBundleQuestionPaper" class="table table-bordered slNo dataTable">
+							<thead>
+								<tr>
+									<th>Question Paper</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+							<tr><td colspan="2">No Question Papers added</td></tr>
+						</tbody>
+						</table>
+          </div>
+					<div class="modal-footer">
+					<div class="text-center">
+						<button class="btn btn-default" id="btnAddNewBundleSave">
+							Add
+						</button>
+						<button class="btn btn-default"  data-dismiss="modal">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
