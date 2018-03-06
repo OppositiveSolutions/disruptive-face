@@ -138,6 +138,7 @@ function showMaterialPage() {
 	}
 	updateLeftMenu("Material");
 	showPage($("#addMaterials")[0]);
+	initializeMaterialPage();
 }
 
 function showBundlesPage() {
