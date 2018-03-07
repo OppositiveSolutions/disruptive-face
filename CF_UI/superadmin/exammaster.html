@@ -18,7 +18,7 @@
 							<th>Total No. of Qst:</th>
 							<th>Created Date</th>
 							<th>Last Modified Date</th>
-							<th>Status</th>
+							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody></tbody>
@@ -76,6 +76,10 @@
 									<label>No. of Options </label>
 									<input type="text" id="txtExamMasterTotalNoOfOptions" class="form-control input-sm mandatory" />
 								</div>
+								<div class="form-group">
+									<label>Type </label>
+									<select id="sltExamMasterType" class="form-control mandatory"><option value="1">Elastic</option><option value="2">Static</option></select>
+								</div>
 								<div class="text-center">
 									<button class="btn btn-default" id="btnExamMasterExamDetailsNext">
 										Next
@@ -95,6 +99,7 @@
 												<th>No. of Subcategories</th>
 												<th>Right Answer Mark</th>
 												<th>Minus Mark</th>
+												<th id="thExamMasterCategoryDuration">Duration</th>
 											</tr>
 										</thead>
 										<tbody></tbody>
