@@ -17,7 +17,7 @@ function loadExamMasterPage(isShow) {
 		});
 		$("a[href='#divExamMasterCategoryTab']").click(function() {
 			getCategoryForExam();
-		});
+		}); 
 		$("#btnExamMasterExamDetailsNext").click(function() {
 			var editMode = $(this).attr("editMode");
 			var object = $(this).data("obj");
