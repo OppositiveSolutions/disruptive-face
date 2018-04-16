@@ -24,6 +24,11 @@ function loadBundlesPage(isShow) {
         saveBundle();
       }
     });
+    $("#btnAddedQuestionPaperToBundle").click(function() {
+      var questionPaperId = $("#sltBundleQuestionPaper").val();
+      var bundleId = $("#sltBundleQuestionPaper").attr("bundleId");
+      addQuestionPaperToBunlde(bundleId, questionPaperId)
+    })
   });
 
 }
@@ -215,5 +220,100 @@ function appendLiForBundleSettings(div, obj) {
   $(liForDelete).click(function() {
     var obj = $(this).closest("tr").data("obj");
     deleteBundle(obj.bundleId);
+  });
+  var liForQuestionPapers = createAndReturnLiForSettingsGear("Manage Question Papers");
+  $(ul).append(liForQuestionPapers);
+  $(liForQuestionPapers).click(function() {
+    var obj = $(this).closest("tr").data("obj");
+    showManageQuestionPaperPage(obj);
+  });
+}
+
+function showManageQuestionPaperPage(obj) {
+  console.info(obj)
+  $("#divManageQuestionPaper").modal("show");
+  $("#pForBundleName").html(obj.name);
+  $("#pForCategoryName").html(obj.category);
+  getQuestionPapersForBundle(obj.bundleId);
+  getAddedQuestionPapersForBundle(obj.bundleId)
+  $("#sltBundleQuestionPaper").attr("bundleId", obj.bundleId)
+}
+
+function getQuestionPapersForBundle(bundleId) {
+  $.ajax({
+    url: protocol + "//" + host + "/question-paper/list?bundleId" + bundleId,
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      populateQuestionPapersForBundle(obj.data);
+    }
+  });
+}
+
+function populateQuestionPapersForBundle(list) {
+  $("#sltBundleQuestionPaper").empty();
+  for (var i = 0; i < list.length; ++i) {
+    var option = $("<option>").val(list[i].qpId).html(list[i].name);
+    $("#sltBundleQuestionPaper").append(option);
+  }
+}
+
+function getAddedQuestionPapersForBundle(bundleId) {
+  $.ajax({
+    url: protocol + "//" + host + "/bundle/qps/" + bundleId,
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      populateAddedQuestionPapers(obj.data);
+    }
+  });
+}
+
+function populateAddedQuestionPapers(list) {
+  var tbody = $("#tblBundleQuestionPaper tbody");
+  $(tbody).empty();
+  for (var i = 0; i < list.length; ++i) {
+    var tr = $("<tr>");
+    var td1 = $("<td>").html(list[i].name);
+    var img = $("<img>").attr("src", "images/cancel.png");
+    $(img).attr("qpId", list[i].question_paper_id)
+    $(img).attr("bundleId", list[i].bundle_id)
+    $(img).click(function() {
+      var qpId = $(this).attr("qpId");
+      var bundleId = $(this).attr("bundleId");
+      deleteAddedQuestionPaperFromBundle(bundleId, qpId);
+    })
+    var td2 = $("<td>").append(img);
+    $(tr).append(td1);
+    $(tr).append(td2)
+    $(tbody).append(tr)
+  }
+  if (list.length == 0) {
+    var tr = $("<tr>");
+    var td = $("<td>").attr("colspan", 2).html("No Question Papers added");
+    $(tr).append(td);
+    $(tbody).append(tr)
+  }
+}
+
+function addQuestionPaperToBunlde(bundleId, questionPaperId) {
+  $.ajax({
+    url: protocol + "//" + host + "/bundle/" + bundleId + "/addqp/" + questionPaperId,
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      getAddedQuestionPapersForBundle(bundleId)
+    }
+  });
+}
+
+function deleteAddedQuestionPaperFromBundle(bundleId, qpId) {
+  $.ajax({
+    url: protocol + "//" + host + "/bundle/" + bundleId + "/removeqp/" + qpId,
+    type: "DELETE",
+    cache: false,
+    success: function(obj) {
+      getAddedQuestionPapersForBundle(bundleId)
+    }
   });
 }
