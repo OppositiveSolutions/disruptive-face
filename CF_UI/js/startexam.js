@@ -156,7 +156,7 @@ function populateResultScoreSheet(list) {
         var percentage = list[i].totalMark / list[i].totalPossibleMark * 100;
         var tdPercentage = $('<td>').html(percentage);
         $(tr).append(tdPercentage);
-        var tdTime = $('<td>').html(list[i].timeTakenMin + "min " + list[i].timeTakenSec+"sec");
+        var tdTime = $('<td>').html(list[i].timeTakenMin + "min " + list[i].timeTakenSec + "sec");
         $(tr).append(tdTime);
         $(tbody).append(tr);
     }
@@ -177,7 +177,7 @@ function populateTotalStatus(list) {
         totalWrongAnswer += list[i].negativeMark;
         totalScore += list[i].totalMark;
     }
-    $("#totalAttempted").html(totalAttempted+" / "+totalAvailable);
+    $("#totalAttempted").html(totalAttempted + " / " + totalAvailable);
     $("#totalCorrectAnswer").html(totalCorrectAnswer);
     $("#totalWrongAnswer").html(totalWrongAnswer);
     $("#totalScore").html(totalScore);
@@ -246,12 +246,14 @@ function startExam() {
 
 function populateSections(sectionsList) {
     var sectionDiv = $("#sectionContainer");
+    var totalTime = 0;
     if (sectionsList.length != 0) {
         for (var i = 0; i < sectionsList.length; i++) {
             var btnForSection = $("<button>").addClass("btn btn-white btn-sm").html(sectionsList[i].category.name);
             $(sectionDiv).append(btnForSection);
             $(btnForSection).attr("categoryId", sectionsList[i].category.categoryId);
             $(btnForSection).data("categoryData", sectionsList[i]);
+            
             $(btnForSection).click(function () {
                 var categoryData = $(this).data("categoryData");
                 selectionOfCategories(categoryData);

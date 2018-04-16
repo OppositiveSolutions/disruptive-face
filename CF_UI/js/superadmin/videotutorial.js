@@ -8,6 +8,7 @@ function loadVideoTutorialPage(isShow) {
     }
     $("#btnAddNewVideoTutorial").click(function() {
       $("#divSuperAdminAddNewVideoURL").modal("show");
+      clearAddTutorialModal();
     });
     $("#divAddNewCategoryPage").on("shown.bs.modal", function() {
 
@@ -22,6 +23,11 @@ function loadVideoTutorialPage(isShow) {
       }
     });
   });
+}
+function clearAddTutorialModal(){
+  $("#txtVideoTutorialName").val("");
+  $("#txtVideoTutorialDescription").val("");
+  $("#txtVideoTutorialURL").val("");
 }
 
 function validateAndReturnVideoTutorialInfo() {
