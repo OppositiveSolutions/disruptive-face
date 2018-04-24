@@ -1,5 +1,6 @@
-var protocol = "http:";
-var host = "localhost:8080/cf-restful"
+var protocol = location.protocol;
+var host = "localhost:8080/cf-restful";
+var timerForCategory;
 $(document).ready(function () {
     createExamForTest();
     $("#examContainer").hide();
@@ -41,7 +42,6 @@ function setCounter(duration) {
     var countDownDate = (new Date()).getTime() + durationForExam;
 
     var x = setInterval(function () {
-
         var now = new Date().getTime();
         var distance = countDownDate - now;
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -65,10 +65,53 @@ function setCounter(duration) {
         // If the count down is over, write some text 
         if (distance <= 0) {
             clearInterval(x);
-            document.getElementById("demo").innerHTML = "EXPIRED";
+            $("#minuteSpan").html("00");
+            $("#hourSpan").html("00");
+            $("#secondsSpan").fadeOut(500, function () {
+                $(this).text("00").fadeIn(500);
+            });
         }
     }, 1000);
 }
+
+function setCounterForCategory(duration) {
+    var durationForExam = duration * 60 * 1000;
+    var countDownDate = (new Date()).getTime() + durationForExam;
+
+    timerForCategory = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        if (hours.toString().length == 1) {
+            hours = "0" + hours;
+        }
+        if (minutes.toString().length == 1) {
+            minutes = "0" + minutes;
+        }
+        if (seconds.toString().length == 1) {
+            seconds = "0" + seconds;
+        }
+        $("#secondsSpanCategory").fadeOut(500, function () {
+            $(this).text(seconds).fadeIn(500);
+        });
+        $("#minuteSpanCategory").html(minutes);
+        $("#hourSpanCategory").html(hours);
+
+        // If the count down is over, write some text 
+        if (distance <= 0) {
+            clearInterval(timerForCategory);
+            $("#minuteSpanCategory").html("00");
+            $("#hourSpanCategory").html("00");
+            $("#secondsSpanCategory").fadeOut(500, function () {
+                $(this).text("00").fadeIn(500);
+            });
+            $("#sectionContainer").find("button.active").next().click();
+        }
+    }, 1000);
+}
+
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
         sURLVariables = sPageURL.split('&'),
@@ -164,7 +207,6 @@ function populateResultScoreSheet(list) {
 
 }
 function populateTotalStatus(list) {
-
     var totalAttempted = 0;
     var totalAvailable = 0;
     var totalCorrectAnswer = 0;
@@ -200,7 +242,6 @@ function getAllCategoriesOfQUestionPaper(testId) {
 function populateExamStartPage(examMap) {
     $("#examName").html(examMap.name + " - " + examMap.examCode);
     $("#totalNumberOfQuestions").html(examMap.noOfQuestions);
-    setCounter(examMap.duration);
     $("#totalTimeAvailable").html(examMap.duration + " min");
     var tbody = $("#tblForExamIntroductionCategoryList").find("tbody");
     $(tbody).empty();
@@ -235,6 +276,7 @@ function startExam() {
             $("#examContainer").show();
             $("#examIntroduction").hide();
             var examMap = $("#examContainer").data("examMap");
+            setCounter(examMap.duration);
             populateSections(examMap.questionPaperCategorys);
             populateQuestions(examMap.questionPaperCategorys);
             $("#sectionContainer").find("button:first").trigger("click");
@@ -247,13 +289,15 @@ function startExam() {
 function populateSections(sectionsList) {
     var sectionDiv = $("#sectionContainer");
     var totalTime = 0;
+    var totalDuration = 0;
     if (sectionsList.length != 0) {
         for (var i = 0; i < sectionsList.length; i++) {
             var btnForSection = $("<button>").addClass("btn btn-white btn-sm").html(sectionsList[i].category.name);
             $(sectionDiv).append(btnForSection);
             $(btnForSection).attr("categoryId", sectionsList[i].category.categoryId);
             $(btnForSection).data("categoryData", sectionsList[i]);
-            
+            $(btnForSection).attr("timeIn", totalDuration);
+            $(btnForSection).attr("timeOut", totalDuration);
             $(btnForSection).click(function () {
                 var categoryData = $(this).data("categoryData");
                 selectionOfCategories(categoryData);
@@ -264,10 +308,16 @@ function populateSections(sectionsList) {
 }
 
 function selectionOfCategories(categoryData) {
+    var previousCategoryData = $("#sectionContainer").find("button.active").data("categoryData");
+    var previousCategoryNumber = undefined;
+    if (previousCategoryData) {
+        previousCategoryNumber = previousCategoryData.questionPaperSubCategorys[0].questions[0].questionNo;
+    }
     var subCategoryId = categoryData.questionPaperSubCategorys[0].questionPaperSubCategoryId;
     var firstQuestionNumber = categoryData.questionPaperSubCategorys[0].questions[0].questionNo;
     var totalQuestions = categoryData.questionPaperSubCategorys[0].noOfQuestions;
-    showQuestion(firstQuestionNumber);
+
+    showQuestion(firstQuestionNumber, previousCategoryNumber);
 }
 function populateQuestions(categoryList) {
     if (categoryList.length != 0) {
@@ -280,24 +330,56 @@ function populateQuestions(categoryList) {
         }
     }
 }
-function showQuestion(firstQuestionNumber) {
-    $("#questionContainer").find("div.questionDiv").removeClass("hide").addClass("hide");
+function showQuestion(firstQuestionNumber, oldQuestion) {
+    var type = 0;
+    if (firstQuestionNumber < oldQuestion) {
+        type = 1;
+    }
     var currentQuestionDiv = $("#questionContainer").find("div[questionNumber=" + firstQuestionNumber + "]");
-    $(currentQuestionDiv).removeClass("hide");
     var selectedCategory = $(currentQuestionDiv).attr("categoryId");
+    var currentCategory = $("#sectionContainer").find("button.active").attr("categoryId");
+    var targetCategory = $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]");
+    var examMap = $("#examContainer").data("examMap");
+    if (currentCategory != selectedCategory && examMap.durationType == 2) {
+        if (currentCategory) {
+            var tMinute = $("#minuteSpan").html();
+            var tHour = $("#hourSpan").html();
+            var totalCurrentDuration = examMap.duration - (tHour * 60 + tMinute);
+            totalCurrentDuration--;
+            var categoryTimeOut = $("#sectionContainer").find("button[categoryid=" + currentCategory + "]").attr("timeout");
+            var currentCategoryTimeIn = $("#sectionContainer").find("button[categoryid=" + currentCategory + "]").attr("timeIn");
+            var categoryTimeIn = $(targetCategory).attr("timeIn");
+            if ((totalCurrentDuration < categoryTimeOut && type == 0) || (categoryTimeIn && totalCurrentDuration < categoryTimeIn)) {
+                return;
+            }
+            if (totalCurrentDuration >= currentCategoryTimeIn && type == 1) {
+                return;
+            }
+        }
+    }
+    $("#questionContainer").find("div.questionDiv").removeClass("hide").addClass("hide");
+    $(currentQuestionDiv).removeClass("hide");
     detectCategoryChanges(selectedCategory);
     $("#questionContainer").attr("currentQuestion", firstQuestionNumber);
     setStatusForQuestion(firstQuestionNumber);
 
 }
+
+
 function detectCategoryChanges(selectedCategory) {
     var currentCategory = $("#sectionContainer").find("button.active").attr("categoryId");
+    var targetCategory = $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").data("categoryData");
     if (currentCategory != selectedCategory) {
+        console.info(targetCategory);
+        clearInterval(timerForCategory);
+        setCounterForCategory(2);
         addCategoryChange(selectedCategory);
         $("#sectionContainer").find("button").removeClass("btn-primary active").addClass("btn-white");
         $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").addClass("btn-primary active").removeClass("btn-white");
     }
 }
+
+
 function addCategoryChange(selectedCategory) {
     var examId = $("#questionContainer").attr("examId");
     var url = protocol + "//" + host + "/exam/save/" + examId + "/time/" + selectedCategory;
@@ -378,12 +460,13 @@ function populateNextQuestion(type, reviewed) {
 
         setStatusForQuestion(currentQuestion, answered);
     }
+    var oldQuestion = currentQuestion;
     if (type == 1) {
         currentQuestion++;
     } else {
         currentQuestion--;
     }
-    showQuestion(currentQuestion);
+    showQuestion(currentQuestion, oldQuestion);
 
 }
 
@@ -391,9 +474,15 @@ function populateExamStatusTiles(questionsMap, subCategory, categoryId) {
     var spanForStatusTile = $("<span>").addClass("statusTile").html(questionsMap.questionNo);
     $("#statusTable").append(spanForStatusTile);
     $(spanForStatusTile).attr("questionNumber", questionsMap.questionNo);
+    $(spanForStatusTile).attr("categoryId", categoryId);
     $(spanForStatusTile).click(function () {
         var questionNumber = $(this).attr("questionNumber");
-        showQuestion(questionNumber)
+        var previousCategoryData = $("#sectionContainer").find("button.active").data("categoryData");
+        var previousCategoryNumber = undefined;
+        if (previousCategoryData) {
+            previousCategoryNumber = previousCategoryData.questionPaperSubCategorys[0].questions[0].questionNo;
+        }
+        showQuestion(questionNumber, previousCategoryNumber);
     });
 }
 

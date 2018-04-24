@@ -47,6 +47,7 @@ function saveEditedPersonalInfo() {
         contentType: "application/json; charset=utf-8",
         success: function (obj) {
             $("#editStudentDetailsModal").modal("hide");
+            initializeStudentProfilePage();
         }
     });
 }
@@ -60,7 +61,10 @@ function enableEditMyProfile() {
     if (userDetails) {
         var address = userDetails.address[0];
         $("#sltManageStudentsAddressMyProfile").val(address.streetAddress);
-        $("#sltManageStudentsStatesMyProfile").val(address.states.stateId);
+        if (address.states && address.states.stateId)
+            $("#sltManageStudentsStatesMyProfile").val(address.states.stateId);
+        else
+            $("#sltManageStudentsStatesMyProfile").val(0);
         $("#txtManageStudentsCityMyProfile").val(address.city);
         $("#txtManageStudentsPinCode").val(address.pinCode);
     }

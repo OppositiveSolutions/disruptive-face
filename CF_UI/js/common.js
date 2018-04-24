@@ -2,9 +2,10 @@ function populateStateDropdown(dropDown, callback) {
   $(dropDown).empty();
   $.get(protocol + "//" + host + "/common/states", {
     "_": $.now()
-  }, function(obj) {
+  }, function (obj) {
     var list = obj.data;
-    var optionSelect = $("<option>", {}).html("Select");
+    var optionSelect = $("<option>").html("Select");
+    $(optionSelect).attr("value", "0");
     $(dropDown).append(optionSelect);
     for (var i = 0; i < list.length; ++i) {
       var option = $("<option>", {

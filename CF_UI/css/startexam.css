@@ -190,12 +190,12 @@ padding-top:10px;
 }
 .timerSpanGroup
 {
-    display: inline-block;
+    display: block;
       color:white;
      background: #444444;
      border-radius: 5px;
 }
-#CountDown span
+.CountDown span
 {
      display: inline-block;
     text-align: center;
@@ -204,6 +204,15 @@ padding-top:10px;
     cursor: pointer;
    
 }
+.CountDown {
+    padding: 10px;
+    padding-top: 5px;
+    display: block;
+    background: white;
+    padding-bottom: 20px;
+text-align: center;
+}
+
 .statusLegends 
 {
     border-top:1px solid #ddd; 
