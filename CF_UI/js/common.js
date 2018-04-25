@@ -14,3 +14,12 @@ function populateStateDropdown(dropDown, callback) {
     }
   });
 }
+
+function trimValuesInObject(obj) {
+  for (var key in obj) {
+    if (obj[key] != null && obj[key] != undefined && typeof obj[key] === 'string') {
+      obj[key] = obj[key].trim();
+    }
+  }
+  return obj;
+}
