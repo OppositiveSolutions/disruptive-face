@@ -10,8 +10,8 @@ function initializeStudentRoutes() {
 		showStudentHomPage();
 	});
 	crossroads.bypassed.add(function () {
-		
-	//	hasher.setHash('home');
+
+		//	hasher.setHash('home');
 	});
 	crossroads.addRoute('home', function (query) {
 		showStudentHomPage();
@@ -150,6 +150,7 @@ function initializeStudentPage() {
 	getAccuracyOfTheStudent();
 	getCOmpletionStatusOfTheStudent();
 	getAvrgeTimeForStudent();
+	getAllTestList();
 }
 function getExamProgressOfStudent() {
 	console.info(currentAccountDetails);
@@ -217,7 +218,11 @@ function getAvrgeTimeForStudent() {
 	});
 }
 function createProgressGraph(list) {
-	console.info(list);
+	if (!list.length) {
+		$("#chart_div").html("<div class='text-center noResults'>No results available</div>");
+		return;
+	}
+	$("#chart_div").empty();
 	var progressMap = [['Date', 'progress']];
 	for (var i = 0; i < list.length && i < 10; i++) {
 
@@ -274,6 +279,39 @@ function getResultList() {
 	}];
 	populateResultList(list);
 
+}
+
+
+
+function getAllTestList() {
+	var url = protocol + "//" + host + "/test/all/1";
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		success: function (list) {
+			populateMytestTable(list.data);
+		}
+	});
+}
+
+
+function populateMytestTable(list) {
+	if (list.length != 0) {
+		var tbody = $("#tblMyTestsHome").find("tbody");
+		$(tbody).empty();
+		for (var i = 0; i < list.length; i++) {
+			var tr = $("<tr>");
+			$(tr).attr("isDemo", list[i].is_demo);
+			$(tr).attr("testId", list[i].test_id);
+			$(tr).data("map", list[i]);
+			var tdForIndex = $("<td>").html(i + 1);
+			$(tr).append(tdForIndex);
+			var tdForName = $("<td>").html(list[i].name);
+			$(tr).append(tdForName);
+			$(tbody).append(tr);
+		}
+	}
 }
 
 function populateResultList(list) {
