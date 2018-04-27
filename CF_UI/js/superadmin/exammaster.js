@@ -15,7 +15,7 @@ function loadExamMasterPage(isShow) {
 		$("#divAddNewExamMasterPage").on("hidden.bs.modal", function() {
 			$("#btnExamMasterExamDetailsNext").removeData("isNextClicked");
 			$("#btnExamMasterCategoryDetailsNext").removeData("isNextClicked");
-			clearExamMasterPage();
+			clearExamMasterPage(); 
 		});
 		$("a[href='#divExamMasterCategoryTab']").click(function() {
 			var editMode = $("#btnExamMasterExamDetailsNext").attr("editMode");

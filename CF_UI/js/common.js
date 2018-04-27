@@ -14,7 +14,7 @@ function populateStateDropdown(dropDown, callback) {
       $(dropDown).append(option);
     }
   });
-}
+} 
 
 function trimValuesInObject(obj) {
   for (var key in obj) {
