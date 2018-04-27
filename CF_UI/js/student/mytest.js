@@ -31,18 +31,20 @@ function populateMytestTable(list) {
             $(tr).data("map", list[i]);
             var tdForIndex = $("<td>").html(i + 1);
             $(tr).append(tdForIndex);
-            var tdForName = $("<td>").html("Test" + list[i].test_id);
+            var tdForName = $("<td>").html(list[i].name);
             $(tr).append(tdForName);
             var tdForAction = $("<td>");
-            var btnForTest = $("<button>").addClass("btn btn-default btn-sm").html("Take Test");
+            var btnForTest = $("<button>").addClass("btn btn-primary btn-sm").html("Take Test");
             $(tdForAction).append(btnForTest);
             $(tr).append(tdForAction);
             $(tbody).append(tr);
             $(btnForTest).click(function () {
                 var testId = $(this).closest("tr").attr("testId");
                 var isDemo = $(this).closest("tr").attr("isDemo");
-                window.open('startexam.html?testId='+testId+'&isDemo='+isDemo, 'mywindow', 'width=1300,height=800')
-
+                window.open('startexam.html?testId=' + testId + '&isDemo=' + isDemo, 'mywindow', 'width=1300,height=800')
+                setTimeout(function () {
+                    getAllTestList();
+                },1000);
             });
         }
     }

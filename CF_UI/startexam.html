@@ -29,7 +29,6 @@
 	<div class="container-fluid" id="examContainerPage">
 		<div class="row topRow">
 			<div class="col-md-3 examName" id="examName">
-				IBPS SSO
 			</div>
 			<div class="col-md-3 companyLogo pull-right">
 				Career Focus
@@ -42,7 +41,10 @@
 
 				</div>
 				<div class "fontWeightBold">
-					Total Number of questions: <span id="totalNumberOfQuestions"></span><br/> Total time available: <span id="totalTimeAvailable"></span>
+					Total Number of questions:
+					<span id="totalNumberOfQuestions"></span>
+					<br/> Total time available:
+					<span id="totalTimeAvailable"></span>
 				</div>
 				<div class=" categoryListInIntroductionPage">
 					<table id="tblForExamIntroductionCategoryList">
@@ -69,13 +71,17 @@
 				</div>
 				<div class="col-md-6 attemptStatusLegends">
 					<ul>
-						<li><span class="statusTile plain">1</span> You have not visted the question yet.
+						<li>
+							<span class="statusTile plain">1</span> You have not visted the question yet.
 						</li>
-						<li><span class="statusTile redTile">3</span> You have not answered the question yet.
+						<li>
+							<span class="statusTile redTile">3</span> You have not answered the question yet.
 						</li>
-						<li><span class="statusTile greenTile">5</span> You have answered the question.
+						<li>
+							<span class="statusTile greenTile">5</span> You have answered the question.
 						</li>
-						<li><span class="statusTile violetTile">7</span> You have marked the question for review.
+						<li>
+							<span class="statusTile violetTile">7</span> You have marked the question for review.
 						</li>
 
 					</ul>
@@ -115,13 +121,22 @@
 				</div>
 			</div>
 			<div class="col-md-3 examStatusContainer" id="examStatusContainer">
-
-				<div id="CountDown">
-					Time Left :
-					<div class="timerSpanGroup pull-right">
-						<span id="hourSpan"></span>:
-						<span id="minuteSpan"></span>:
-						<span id="secondsSpan"></span>
+				<div class="row">
+					<div id="categoryCountDown" class=" CountDown col-md-6">
+						Category Time Left
+						<div class="timerSpanGroup ">
+							<span id="hourSpanCategory"></span>:
+							<span id="minuteSpanCategory"></span>:
+							<span id="secondsSpanCategory"></span>
+						</div>
+					</div>
+					<div id="CountDown" class="CountDown col-md-6">
+						Total Time Left
+						<div class="timerSpanGroup ">
+							<span id="hourSpan"></span>:
+							<span id="minuteSpan"></span>:
+							<span id="secondsSpan"></span>
+						</div>
 					</div>
 				</div>
 				<div class="statusContainer" id="statusTable">
@@ -130,13 +145,17 @@
 				</div>
 				<div class="statusLegends">
 					<ul>
-						<li><span class="statusTile plain">1</span>Not visted
+						<li>
+							<span class="statusTile plain">1</span>Not visted
 						</li>
-						<li><span class="statusTile redTile">3</span>Not answered
+						<li>
+							<span class="statusTile redTile">3</span>Not answered
 						</li>
-						<li><span class="statusTile greenTile">5</span>Answered
+						<li>
+							<span class="statusTile greenTile">5</span>Answered
 						</li>
-						<li><span class="statusTile violetTile">7</span>Marked for review
+						<li>
+							<span class="statusTile violetTile">7</span>Marked for review
 						</li>
 
 					</ul>
@@ -161,31 +180,35 @@
 				<div class="modal-content modal-lg">
 					<div class="modal-header">
 						<button class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
+							<span aria-hidden="true">×</span>
+						</button>
 						<h4 class="modal-title">Exam Result</h4>
 					</div>
 					<div class="modal-body currentResult">
 						<div class="row">
 							<div class="col-sm-3">
-								<i class="fa fa-file-text fa-lg"></i><span id="totalAttempted">
-</span>
+								<i class="fa fa-file-text fa-lg"></i>
+								<span id="totalAttempted">
+								</span>
 								<p> Attempted</p>
 							</div>
 							<div class="col-sm-3">
-								<i class="fa fa-calendar-check-o fa-lg"></i> <span id="totalCorrectAnswer">
-</span>
+								<i class="fa fa-calendar-check-o fa-lg"></i>
+								<span id="totalCorrectAnswer">
+								</span>
 								<p> Correct Mark</p>
 
 							</div>
 							<div class="col-sm-3">
-								<i class="fa fa-calendar-times-o fa-lg"></i><span id="totalWrongAnswer">
-</span>
+								<i class="fa fa-calendar-times-o fa-lg"></i>
+								<span id="totalWrongAnswer">
+								</span>
 								<p> Wrong Mark</p>
 							</div>
 							<div class="col-sm-3">
-								<i class="fa  fa-trophy fa-lg"></i> <span id="totalScore">
-</span>
+								<i class="fa  fa-trophy fa-lg"></i>
+								<span id="totalScore">
+								</span>
 								<p> Total Score</p>
 							</div>
 						</div>
@@ -211,7 +234,7 @@
 												Score
 											</th>
 											<th>
-												Percentile
+												Percentage
 											</th>
 											<th>
 												Time

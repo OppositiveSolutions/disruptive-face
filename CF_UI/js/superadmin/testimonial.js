@@ -73,7 +73,8 @@ function saveTestimonials() {
     cache: false,
     data: formdata,
     success: function (obj) {
-
+      $("#divSuperAdminAddNewTestimonial").modal("hide");
+      getTestimonials();
     }
   });
 
