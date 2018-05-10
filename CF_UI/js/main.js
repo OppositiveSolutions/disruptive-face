@@ -5,6 +5,8 @@ $(document).ready(function() {
 	var locationString = window.location.toString();
 	if (locationString.indexOf("signup") == -1) {
 		checkSession();
+	} else {
+
 	}
 });
 

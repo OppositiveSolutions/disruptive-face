@@ -18,7 +18,7 @@ function loadStudentDetailPage(isShow) {
 			clearStudentManagementPage();
 		});
 		populateStateDropdown($("#sltManageStudentsStates"));
-		populateManageStudentsCenter();
+		populateManageStudentsCenter($("#sltManageStudentsCenterName"));
 		attachDatePickers($("#divAddNewStudentDetailsPage")[0]);
 		$("#btnStudentDetailsSave").click(function() {
 			var type = $(this).attr("type");
@@ -198,23 +198,7 @@ function validateAndReturnStudentInfo() {
 	return obj;
 }
 
-function populateManageStudentsCenter() {
-	$.ajax({
-		url: protocol + "//" + host + "/center",
-		type: "GET",
-		cache: false,
-		success: function(obj) {
-			var list = obj.data;
-			var optionSelect = $("<option>").html("Select");
-			$("#sltManageStudentsCenterName").append(optionSelect);
-			for (var i = 0; i < list.length; i++) {
-				var option = $("<option>").val(list[i].centerId).html(list[i].centerCode);
-				$("#sltManageStudentsCenterName").append(option);
-			}
-		}
-	});
 
-}
 
 function getStudents() {
 	$.ajax({
