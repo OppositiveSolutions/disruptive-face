@@ -1,5 +1,4 @@
-
-$(document).ready(function(){
+$(document).ready(function() {
 	$("#btnStudentDetailsSave").unbind("click");
 	$("#btnStudentDetailsSave").click(function() {
 		var type = $(this).attr("type");
@@ -10,36 +9,37 @@ $(document).ready(function(){
 		}
 		return false;
 	});
-	$("#btnStudentDetailsSave").attr("disabled",true);
-	$("#chkTerms").change(function(){
-		if($(this).prop("checked")){
+	$("#btnStudentDetailsSave").attr("disabled", true);
+	$("#chkTerms").change(function() {
+		if ($(this).prop("checked")) {
 			$("#btnStudentDetailsSave").removeAttr("disabled");
-		}else{
-			$("#btnStudentDetailsSave").attr("disabled",true);
+		} else {
+			$("#btnStudentDetailsSave").attr("disabled", true);
 		}
 	})
-	$("#btnCancel").click(function(){
-		window.location.replace(protocol + "//" + window.location.host + FOLDER_NAME);
+	$("#btnCancel").click(function() {
+		window.location = protocol + "//" + window.location.host + FOLDER_NAME;
 	})
 	attachDatePickers($("#signupPage")[0]);
 	populateStateDropdown($("#sltManageStudentsStates"));
 	populateManageStudentsCenter($("#sltManageStudentsCenterName"));
 })
+
 function saveStudentDetails() {
 	var obj = validateAndReturnStudentInfo();
-
+	if (obj == undefined) {
+		return;
+	}
 	var formdata = new FormData();
-	var fileName=$("#fileStudentProfilePic").val();
-	if(fileName==""){
+	var fileName = $("#fileStudentProfilePic").val();
+	if (fileName == "") {
 		alert("Please select a profile pic");
 		return;
 	}
 	var file = $("#fileStudentProfilePic")[0].files[0];
 	formdata.append("file", file);
-	formdata.append("student", JSON.stringify(obj));
-	if (obj == undefined) {
-		return;
-	}
+	formdata.append("studentJson", JSON.stringify(obj));
+
 	$.ajax({
 		url: protocol + "//" + host + "/student",
 		type: "POST",
@@ -47,11 +47,11 @@ function saveStudentDetails() {
 		data: formdata,
 		processData: false,
 		contentType: false,
-		contentType: "application/json; charset=utf-8",
 		success: function(obj) {
 			alert("You are successfully registered")
 			window.location = protocol + "//" + window.location.host + FOLDER_NAME;
-		},error:function(){
+		},
+		error: function() {
 			window.location = protocol + "//" + window.location.host + FOLDER_NAME;
 		}
 	});

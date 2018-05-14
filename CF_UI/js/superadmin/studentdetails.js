@@ -31,6 +31,23 @@ function loadStudentDetailPage(isShow) {
 	});
 }
 
+function populateManageStudentsCenter(dropDown) {
+	$.ajax({
+		url: protocol + "//" + host + "/center",
+		type: "GET",
+		cache: false,
+		success: function(obj) {
+			var list = obj.data;
+			var optionSelect = $("<option>").html("Select");
+			$(dropDown).append(optionSelect);
+			for (var i = 0; i < list.length; i++) {
+				var option = $("<option>").val(list[i].centerId).html(list[i].centerCode);
+				$(dropDown).append(option);
+			}
+		}
+	});
+}
+
 function clearStudentManagementPage() {
 	$("#divAddNewStudentDetailsPage").find("input:text").val("");
 	$("#divAddNewStudentDetailsPage").find("select").val("Select");
@@ -41,12 +58,21 @@ function saveStudentDetails() {
 	if (obj == undefined) {
 		return;
 	}
+	var formdata = new FormData();
+	var fileName = $("#fileStudentProfilePic").val();
+	if (fileName != "") {
+		var file = $("#fileStudentProfilePic")[0].files[0];
+		formdata.append("file", file);
+	}
+	formdata.append("studentJson", JSON.stringify(obj));
+
 	$.ajax({
 		url: protocol + "//" + host + "/student",
 		type: "POST",
 		cache: false,
-		data: JSON.stringify(obj),
-		contentType: "application/json; charset=utf-8",
+		data: formdata,
+		processData: false,
+		contentType: false,
 		success: function(obj) {
 			console.info(obj);
 			getStudents();
