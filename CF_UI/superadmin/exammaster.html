@@ -38,48 +38,71 @@
 				<div class="modal-body">
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" class="active">
-							<a href="#divExamMasterExamDetailsTab" aria-controls="divExamMasterExamDetailsTab" role="tab" data-toggle="tab">Exam Details</a>
+							<a href="#divExamMasterExamDetailsTab" aria-controls="divExamMasterExamDetailsTab" role="tab" >Exam Details</a>
 						</li>
 						<li role="presentation">
-							<a href="#divExamMasterCategoryTab" aria-controls="divExamMasterCategoryTab" role="tab" data-toggle="tab">Category Details</a>
+							<a href="#divExamMasterCategoryTab" aria-controls="divExamMasterCategoryTab" role="tab">Category Details</a>
 						</li>
 						<li role="presentation">
-							<a href="#divExamMasterSubCategoryTab" aria-controls="divExamMasterSubCategoryTab" role="tab" data-toggle="tab">Sub Category Details</a>
+							<a href="#divExamMasterSubCategoryTab" aria-controls="divExamMasterSubCategoryTab" role="tab">Sub Category Details</a>
 						</li>
 					</ul>
 					<div role="tabpanel">
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="divExamMasterExamDetailsTab">
-								<div class="form-group">
-									<label>Exam Code</label>
-									<input type="text" id="txtExamMasterExamCode" class="form-control input-sm mandatory" />
-								</div>
-								<div class="form-group">
-									<label>Course Name </label>
-									<input type="text" id="txtExamMasterCourseName" class="form-control input-sm mandatory" />
-								</div>
-								<div class="form-inline">
-									<label>Exam Duration</label>
-									<br>
-									<div class="form-group">
-										<input type="text" id="txtExamMasterExamDurationHours" class="form-control input-sm mandatory" />
+								<div class="row">
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-group">
+											<label>Exam Code</label>
+											<input type="text" id="txtExamMasterExamCode" class="form-control input-sm mandatory" />
+										</div>
 									</div>
-									<div class="form-group">
-										<input type="text" id="txtExamMasterExamDurationMinutes" class="form-control input-sm mandatory" />
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-group">
+											<label>Course Name </label>
+											<input type="text" id="txtExamMasterCourseName" class="form-control input-sm mandatory" />
+										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label>Total No. of Questions </label>
-									<input type="text" id="txtExamMasterTotalNoOfQuestions" class="form-control input-sm mandatory" />
+
+								<div class="row">
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-inline">
+											<label>Exam Duration</label>
+											<br>
+											<div class="form-group">
+												<input type="text" id="txtExamMasterExamDurationHours" class="form-control input-sm mandatory" />
+											</div>
+											<div class="form-group">
+												<input type="text" id="txtExamMasterExamDurationMinutes" class="form-control input-sm mandatory" />
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-group">
+											<label>Total No. of Questions </label>
+											<input type="text" id="txtExamMasterTotalNoOfQuestions" class="form-control input-sm mandatory" />
+										</div>
+									</div>
 								</div>
-								<div class="form-group">
-									<label>No. of Options </label>
-									<input type="text" id="txtExamMasterTotalNoOfOptions" class="form-control input-sm mandatory" />
+								<div class="row">
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-group">
+											<label>No. of Options </label>
+											<input type="text" id="txtExamMasterTotalNoOfOptions" class="form-control input-sm mandatory" />
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-group">
+											<label>Type </label>
+											<select id="sltExamMasterType" class="form-control mandatory"><option value="1">Elastic</option><option value="2">Static</option></select>
+										</div>
+									</div>
 								</div>
-								<div class="form-group">
-									<label>Type </label>
-									<select id="sltExamMasterType" class="form-control mandatory"><option value="1">Elastic</option><option value="2">Static</option></select>
-								</div>
+
+
+
+
 								<div class="text-center">
 									<button class="btn btn-default" id="btnExamMasterExamDetailsNext">
 										Next
@@ -105,18 +128,18 @@
 										<tbody></tbody>
 									</table>
 								</div>
-								<div class="text-center">
+								<div class="text-center margintopten">
 									<button class="btn btn-default" id="btnExamMasterCategoryDetailsNext">
 										Next
 									</button>
-									<button class="btn btn-default" id="btnExamMasterCategoryDetailsBack">
+									<!-- <button class="btn btn-default" id="btnExamMasterCategoryDetailsBack">
 										Back
-									</button>
+									</button> -->
 								</div>
 							</div>
 							<div role="tabpanel" class="tab-pane" id="divExamMasterSubCategoryTab">
 								<div id="divSubCategoryDetailsContainer"></div>
-								<div class="text-center">
+								<div class="text-center margintopten">
 									<button class="btn btn-default" id="btnExamMasterSubCategoryDetailsNext">
 										Save
 									</button>

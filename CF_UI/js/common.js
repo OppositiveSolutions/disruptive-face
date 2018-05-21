@@ -2,7 +2,7 @@ function populateStateDropdown(dropDown, callback) {
   $(dropDown).empty();
   $.get(protocol + "//" + host + "/common/states", {
     "_": $.now()
-  }, function (obj) {
+  }, function(obj) {
     var list = obj.data;
     var optionSelect = $("<option>").html("Select");
     $(optionSelect).attr("value", "0");
@@ -12,6 +12,32 @@ function populateStateDropdown(dropDown, callback) {
         value: list[i].stateId
       }).html(list[i].name);
       $(dropDown).append(option);
+    }
+  });
+}
+
+function trimValuesInObject(obj) {
+  for (var key in obj) {
+    if (obj[key] != null && obj[key] != undefined && typeof obj[key] === 'string') {
+      obj[key] = obj[key].trim();
+    }
+  }
+  return obj;
+}
+
+function populateManageStudentsCenter(dropDown) {
+  $.ajax({
+    url: protocol + "//" + host + "/center",
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      var list = obj.data;
+      var optionSelect = $("<option>").html("Select");
+      $(dropDown).append(optionSelect);
+      for (var i = 0; i < list.length; i++) {
+        var option = $("<option>").val(list[i].centerId).html(list[i].centerCode);
+        $(dropDown).append(option);
+      }
     }
   });
 }

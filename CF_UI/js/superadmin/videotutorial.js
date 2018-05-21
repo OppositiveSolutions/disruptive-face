@@ -13,7 +13,10 @@ function loadVideoTutorialPage(isShow) {
     $("#divAddNewCategoryPage").on("shown.bs.modal", function() {
 
     });
-    $("#divAddNewCategoryPage").on("hidden.bs.modal", function() {});
+
+    $("#divSuperAdminAddNewVideoURL").on("hidden.bs.modal", function() {
+      $("#divSuperAdminAddNewVideoURL").find("input,textarea").val("");
+    });
     $("#btnNewVideoTutorialSave").click(function() {
       var type = $(this).attr("type");
       if (type == "edit") {

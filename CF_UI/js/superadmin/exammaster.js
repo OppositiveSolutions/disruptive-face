@@ -12,15 +12,21 @@ function loadExamMasterPage(isShow) {
 		$("#divAddNewCategoryPage").on("shown.bs.modal", function() {
 			$("#thExamMasterCategoryDuration").hide();
 		});
-		$("#divAddNewCategoryPage").on("hidden.bs.modal", function() {
+		$("#divAddNewExamMasterPage").on("hidden.bs.modal", function() {
+			$("#btnExamMasterExamDetailsNext").removeData("isNextClicked");
+			$("#btnExamMasterCategoryDetailsNext").removeData("isNextClicked");
 			clearExamMasterPage();
 		});
 		$("a[href='#divExamMasterCategoryTab']").click(function() {
-			getCategoryForExam();
-		}); 
-		$("#btnExamMasterExamDetailsNext").click(function() {
-			var editMode = $(this).attr("editMode");
-			var object = $(this).data("obj");
+			return;
+			var editMode = $("#btnExamMasterExamDetailsNext").attr("editMode");
+			var object = $("#btnExamMasterExamDetailsNext").data("obj");
+			var isNextClicked = $("#btnExamMasterExamDetailsNext").data("isNextClicked");
+			if (isNextClicked == "1") {
+				$("a[href='#divExamMasterCategoryTab']").tab("show");
+				return;
+			}
+
 			if (editMode == "1") {
 				editExamMasterExamDetails(function(obj) {
 					getCategoryForExam(function() {
@@ -28,6 +34,7 @@ function loadExamMasterPage(isShow) {
 					});
 					var questionPaperId = obj.data.questionPaperId;
 					$("a[href='#divExamMasterCategoryTab']").tab("show");
+					$("#btnExamMasterExamDetailsNext").data("isNextClicked", "1");
 				});
 			} else {
 				saveExamMasterExamDetails(function(obj) {
@@ -37,8 +44,40 @@ function loadExamMasterPage(isShow) {
 					var questionPaperId = obj.data.questionPaperId;
 					$("#btnExamMasterCategoryDetailsNext").attr("questionPaperId", questionPaperId);
 					$("a[href='#divExamMasterCategoryTab']").tab("show");
+					$("#btnExamMasterExamDetailsNext").data("isNextClicked", "1");
 				});
 			}
+		});
+		$("#btnExamMasterExamDetailsNext").click(function() {
+			var editMode = $(this).attr("editMode");
+			var object = $(this).data("obj");
+			var isNextClicked = $(this).data("isNextClicked");
+			if (isNextClicked == "1") {
+				$("a[href='#divExamMasterCategoryTab']").tab("show");
+				return;
+			}
+
+			if (editMode == "1") {
+				editExamMasterExamDetails(function(obj) {
+					getCategoryForExam(function() {
+						populateExamCategoriesForEdit(object);
+					});
+					var questionPaperId = obj.data.questionPaperId;
+					$("a[href='#divExamMasterCategoryTab']").tab("show");
+					$("#btnExamMasterExamDetailsNext").data("isNextClicked", "1");
+				});
+			} else {
+				saveExamMasterExamDetails(function(obj) {
+					getCategoryForExam(function() {
+
+					});
+					var questionPaperId = obj.data.questionPaperId;
+					$("#btnExamMasterCategoryDetailsNext").attr("questionPaperId", questionPaperId);
+					$("a[href='#divExamMasterCategoryTab']").tab("show");
+					$("#btnExamMasterExamDetailsNext").data("isNextClicked", "1");
+				});
+			}
+
 		});
 
 		$("#btnExamMasterCategoryDetailsBack").click(function() {
@@ -48,6 +87,12 @@ function loadExamMasterPage(isShow) {
 			$("a[href='#divExamMasterCategoryTab']").tab("show");
 		});
 		$("#btnExamMasterCategoryDetailsNext").click(function() {
+			var isNextClicked = $(this).data("isNextClicked");
+			// if (isNextClicked == "1") {
+			// 	$("a[href='#divExamMasterSubCategoryTab']").tab("show");
+			// 	return;
+			// }
+			$(this).data("isNextClicked", "1");
 			var editMode = $(this).attr("editMode");
 			if (editMode == 1) {
 				var questionPaperId = $("#btnExamMasterCategoryDetailsNext").attr("questionPaperId");
@@ -149,6 +194,9 @@ function validateAndReturnExamMasteExamDetails() {
 	if (examDurationHours == "") {
 		examDurationHours = 0;
 	}
+	if (examDurationMinutes == "") {
+		examDurationMinutes = 0;
+	}
 	examDurationHours = parseInt(examDurationHours);
 	examDurationMinutes = parseInt(examDurationMinutes);
 	if (examDurationHours > 24) {
@@ -159,6 +207,8 @@ function validateAndReturnExamMasteExamDetails() {
 		alert("Please enter the valid minutes");
 		return;
 	}
+	console.info(examDurationHours);
+	console.info(examDurationMinutes);
 	examDurationHours = examDurationHours * 60;
 	examDurationHours = examDurationHours + examDurationMinutes;
 	obj.duration = examDurationHours;
@@ -174,6 +224,7 @@ function validateAndReturnExamMasteExamDetails() {
 		return;
 	}
 	obj.noOfOptions = noOfOptions;
+	obj = trimValuesInObject(obj);
 	return obj;
 }
 
@@ -290,6 +341,8 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 	var list = [];
 	var totalDurationOfCategories = 0;
 	var examMasterType = $("#sltExamMasterType").val();
+	var totalQuestions = $("#txtExamMasterTotalNoOfQuestions").val();
+	var totalCategroyQuestions = 0;
 	$("#tblCategoryForExam tbody").find("input:checkbox:checked").each(function() {
 		var obj = {};
 		var categoryId = $(this).val();
@@ -302,6 +355,7 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 			shouldReturn = true;
 			return false;
 		}
+		totalCategroyQuestions = totalCategroyQuestions + parseInt(noOfQuestions);
 		var noOfSubCategory = $(tr).find("input:text.noOfSubcategory").val();
 		if (noOfSubCategory == "") {
 			alert("Please enter no. of sub categories");
@@ -343,6 +397,7 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 		obj.noOfSubCategory = noOfSubCategory;
 		obj.correctAnswerMark = correctAnswerMark;
 		obj.negativeMark = negativeMark;
+		obj = trimValuesInObject(obj);
 		list.push(obj);
 
 	});
@@ -369,6 +424,10 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 			alert("Exam duration and total of category duration doesn't match");
 			shouldReturn = true;
 		}
+	}
+	if (parseInt(totalQuestions) != totalCategroyQuestions) {
+		alert("Total no. of questions and total category questions doesn't match");
+		shouldReturn = true;
 	}
 	if (shouldReturn) {
 		return;
@@ -447,7 +506,7 @@ function appendLiForExamSettings(div) {
 	});
 
 	var liForManageSolution = createAndReturnLiForSettingsGear("Manage Solution");
-	$(ul).append(liForManageSolution);
+	//$(ul).append(liForManageSolution);
 	$(liForManageSolution).click(function() {
 		var obj = $(this).closest("tr").data("obj");
 	});
@@ -534,14 +593,20 @@ function createSubCategoryDetailsForEachCategory(list) {
 		return;
 	}
 	for (var i = 0; i < list.length; ++i) {
+
 		var divPanel = createAndReturnPanelDiv(list[i].category.name);
 		var panelBody = $(divPanel).find("div.panel-body")[0];
+		$(panelBody).addClass("category")
 		var noOfSubCategories = list[i].noOfSubCategory;
+		var divMainRow = $("<div>").addClass("row");
 		for (var j = 0; j < noOfSubCategories; ++j) {
+			var col = $("<div>").addClass("col-md-6 col-sm-6");
+			$(panelBody).append(col);
 			var panelForSubCategory = createAndReturnPanelDiv();
 			$(panelForSubCategory).attr("questionPaperCategoryId", list[i].questionPaperCategoryId);
+			$(panelForSubCategory).attr("noOfQuestions", list[i].noOfQuestions);
 			$(panelForSubCategory).find("div.panel-heading").remove();
-			$(panelBody).append(panelForSubCategory);
+			$(col).append(panelForSubCategory);
 			var label = $("<label>").html("Sub category " + parseInt(j + 1));
 			$(panelForSubCategory).find("div.panel-body").append(label);
 			createAndReturnSubCategoryDetailsDiv($(panelForSubCategory).find("div.panel-body"), parseInt(j + 1));
@@ -554,12 +619,16 @@ function createSubCategoryDetailsForEachCategory(list) {
 function validateAndReturnSubcategoryDetails() {
 	var list = [];
 	var shouldReturn = false;
+	var totalSubCategroyQuestions = 0;
+	var previousQuestionPaperCategoryId = 0;
 	$("#divSubCategoryDetailsContainer").find("*[questionPaperCategoryId]").each(function() {
 		var obj = {};
 		var description = $(this).find("input:text.description").val();
 		var noOfQuestions = $(this).find("input:text.noOfQuestions").val();
 		var name = $(this).find("input:text.subcategoryName").val();
 		var questionPaperCategoryId = $(this).attr("questionPaperCategoryId");
+		previousQuestionPaperCategoryId = questionPaperCategoryId
+		var totalCategoryQuestions = $(this).attr("noOfQuestions");
 		obj.description = description;
 		obj.noOfQuestions = noOfQuestions;
 		obj.name = name;
@@ -569,7 +638,25 @@ function validateAndReturnSubcategoryDetails() {
 			shouldReturn = true;
 			return false;
 		}
+		obj = trimValuesInObject(obj);
 		list.push(obj);
+	});
+	if (shouldReturn) {
+		return;
+	}
+	$("#divSubCategoryDetailsContainer").find(".category").each(function() {
+		var totalCategoryQuestions = 0;
+		var totalSubCategoryQuestions = 0
+		$(this).find("*[questionPaperCategoryId]").each(function() {
+			totalCategoryQuestions = $(this).attr("noOfQuestions");
+			var noOfQuestions = $(this).find("input:text.noOfQuestions").val();
+			totalSubCategoryQuestions = totalSubCategoryQuestions + parseInt(noOfQuestions);
+		});
+		if (parseInt(totalCategoryQuestions) != totalSubCategoryQuestions) {
+			alert("Total no. of category questons and total no. of Subcategory questions doesn't match");
+			shouldReturn = true;
+			return false;
+		}
 	});
 	if (shouldReturn) {
 		return;
@@ -602,12 +689,13 @@ function deleteExamMasterExam(questionPaperId) {
 		url: protocol + "//" + host + "/question-paper",
 		type: "DELETE",
 		cache: false,
-		data: JSON.stringify(obj),
 		contentType: "application/json; charset=utf-8",
 		success: function(returnMap) {
-			if (callBack != undefined) {
-				callBack(returnMap.data);
-			}
+			getExamMasterExams();
+			// if (callBack != undefined) {
+			// 	callBack(returnMap.data);
+			//
+			// }
 		}
 	});
 }
