@@ -32,12 +32,10 @@ function saveStudentDetails() {
 	}
 	var formdata = new FormData();
 	var fileName = $("#fileStudentProfilePic").val();
-	if (fileName == "") {
-		alert("Please select a profile pic");
-		return;
+	if (fileName != "") {
+		var file = $("#fileStudentProfilePic")[0].files[0];
+		formdata.append("file", file);
 	}
-	var file = $("#fileStudentProfilePic")[0].files[0];
-	formdata.append("file", file);
 	formdata.append("studentJson", JSON.stringify(obj));
 
 	$.ajax({
@@ -81,12 +79,17 @@ function editStudentDetails() {
 }
 
 function validateAndReturnStudentInfo() {
+
 	var obj = {};
-	var centerCode = $("#sltManageStudentsCenterName").val();
-	if (centerCode == "Select") {
-		alert("Please select the center code");
+	var place = $("#txtManageStudentsPlace").val();
+	if (place == "") {
+		alert("Please enter a place");
 		return;
 	}
+	obj.place = place;
+	var centerCode = $("#sltManageStudentsCenterName").val();
+	if (centerCode == "Select") {}
+	centerCode = 0;
 	obj.center = {};
 	obj.centerId = centerCode;
 	obj.center.centerCode = centerCode
@@ -122,8 +125,8 @@ function validateAndReturnStudentInfo() {
 	obj.qualification = qualification;
 	var address = $("#txtAddress").val();
 	if (address == "") {
-		alert("Please enter address");
-		return;
+		// alert("Please enter address");
+		// return;
 	}
 	obj.address = address;
 	var emailId = $("#txtEmailId").val();
@@ -141,8 +144,8 @@ function validateAndReturnStudentInfo() {
 	obj.stateId = stateId;
 	var city = $("#txtManageStudentsCity").val();
 	if (city == "") {
-		alert("Please enter a city");
-		return;
+		// alert("Please enter a city");
+		// return;
 	}
 	obj.city = city;
 	var address = $("#sltManageStudentsAddress").val();
@@ -150,8 +153,8 @@ function validateAndReturnStudentInfo() {
 	obj.address = address;
 	var pinCode = $("#txtManageStudentsPinCode").val();
 	if (pinCode == "") {
-		alert("Please enter a pin code");
-		return;
+		// alert("Please enter a pin code");
+		// return;
 	}
 	obj.pinCode = pinCode;
 
