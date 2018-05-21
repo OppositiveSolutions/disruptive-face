@@ -28,6 +28,7 @@ function populateExamListLeftMenu(list) {
         return;
     }
     var ul = $("#resultLeftmenu").find("ul");
+    $(ul).empty();
     for (var i = 0; i < list.length; i++) {
         var li = $("<li>").html(list[i].examName);
         $(li).data("examData", list[i]);

@@ -365,3 +365,30 @@ padding:10px;
 .deleteFileBtnDiv{
 	text-align: center;
 }
+
+
+
+.profile-details {
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin: 5px 10px 0 5px;
+    position: relative;
+}
+.forProPic{
+	display: inline-block
+}
+.forProPic img{
+	width:100px;
+}
+.holderName{
+	display: inline-block;
+}
+.dropDownBtn{
+	background: white;
+    border: none;
+    font-weight: bold;
+}
+.profile-details .dropdown-menu{
+	margin-top: 25px;
+	cursor: pointer;
+}

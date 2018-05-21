@@ -186,9 +186,13 @@ function loadLoginPage() {
 			authenticate(username, password);
 		});
 
-		$("#lblForgotPassword").unbind('mousedown');
-		$("#lblForgotPassword").on("mousedown", function () {
+		$("#lblForgotPassword").unbind('click');
+		$("#lblForgotPassword").click(function () {
 			loadForgotPasswordPage();
+		});
+		$("#btnForgotConfirm").unbind('click');
+		$("#btnForgotConfirm").click(function () {
+			sendForgotPasswordRequest();
 		});
 		$("#txtEmailId").unbind("keydown");
 		$("#txtEmailId").keydown(function (event) {
@@ -212,6 +216,25 @@ function loadLoginPage() {
 			}
 		});
 		hideLoadingMessage();
+	});
+}
+function loadForgotPasswordPage() {
+	$("#divForgotPassword").modal("show");
+}
+
+function sendForgotPasswordRequest() {
+	var emailId = $("#txtForgotPasswordMail").val();
+	if (!emailId || (emailId && (emailId.trim() == "" || !isEmail(emailId)))) {
+		alert("Invalid Email ID");
+		return;
+	}
+	var url = protocol + "//" + host + "/profile/password/reset?emailId=" + emailId;
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		success: function (statusMap) {
+		}
 	});
 }
 
@@ -256,6 +279,12 @@ function loadContainerPage(statusMap) {
 		$("#btnLogOut").click(function () {
 			logout();
 		});
+		$("#changePasswordLi").click(function () {
+			showChangePassword();
+		});
+		$("#btnSaveChangePassword").click(function () {
+
+		});
 		console.info(currentAccountDetails);
 		$("#lblAccountHolderName").html(currentAccountDetails.firstName + " " + currentAccountDetails.lastName);
 		$("#emailid").html(currentAccountDetails.emailid);
@@ -263,6 +292,10 @@ function loadContainerPage(statusMap) {
 
 }
 
+function showChangePassword() {
+	$("#divChangePassword").modal("show");
+
+}
 function initializePagesBasedOnRole() {
 	console.info(currentAccountDetails);
 	switch (currentAccountDetails.role.toString()) {
