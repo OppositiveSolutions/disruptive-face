@@ -93,7 +93,7 @@ function validateAndReturnStudentInfo() {
 		alert("Please enter mobile number");
 		return;
 	}
-	obj.phoneNo = phoneNo;
+	obj.mobileNo = phoneNo;
 	if (!isMobileNo(phoneNo)) {
 		alert("Please enter a valid mobile number");
 		return;
