@@ -157,9 +157,9 @@ function validateAndReturnStudentInfo() {
 	var centerCode = $("#sltManageStudentsCenterName").val();
 	if (centerCode == "Select") {}
 	centerCode = 0;
-	obj.center = {};
-	obj.centerId = centerCode;
-	obj.center.centerCode = centerCode
+//	obj.center = {};
+//	obj.centerId = centerCode;
+//	obj.center.centerCode = centerCode
 
 	var gender = $("input:radio[name='gendername']:checked").val();
 	if (gender == "" || gender == undefined || gender == null) {
@@ -182,7 +182,11 @@ function validateAndReturnStudentInfo() {
 		alert("Please enter select the state");
 		return;
 	}
-	obj.stateId = stateId;
+//	obj.stateId = stateId;
+	obj.state = {};
+	obj.state.stateId = stateId;
+	obj.state.name = stateId;
+	
 	var city = $("#txtManageStudentsCity").val();
 	if (city == "") {
 		// alert("Please enter a city");

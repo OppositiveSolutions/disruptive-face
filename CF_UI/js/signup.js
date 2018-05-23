@@ -102,9 +102,9 @@ function validateAndReturnStudentInfo() {
 	var centerCode = $("#sltManageStudentsCenterName").val();
 	if (centerCode == "Select") {}
 	centerCode = 0;
-	obj.center = {};
-	obj.centerId = centerCode;
-	obj.center.centerCode = centerCode
+//	obj.center = {};
+//	obj.centerId = centerCode;
+//	obj.center.centerCode = centerCode
 	var firstName = $("#txtFirstName").val();
 	if (firstName == "") {
 		alert("Please enter first name");
@@ -152,8 +152,11 @@ function validateAndReturnStudentInfo() {
 		alert("Please enter select the state");
 		return;
 	}
-	obj.stateId = stateId;
-
+//	obj.stateId = stateId;
+	obj.state = {};
+	obj.state.stateId = stateId;
+	obj.state.name = stateId;
+	
 	var address = $("#txtAddress").val();
 	if (address == "") {
 		// alert("Please enter address");
