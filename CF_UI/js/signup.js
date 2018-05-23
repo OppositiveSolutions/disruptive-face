@@ -23,6 +23,7 @@ $(document).ready(function() {
 	attachDatePickers($("#signupPage")[0]);
 	populateStateDropdown($("#sltManageStudentsStates"));
 	populateManageStudentsCenter($("#sltManageStudentsCenterName"));
+	addIconToMandatoryItems($("#signupPage")[0])
 })
 
 function saveStudentDetails() {

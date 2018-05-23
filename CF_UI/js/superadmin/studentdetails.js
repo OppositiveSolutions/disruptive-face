@@ -20,6 +20,7 @@ function loadStudentDetailPage(isShow) {
 		populateStateDropdown($("#sltManageStudentsStates"));
 		populateManageStudentsCenter($("#sltManageStudentsCenterName"));
 		attachDatePickers($("#divAddNewStudentDetailsPage")[0]);
+		addIconToMandatoryItems($("#divAddNewStudentDetailsPage")[0])
 		$("#btnStudentDetailsSave").click(function() {
 			var type = $(this).attr("type");
 			if (type == "edit") {
