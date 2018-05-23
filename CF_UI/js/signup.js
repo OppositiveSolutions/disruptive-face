@@ -160,8 +160,6 @@ function validateAndReturnStudentInfo() {
 	}
 	obj.address = address;
 
-
-
 	var address = $("#sltManageStudentsAddress").val();
 
 	obj.address = address;

@@ -235,7 +235,6 @@ function validateAndReturnStudentInfo() {
 }
 
 
-
 function getStudents() {
 	$.ajax({
 		url: protocol + "//" + host + "/student/pageSize/100/pageNo/1",
