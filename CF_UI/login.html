@@ -1,56 +1,97 @@
 <div id="loginPage" class="copyright-margin">
-<div class="logoContainer">
-			<div class="login-logo">
-				<img src="img/cf-logo.png" />
-			</div>
-			<ul class="navbar-right">
-			<li><a href="#">Get the app</a></li>
-			<li><a href="#">Help</a></li>
-			</ul>
+	<div class="logoContainer">
+		<div class="login-logo">
+			<img src="img/cf-logo.png" />
 		</div>
+		<ul class="navbar-right">
+			<li>
+				<a href="#">Get the app</a>
+			</li>
+			<li>
+				<a href="#">Help</a>
+			</li>
+		</ul>
+	</div>
 	<div class="container-fluid">
 		<div class="row">
-		<div class="col-sm-1"></div>
-		<div class="col-md-6">
-		<div class="text-center login-page-message">
-   <h2>Welcome to Career Focus</h2>
-    <p>Successful and unsuccessful people do not vary greatly in their abilities.<br/>They vary in their desires to reach their potential.<br/></t></t> – John Maxwell.</p>
-  </div>
-		</div>
-		<div class="col-md-4">
-		<div class="panel panel-default postlogin-box clear">
-			<div class="panel-body text-left">
-			<div class="text-center login-title"><img src="img/cf-logo.png" /></div>
-			<p class="text-center login-title">Sign in</p>
-				<form role="form">
-					<p></p>
-					<div class="form-group">
-						<input type="email" id="txtEmailId" class="form-control" placeholder="Enter username"  autocomplete="false"/>
-					</div>
-					<div class="form-group">
-						<input type="password" id="txtPassword" class="form-control" placeholder="Enter password" autocomplete="false"/>
-					</div>
-					<div id="securityTextImage" class="marginbtmfifteen"></div>
-					<button id="btnLogin" type="button" class="btn btn-default btn-block">
-						Login
-					</button>
-					<div class="login-links">
-						<span id="loginStatus"></span>
-						<!-- <label id="lblSignUp" class="pull-left">Register now</label> -->
-						<label id="lblForgotPassword" class="pull-right">Trouble signing in?</label>
-					</div>
-				</form>
-				<div class="link-signup">Don't have an account? <a href="#">Sign up</a></div>
+			<div class="col-sm-1"></div>
+			<div class="col-md-6">
+				<div class="text-center login-page-message">
+					<h2>Welcome to Career Focus</h2>
+					<p>Successful and unsuccessful people do not vary greatly in their abilities.
+						<br/>They vary in their desires to reach their potential.
+						<br/>
+						</t>
+						</t> – John Maxwell.</p>
+				</div>
 			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default postlogin-box clear">
+					<div class="panel-body text-left">
+						<div class="text-center login-title">
+							<img src="img/cf-logo.png" />
+						</div>
+						<p class="text-center login-title">Sign in</p>
+						<form role="form">
+							<p></p>
+							<div class="form-group">
+								<input type="email" id="txtEmailId" class="form-control" placeholder="Enter username" autocomplete="false" />
+							</div>
+							<div class="form-group">
+								<input type="password" id="txtPassword" class="form-control" placeholder="Enter password" autocomplete="false" />
+							</div>
+							<div id="securityTextImage" class="marginbtmfifteen"></div>
+							<button id="btnLogin" type="button" class="btn btn-default btn-block">
+								Login
+							</button>
+							<div class="login-links">
+								<span id="loginStatus"></span>
+								<!-- <label id="lblSignUp" class="pull-left">Register now</label> -->
+								<label id="lblForgotPassword" class="pull-right">Trouble signing in?</label>
+							</div>
+						</form>
+						<div class="link-signup">Don't have an account?
+							<a href="signup.html">Sign up</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-1"></div>
 		</div>
-		</div>
-		<div class="col-sm-1"></div>
-		</div>
-		
+
 	</div>
 </div>
 <div class="footer navbar-fixed-bottom text-center">
-			<p class="small margin-btm-zero">
-<a href="#" target="_blank">Terms of Service</a> &nbsp; | &nbsp; <a href="#" target="_blank">Privacy Agreement</a> 
-			</p>
+	<p class="small margin-btm-zero">
+		<a href="#" target="_blank">Terms of Service</a> &nbsp; | &nbsp;
+		<a href="#" target="_blank">Privacy Agreement</a>
+	</p>
+</div>
+<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divForgotPassword">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title">Forgot Password</h4>
+			</div>
+			<div class="modal-body">
+				<p>
+					To reset your password, enter the email address you use to sign in.
+				</p>
+				<div class="form-group">
+					<input type="email" id="txtForgotPasswordMail" class="form-control" placeholder="Enter email" autocomplete="false" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="btnForgotConfirm" type="button" class=" btn btn-default pull-right">
+					Continue
+				</button>
+				<button data-dismiss="modal"type="button" class="marginrgtfive  btn btn-default pull-right">
+					Cancel
+				</button>
+			</div>
 		</div>
+	</div>
+</div>

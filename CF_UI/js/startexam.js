@@ -1,5 +1,5 @@
 var protocol = location.protocol;
-var host = "localhost:8080/cf-restful";
+var host = location.host+"/cf-restful";
 var timerForCategory;
 $(document).ready(function () {
     createExamForTest();

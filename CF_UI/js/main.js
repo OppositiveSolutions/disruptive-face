@@ -1,6 +1,6 @@
 var DEFAULT_HASH = 'home';
 var doValidateResponse = true;
-$(document).ready(function() {
+$(document).ready(function () {
 	initialize();
 	var locationString = window.location.toString();
 	if (locationString.indexOf("signup") == -1) {
@@ -16,13 +16,13 @@ function checkSession() {
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function(statusMap) {
+		success: function (statusMap) {
 			currentAccountDetails = statusMap.data;
 			if (statusMap.status == STATUS_OK) {
 				loadContainerPage(statusMap);
 			}
 		},
-		error: function() {
+		error: function () {
 
 			var locationString = window.location.toString();
 			if (locationString.indexOf("signup") == -1) {
@@ -39,20 +39,20 @@ if (!hasher.getHash()) {
 	console.info(hasher.getHash());
 	// hasher.setHash(DEFAULT_HASH);
 }
-var loginRoute = crossroads.addRoute('login', function(query) {
+var loginRoute = crossroads.addRoute('login', function (query) {
 	var session = false;
 	var url = protocol + "//" + host + "/login";
 	$.ajax({
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function(statusMap) {
+		success: function (statusMap) {
 			currentAccountDetails = statusMap.data;
 			if (statusMap.status == STATUS_OK) {
 				setHashInUrl('home');
 			}
 		},
-		error: function() {
+		error: function () {
 			loadLoginPage();
 			hideLoadingMessage();
 		}
@@ -70,7 +70,7 @@ hasher.init();
 // start listening for hash changes
 
 function loadFilesAndExecutecallBack(files, callBack) {
-	head.load(files, function() {
+	head.load(files, function () {
 		if (callBack != undefined) {
 			callBack();
 		}
@@ -79,12 +79,12 @@ function loadFilesAndExecutecallBack(files, callBack) {
 
 function initialize() {
 	if (typeof String.prototype.trim !== 'function') {
-		String.prototype.trim = function() {
+		String.prototype.trim = function () {
 			return this.replace(/^\s+|\s+$/g, '');
 		};
 	}
 	if (!Array.prototype.indexOf) {
-		Array.prototype.indexOf = function(elt /* , from */ ) {
+		Array.prototype.indexOf = function (elt /* , from */) {
 			var len = this.length >>> 0;
 			var from = Number(arguments[1]) || 0;
 			from = (from < 0) ? Math.ceil(from) : Math.floor(from);
@@ -98,7 +98,7 @@ function initialize() {
 		};
 	}
 	$(document).ajaxSend(
-		function(e, xhr, settings) {
+		function (e, xhr, settings) {
 			if (settings.hideLoading != undefined && settings.hideLoading) {
 				return;
 			}
@@ -117,15 +117,15 @@ function initialize() {
 				doValidateResponse = false;
 			}
 			showLoadingMessage();
-		}).ajaxStop(function() {
-		isAjaxProgress = false;
-		hideLoadingMessage()
-	});
+		}).ajaxStop(function () {
+			isAjaxProgress = false;
+			hideLoadingMessage()
+		});
 	$.ajaxSetup({
-		beforeSend: function(jqXHR) {
+		beforeSend: function (jqXHR) {
 			// $.xhrPool.push(jqXHR);
 		},
-		complete: function(result, status, xhr) {
+		complete: function (result, status, xhr) {
 			// var index = $.xhrPool.indexOf(result);
 			// if (index > -1) {
 			// $.xhrPool.splice(index, 1);
@@ -137,12 +137,12 @@ function initialize() {
 
 			try {
 				var responseText = result.responseText.trim();
-				if (responseText == '#NO_SESSION#') {}
+				if (responseText == '#NO_SESSION#') { }
 			} catch (err) {
 
 			}
 		},
-		error: function(jqXHR, textStatus, errorThrown) {
+		error: function (jqXHR, textStatus, errorThrown) {
 			if (jqXHR.status == "0") {
 				// alert("Seems like your internet connection is broken. Please
 				// try again later. ");
@@ -150,8 +150,8 @@ function initialize() {
 		}
 	});
 	jQuery.expr[":"].containsIgnoreCase = jQuery.expr
-		.createPseudo(function(arg) {
-			return function(elem) {
+		.createPseudo(function (arg) {
+			return function (elem) {
 				return jQuery(elem).text().toUpperCase().indexOf(
 					arg.toUpperCase()) >= 0;
 			};
@@ -163,18 +163,18 @@ function initialize() {
 function loadLoginPage() {
 	$.get("login.html", {
 		"_": $.now()
-	}, function(data) {
+	}, function (data) {
 		$("#loginPage").remove();
 		$("#pageContainer").empty();
 		$("#container").remove();
 		$("body").append(data);
 		$("#lblSignUp").click(
-			function() {
+			function () {
 				window.location = protocol + "//" + window.location.host + FOLDER_NAME +
 					"/signup.html";
 			});
 		$("#btnLogin").unbind('click');
-		$("#btnLogin").click(function() {
+		$("#btnLogin").click(function () {
 			var username = $("#txtEmailId").val().trim();
 			var password = $("#txtPassword").val();
 			if (username == "") {
@@ -188,16 +188,20 @@ function loadLoginPage() {
 			authenticate(username, password);
 		});
 
-		$("#lblForgotPassword").unbind('mousedown');
-		$("#lblForgotPassword").on("mousedown", function() {
+		$("#lblForgotPassword").unbind('click');
+		$("#lblForgotPassword").click(function () {
 			loadForgotPasswordPage();
 		});
+		$("#btnForgotConfirm").unbind('click');
+		$("#btnForgotConfirm").click(function () {
+			sendForgotPasswordRequest();
+		});
 		$("#txtEmailId").unbind("keydown");
-		$("#txtEmailId").keydown(function(event) {
+		$("#txtEmailId").keydown(function (event) {
 			$("#loginStatus").html("");
 		});
 		$("#txtPassword").unbind("keydown");
-		$("#txtPassword").keydown(function(event) {
+		$("#txtPassword").keydown(function (event) {
 			$("#loginStatus").html("");
 			if (event.keyCode == 13) {
 				var username = $("#txtEmailId").val().trim();
@@ -216,6 +220,27 @@ function loadLoginPage() {
 		hideLoadingMessage();
 	});
 }
+function loadForgotPasswordPage() {
+	$("#divForgotPassword").modal("show");
+}
+
+function sendForgotPasswordRequest() {
+	var emailId = $("#txtForgotPasswordMail").val();
+	if (!emailId || (emailId && (emailId.trim() == "" || !isEmail(emailId)))) {
+		alert("Invalid Email ID");
+		return;
+	}
+	var url = protocol + "//" + host + "/profile/password/reset?emailId=" + emailId;
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		success: function (statusMap) {
+			alert("An email has been sent to your registered email id please follow the link");
+			$("#divForgotPassword").modal("hide");
+		}
+	});
+}
 
 function authenticate(username, password) {
 	var url = protocol + "//" + host + "/login";
@@ -228,7 +253,7 @@ function authenticate(username, password) {
 			username: username,
 			password: password
 		},
-		success: function(statusMap) {
+		success: function (statusMap) {
 			if (statusMap.status == 200) {
 				$("#loginStatus").html("");
 				currentAccountDetails = statusMap.data;
@@ -246,7 +271,7 @@ function authenticate(username, password) {
 function loadContainerPage(statusMap) {
 	$.get("container.html", {
 		"_": $.now()
-	}, function(data) {
+	}, function (data) {
 		$("#loginPage").remove();
 		$("#container").remove();
 		$("body").append(data);
@@ -255,8 +280,14 @@ function loadContainerPage(statusMap) {
 		console.info(statusMap.data);
 		currentAccountDetails.role = statusMap.data.role;
 		initializePagesBasedOnRole();
-		$("#btnLogOut").click(function() {
+		$("#btnLogOut").click(function () {
 			logout();
+		});
+		$("#changePasswordLi").click(function () {
+			showChangePassword();
+		});
+		$("#btnSaveChangePassword").click(function () {
+
 		});
 		console.info(currentAccountDetails);
 		$("#lblAccountHolderName").html(currentAccountDetails.firstName + " " + currentAccountDetails.lastName);
@@ -265,17 +296,21 @@ function loadContainerPage(statusMap) {
 
 }
 
+function showChangePassword() {
+	$("#divChangePassword").modal("show");
+
+}
 function initializePagesBasedOnRole() {
 	console.info(currentAccountDetails);
 	switch (currentAccountDetails.role.toString()) {
 		case STUDENT:
-			loadFilesAndExecutecallBack(['js/student/home.js' + postUrl], function() {
+			loadFilesAndExecutecallBack(['js/student/home.js' + postUrl], function () {
 				initializeStudentRoutes();
 				loadStudentView();
 			});
 			break;
 		case ADMIN:
-			loadFilesAndExecutecallBack(['js/superadmin/home.js' + postUrl], function() {
+			loadFilesAndExecutecallBack(['js/superadmin/home.js' + postUrl], function () {
 				initializeSuperAdminRoutes();
 				loadSuperAdminView();
 			});
@@ -295,7 +330,7 @@ function showPage(toPage) {
 	$(toPage).show();
 }
 
-jQuery.expr[':'].contains = function(a, i, m) {
+jQuery.expr[':'].contains = function (a, i, m) {
 	return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };
 
@@ -319,10 +354,10 @@ function logout() {
 		url: url,
 		type: "GET",
 		cache: false,
-		success: function() {
+		success: function () {
 			setHashInUrl('login');
 		},
-		error: function() {
+		error: function () {
 			setHashInUrl('login');
 		}
 	});
@@ -345,18 +380,18 @@ function initializeDataTable(tableId, isRenderMobileView, displayStart,
 
 	try {
 		jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-			"date-uk-pre": function(a) {
+			"date-uk-pre": function (a) {
 				if (a == null || a == "") {
 					return 0;
 				}
 				return parseMMDDYYYYHHMMToJSDateObject(a).getTime();
 			},
 
-			"date-uk-asc": function(a, b) {
+			"date-uk-asc": function (a, b) {
 				return ((a < b) ? -1 : ((a > b) ? 1 : 0));
 			},
 
-			"date-uk-desc": function(a, b) {
+			"date-uk-desc": function (a, b) {
 				return ((a < b) ? 1 : ((a > b) ? -1 : 0));
 			}
 		});
@@ -365,13 +400,13 @@ function initializeDataTable(tableId, isRenderMobileView, displayStart,
 
 	}
 	var dontSort = [];
-	$(table).find('thead th').each(function(index) {
+	$(table).find('thead th').each(function (index) {
 		var thText = $(this).text();
-		$(table).find('tbody tr').each(function(indexOfTd) {
+		$(table).find('tbody tr').each(function (indexOfTd) {
 			$(this).find('td:eq(' + index + ')').attr("data-title", thText);
 		});
 	});
-	$(table).find('thead th').each(function(index) {
+	$(table).find('thead th').each(function (index) {
 		if ($(this).hasClass('dont-sort')) {
 			dontSort.push({
 				"bSortable": false,
@@ -402,7 +437,7 @@ function initializeDataTable(tableId, isRenderMobileView, displayStart,
 			"destroy": true,
 			"bDestroy": true,
 			"iDisplayStart": iDisplayStart,
-			"fnDrawCallback": function(oSettings) {
+			"fnDrawCallback": function (oSettings) {
 				//------------------------for removing scroll if no data available
 				if (oSettings._iDisplayEnd == 0) {
 					$(table).closest("div.table-responsive").addClass("table-nodata");
@@ -414,7 +449,7 @@ function initializeDataTable(tableId, isRenderMobileView, displayStart,
 				}
 			},
 			"aoColumns": dontSort,
-			"fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+			"fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 				if ($(table).hasClass("slNo")) {
 					var index = $(table).find("th.slNo").index();
 					if (index == "-1") {

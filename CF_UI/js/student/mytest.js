@@ -26,8 +26,8 @@ function populateMytestTable(list) {
         $(tbody).empty();
         for (var i = 0; i < list.length; i++) {
             var tr = $("<tr>");
-            $(tr).attr("isDemo", list[i].is_demo);
-            $(tr).attr("testId", list[i].test_id);
+            $(tr).attr("isDemo", list[i].isDemo);
+            $(tr).attr("testId", list[i].testId);
             $(tr).data("map", list[i]);
             var tdForIndex = $("<td>").html(i + 1);
             $(tr).append(tdForIndex);
