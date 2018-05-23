@@ -236,6 +236,8 @@ function sendForgotPasswordRequest() {
 		type: "GET",
 		cache: false,
 		success: function (statusMap) {
+			alert("An email has been sent to your registered email id please follow the link");
+			$("#divForgotPassword").modal("hide");
 		}
 	});
 }
