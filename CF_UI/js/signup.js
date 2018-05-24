@@ -23,6 +23,7 @@ $(document).ready(function() {
 	attachDatePickers($("#signupPage")[0]);
 	populateStateDropdown($("#sltManageStudentsStates"));
 	populateManageStudentsCenter($("#sltManageStudentsCenterName"));
+	addIconToMandatoryItems($("#signupPage")[0])
 })
 
 function saveStudentDetails() {
@@ -81,18 +82,29 @@ function editStudentDetails() {
 function validateAndReturnStudentInfo() {
 
 	var obj = {};
-	var place = $("#txtManageStudentsPlace").val();
-	if (place == "") {
-		alert("Please enter a place");
+	var emailId = $("#txtEmailId").val();
+	if (emailId == "") {
+		alert("Please enter emailId");
 		return;
 	}
-	obj.place = place;
+	obj.emailId = emailId;
+	var phoneNo = $("#txtPhone").val();
+	if (phoneNo == "") {
+		alert("Please enter mobile number");
+		return;
+	}
+	obj.mobileNo = phoneNo;
+	if (!isMobileNo(phoneNo)) {
+		alert("Please enter a valid mobile number");
+		return;
+	}
+
 	var centerCode = $("#sltManageStudentsCenterName").val();
 	if (centerCode == "Select") {}
 	centerCode = 0;
-	obj.center = {};
-	obj.centerId = centerCode;
-	obj.center.centerCode = centerCode
+//	obj.center = {};
+//	obj.centerId = centerCode;
+//	obj.center.centerCode = centerCode
 	var firstName = $("#txtFirstName").val();
 	if (firstName == "") {
 		alert("Please enter first name");
@@ -105,49 +117,53 @@ function validateAndReturnStudentInfo() {
 		return;
 	}
 	obj.lastName = lastName;
-	var gender = $("input:radio[name='gendername']:checked").val();
-	if (gender == "" || gender == undefined || gender == null) {
-		alert("Please enter gender");
-		return;
-	}
-	obj.gender = gender;
-	var dob = $("#txtDob").val();
-	if (dob == "") {
-		alert("Please enter DOB");
-		return;
-	}
-	obj.dob = dob;
 	var qualification = $("#txtQualification").val();
 	if (qualification == "") {
 		alert("Please enter qualification");
 		return;
 	}
 	obj.qualification = qualification;
-	var address = $("#txtAddress").val();
-	if (address == "") {
-		// alert("Please enter address");
-		// return;
-	}
-	obj.address = address;
-	var emailId = $("#txtEmailId").val();
-	if (emailId == "") {
-		alert("Please enter emailId");
+	var dob = $("#txtDob").val();
+	if (dob == "") {
+		alert("Please enter DOB");
 		return;
 	}
-	obj.emailId = emailId;
-
-	var stateId = $("#sltManageStudentsStates").val();
-	if (stateId == "Select") {
-		alert("Please enter select the state");
+	obj.dob = dob;
+	var place = $("#txtManageStudentsPlace").val();
+	if (place == "") {
+		alert("Please enter a place");
 		return;
 	}
-	obj.stateId = stateId;
+	obj.place = place;
+	var gender = $("input:radio[name='gendername']:checked").val();
+	if (gender == "" || gender == undefined || gender == null) {
+		alert("Please enter gender");
+		return;
+	}
+	obj.gender = gender;
 	var city = $("#txtManageStudentsCity").val();
 	if (city == "") {
 		// alert("Please enter a city");
 		// return;
 	}
 	obj.city = city;
+	var stateId = $("#sltManageStudentsStates").val();
+	if (stateId == "Select") {
+		alert("Please enter select the state");
+		return;
+	}
+//	obj.stateId = stateId;
+	obj.state = {};
+	obj.state.stateId = stateId;
+	obj.state.name = stateId;
+	
+	var address = $("#txtAddress").val();
+	if (address == "") {
+		// alert("Please enter address");
+		// return;
+	}
+	obj.address = address;
+
 	var address = $("#sltManageStudentsAddress").val();
 
 	obj.address = address;
@@ -184,16 +200,7 @@ function validateAndReturnStudentInfo() {
 	// 	return;
 	// }
 	// obj.emailId = emailId;
-	var phoneNo = $("#txtPhone").val();
-	if (phoneNo == "") {
-		alert("Please enter mobile number");
-		return;
-	}
-	obj.phoneNo = phoneNo;
-	if (!isMobileNo(phoneNo)) {
-		alert("Please enter a valid mobile number");
-		return;
-	}
+
 	// var centerId = $("#centerId").val();
 	// if (centerId == "") {
 	// 	alert("Please enter city");

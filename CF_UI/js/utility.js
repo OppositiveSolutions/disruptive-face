@@ -191,3 +191,27 @@ function isMobileNo(mobileNo) {
 	}
 	return true;
 }
+
+function addIconToMandatoryItems(div) {
+	$(div).find("input.mandatory,select.mandatory,div.mandatory,textarea.mandatory").each(function() {
+		var img = $("<img>", {
+			src: "img/mandatory.png"
+		});
+		if ($(this).parent().is("td")) {
+			var table = $(this).parents("table").get(0);
+			if ($(table).prev().is("label") && $(table).prev().has("img").length == 0 && $(table).prev("label").find("img").length == 0) {
+				$(table).prev("label").append(img);
+			} else {
+				if ($(table).parent().is("fieldset")) {
+					$(table).parent().children("legend").css({
+						background: "url(img/mandatory.png) no-repeat right",
+						paddingRight: "10px"
+					});
+				}
+			}
+		}
+		if ($(this).prev("label").find("img").length == 0) {
+			$(this).prev("label").append(img);
+		}
+	});
+}
