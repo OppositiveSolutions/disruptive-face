@@ -5987,3 +5987,6 @@ tr.leaderboardHead th {
     padding: 15px 5px;
 }
 }
+.dataTables_wrapper .dataTables_filter{
+	float: left !important;
+}

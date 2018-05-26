@@ -114,6 +114,10 @@ function loadExamMasterPage(isShow) {
 				getExamMasterExams();
 			});
 		});
+		$("#sltExamMasterCoachingType").change(function() {
+			var coachingType = $(this).val();
+			getExamMasterExams(coachingType);
+		})
 
 	});
 }
@@ -182,11 +186,17 @@ function validateAndReturnExamMasteExamDetails() {
 		alert("Please enter a course name");
 		return;
 	}
+	var testType = $("#sltExamMasterTestType").val();
 	obj.isDemo = false;
+	if (testType == 0) {
+		obj.isDemo = true;
+	}
 	obj.courseName = courseName;
 	obj.name = courseName;
 	var examDurationHours = $("#txtExamMasterExamDurationHours").val();
 	var examDurationMinutes = $("#txtExamMasterExamDurationMinutes").val();
+	var coachingType = $("#sltExamMasterAddNewCoachingType").val();
+	obj.coachingType = coachingType;
 	if (examDurationHours == "" && examDurationMinutes == "") {
 		alert("Please enter exam duration");
 		return;
@@ -436,9 +446,12 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 
 }
 
-function getExamMasterExams() {
+function getExamMasterExams(coachingType) {
+	if (coachingType == undefined) {
+		coachingType = 0;
+	}
 	$.ajax({
-		url: protocol + "//" + host + "/question-paper/all",
+		url: protocol + "//" + host + "/question-paper/all?coachingType=" + coachingType,
 		type: "GET",
 		cache: false,
 		success: function(obj) {
@@ -686,7 +699,7 @@ function saveExamMasterSubCategorytails(callBack) {
 
 function deleteExamMasterExam(questionPaperId) {
 	$.ajax({
-		url: protocol + "//" + host + "/question-paper",
+		url: protocol + "//" + host + "/question-paper/" + questionPaperId,
 		type: "DELETE",
 		cache: false,
 		contentType: "application/json; charset=utf-8",
@@ -718,6 +731,12 @@ function populateExamMasterExamForm(obj) {
 	$("#txtExamMasterExamDurationMinutes").val(minutes);
 	$("#txtExamMasterTotalNoOfQuestions").val(obj.noOfQuestions);
 	$("#txtExamMasterTotalNoOfOptions").val(obj.noOfOptions);
+	var testtype = "1"
+	if (obj.isDemo) {
+		testtype = "0";
+	}
+	$("#sltExamMasterTestType").val(testtype);
+	$("#sltExamMasterAddNewCoachingType").val(obj.coachingType);
 
 }
 
@@ -735,4 +754,36 @@ function populateExamCategoriesForEdit(obj) {
 		$(tr).attr("questionPaperCategoryId", categories[i].questionPaperCategoryId);
 	}
 
+}
+
+function getCoachingTypes() {
+	$.ajax({
+		url: protocol + "//" + host + "/bundle/coachingtypes",
+		type: "GET",
+		cache: false,
+		success: function(obj) {
+			populateCoachingTypes(obj.data);
+			populateCoachingTypesIPopup(obj.data);
+		}
+	});
+}
+
+function populateCoachingTypes(list) {
+	$("#sltExamMasterCoachingType").empty();
+	var option = $("<option>").val(0).html("All");
+	$("#sltExamMasterCoachingType").append(option);
+	for (var i = 0; i < list.length; ++i) {
+		var option = $("<option>").val(list[i].bundle_category_id).html(list[i].name);
+		$("#sltExamMasterCoachingType").append(option);
+	}
+}
+
+function populateCoachingTypesIPopup(list) {
+	$("#sltExamMasterAddNewCoachingType").empty();
+	var option = $("<option>").val(0).html("All");
+	//$("#sltExamMasterAddNewCoachingType").append(option);
+	for (var i = 0; i < list.length; ++i) {
+		var option = $("<option>").val(list[i].bundle_category_id).html(list[i].name);
+		$("#sltExamMasterAddNewCoachingType").append(option);
+	}
 }

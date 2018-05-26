@@ -8,6 +8,10 @@
 		</div>
 		<div class="panel-body">
 			<div class="table-responsive noSwipe assignManagementTable">
+				<div class="col-md-4 col-sm-4" style="float:right;top:35px;z-index:5;">
+					<label style="display:inline-block">Coaching Type: </label>
+				<select class="form-control input-sm" id="sltExamMasterCoachingType" style="display:inline-block;width:65%"></select>
+			</div>
 				<table id="tblExamMaster" class="table table-bordered table-striped slNo">
 					<thead>
 
@@ -67,6 +71,21 @@
 
 								<div class="row">
 									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-group">
+											<label>Duration Type </label>
+											<select id="sltExamMasterType" class="form-control mandatory"><option value="1">Elastic</option><option value="2">Static</option></select>
+										</div>
+									</div>
+
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="form-group">
+											<label>Coaching Type </label>
+											<select class="form-control input-sm" id="sltExamMasterAddNewCoachingType"></select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-6 col-xs-12">
 										<div class="form-inline">
 											<label>Exam Duration</label>
 											<br>
@@ -80,25 +99,27 @@
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<div class="form-group">
-											<label>Total No. of Questions </label>
-											<input type="text" id="txtExamMasterTotalNoOfQuestions" class="form-control input-sm mandatory" />
+											<label>Test Type</label>
+											<select type="text"  id="sltExamMasterTestType" class="form-control input-sm mandatory">
+										<option value="1">Regular</option><option value="0">Demo</option></select>
 										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<div class="form-group">
-											<label>No. of Options </label>
-											<input type="text" id="txtExamMasterTotalNoOfOptions" class="form-control input-sm mandatory" />
+									<div class="row" style="margin-top:10px">
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<div class="form-group">
+												<label>Total No. of Questions </label>
+												<input type="text" id="txtExamMasterTotalNoOfQuestions" class="form-control input-sm mandatory" />
+											</div>
 										</div>
-									</div>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<div class="form-group">
-											<label>Type </label>
-											<select id="sltExamMasterType" class="form-control mandatory"><option value="1">Elastic</option><option value="2">Static</option></select>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<div class="form-group">
+												<label>No. of Options </label>
+												<input type="text" id="txtExamMasterTotalNoOfOptions" class="form-control input-sm mandatory" />
+											</div>
 										</div>
+
 									</div>
-								</div>
 
 
 
