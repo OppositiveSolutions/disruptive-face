@@ -773,7 +773,7 @@ function populateCoachingTypes(list) {
 	var option = $("<option>").val(0).html("All");
 	$("#sltExamMasterCoachingType").append(option);
 	for (var i = 0; i < list.length; ++i) {
-		var option = $("<option>").val(list[i].bundle_category_id).html(list[i].name);
+		var option = $("<option>").val(list[i].coachingTypeId).html(list[i].name);
 		$("#sltExamMasterCoachingType").append(option);
 	}
 }
@@ -783,7 +783,7 @@ function populateCoachingTypesIPopup(list) {
 	var option = $("<option>").val(0).html("All");
 	//$("#sltExamMasterAddNewCoachingType").append(option);
 	for (var i = 0; i < list.length; ++i) {
-		var option = $("<option>").val(list[i].bundle_category_id).html(list[i].name);
+		var option = $("<option>").val(list[i].coachingTypeId).html(list[i].name);
 		$("#sltExamMasterAddNewCoachingType").append(option);
 	}
 }
