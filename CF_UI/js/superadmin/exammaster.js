@@ -196,6 +196,13 @@ function validateAndReturnExamMasteExamDetails() {
 	var examDurationHours = $("#txtExamMasterExamDurationHours").val();
 	var examDurationMinutes = $("#txtExamMasterExamDurationMinutes").val();
 	var coachingType = $("#sltExamMasterAddNewCoachingType").val();
+	var durationType = $("#sltExamMasterType").val();
+	if (durationType == 1) {
+		obj.isElastic = "1"
+	} else {
+		obj.isElastic = "0";
+	}
+	obj.durationType = durationType;
 	obj.coachingType = coachingType;
 	if (examDurationHours == "" && examDurationMinutes == "") {
 		alert("Please enter exam duration");
@@ -574,7 +581,10 @@ function createAndReturnFieldSet(index) {
 	return fieldSet;
 }
 
-function createAndReturnSubCategoryDetailsDiv(panelBody, index) {
+function createAndReturnSubCategoryDetailsDiv(panelBody, index, obj) {
+	var description = obj == undefined || obj == null ? "" : obj.description;
+	var noOfQuestions = obj == undefined || obj == null ? "" : obj.noOfQuestions
+
 	var divFormGroup = $("<div>").addClass("form-group");
 	var labelSubCategoryName = $("<label>").html("Subcategory name");
 	var inputCategoryName = $("<input>").attr("type", "text").addClass("input-sm form-control subcategoryName");
@@ -585,14 +595,14 @@ function createAndReturnSubCategoryDetailsDiv(panelBody, index) {
 
 	var divFormGroupForDescription = $("<div>").addClass("form-group");
 	var labelSubCategoryDescription = $("<label>").html("Description");
-	var inputDescription = $("<input>").attr("type", "text").addClass("input-sm form-control description");
+	var inputDescription = $("<input>").attr("type", "text").addClass("input-sm form-control description").val(description);
 	$(divFormGroupForDescription).append(labelSubCategoryDescription);
 	$(divFormGroupForDescription).append(inputDescription);
 	$(panelBody).append(divFormGroupForDescription);
 
 	var divFormGroupNoOfQuestion = $("<div>").addClass("form-group");
 	var labelSubCategoryNoOfQuestion = $("<label>").html("No. of Questions");
-	var inputNoOfQuestion = $("<input>").attr("type", "text").addClass("input-sm form-control noOfQuestions");
+	var inputNoOfQuestion = $("<input>").attr("type", "text").addClass("input-sm form-control noOfQuestions").val(noOfQuestions);
 	$(divFormGroupNoOfQuestion).append(labelSubCategoryNoOfQuestion);
 	$(divFormGroupNoOfQuestion).append(inputNoOfQuestion);
 	$(panelBody).append(divFormGroupNoOfQuestion);
@@ -622,7 +632,7 @@ function createSubCategoryDetailsForEachCategory(list) {
 			$(col).append(panelForSubCategory);
 			var label = $("<label>").html("Sub category " + parseInt(j + 1));
 			$(panelForSubCategory).find("div.panel-body").append(label);
-			createAndReturnSubCategoryDetailsDiv($(panelForSubCategory).find("div.panel-body"), parseInt(j + 1));
+			createAndReturnSubCategoryDetailsDiv($(panelForSubCategory).find("div.panel-body"), parseInt(j + 1), list[i].questionPaperSubCategorys[j]);
 		}
 		$("#divSubCategoryDetailsContainer").append(divPanel);
 
@@ -737,6 +747,7 @@ function populateExamMasterExamForm(obj) {
 	}
 	$("#sltExamMasterTestType").val(testtype);
 	$("#sltExamMasterAddNewCoachingType").val(obj.coachingType);
+	$("#sltExamMasterType").val(obj.durationType);
 
 }
 
