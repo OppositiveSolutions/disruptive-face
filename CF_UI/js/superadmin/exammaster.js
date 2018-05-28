@@ -497,6 +497,20 @@ function populateExamMasterExams(list) {
 		$(tdForModifiedDate).append(list[i].lastModified);
 		$(tr).append(tdForModifiedDate);
 
+		var tdForStatus = $("<td>");
+		var status = "";
+		if (list[i].status == "0") {
+			status = "Created";
+		} else if (list[i].status == "1") {
+			status = "Enabled";
+		} else if (list[i].status == "2") {
+			status = "Disabled";
+		} else if (list[i].status == "3") {
+			status = "Deleted";
+		}
+		$(tdForStatus).append(status);
+		$(tr).append(tdForStatus);
+
 		var settingsGear = createSettingsGearDiv();
 		$(settingsGear).removeClass("pull-right");
 		var tdForSettings = $("<td>").html(settingsGear);
@@ -507,7 +521,7 @@ function populateExamMasterExams(list) {
 	initializeDataTable("tblExamMaster");
 }
 
-function appendLiForExamSettings(div) {
+function appendLiForExamSettings(div, obj) {
 	var ul = $(div).find("ul")[0];
 	$(ul).empty();
 	var liForEdit = createAndReturnLiForSettingsGear("Edit Exam Details");
@@ -532,12 +546,42 @@ function appendLiForExamSettings(div) {
 	});
 
 	var liForDelete = createAndReturnLiForSettingsGear("Delete");
-	$(ul).append(liForDelete);
 	$(liForDelete).click(function() {
 		var obj = $(this).closest("tr").data("obj");
 		var questionPaperId = obj.questionPaperId;
 		deleteExamMasterExam(questionPaperId);
 	});
+	var liForStatus = createAndReturnLiForSettingsGear("Enable");
+	var status = "";
+	if (obj.status == "0") {
+		$(ul).append(liForDelete);
+		liForStatus = createAndReturnLiForSettingsGear("Enable");
+		$(liForStatus).attr("status", "1");
+		$(ul).append(liForStatus);
+	} else if (obj.status == "1") {
+		liForStatus = createAndReturnLiForSettingsGear("Disable");
+		$(liForStatus).attr("status", "2");
+		$(ul).append(liForStatus);
+	} else if (obj.status == "2") {
+		$(ul).append(liForDelete);
+		liForStatus = createAndReturnLiForSettingsGear("Enable");
+		$(liForStatus).attr("status", "1");
+		$(ul).append(liForStatus);
+	} else if (obj.status == "3") {
+		liForStatus = createAndReturnLiForSettingsGear("Recover");
+		$(liForStatus).attr("status", "3");
+		$(ul).append(liForStatus);
+	}
+	console.info("dfsd" + obj.status)
+	$(liForStatus).click(function() {
+		var obj = $(this).closest("tr").data("obj");
+		var status = $(this).attr("status");
+		var questionPaperId = obj.questionPaperId;
+		updateExamMasterStatus(questionPaperId, status);
+	});
+
+
+
 }
 
 function showMakeQuestionPage(obj, questionId) {
@@ -719,6 +763,17 @@ function deleteExamMasterExam(questionPaperId) {
 			// 	callBack(returnMap.data);
 			//
 			// }
+		}
+	});
+}
+
+function updateExamMasterStatus(questionPaperId, status) {
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/" + questionPaperId + "/status/" + status,
+		type: "GET",
+		cache: false,
+		success: function(returnMap) {
+			getExamMasterExams();
 		}
 	});
 }
