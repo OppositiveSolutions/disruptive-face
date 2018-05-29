@@ -139,8 +139,9 @@ function editBundle() {
 function showAddNewBundlePage(obj) {
   $("#divAddNewBundlePage").modal("show");
   $("#btnAddNewBundleSave").removeAttr("type");
+  $("#btnAddNewBundleSave").removeAttr("type", "edit");
+  $("#btnAddNewBundleSave").removeAttr("bundleId");
   if (obj != undefined) {
-    $("#btnAddNewBundleSave").removeAttr("type", "edit");
     populateAddNewBundlesPage(obj);
   }
 
