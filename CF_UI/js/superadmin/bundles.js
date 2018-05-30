@@ -75,9 +75,7 @@ function validateAndReturnBundleInfo() {
     return;
   }
   obj.imageUrl = imageUrl;
-  obj.bundleCategory = {
-    "bundleCategoryId": coachingType
-  };
+  obj.coachingType = coachingType
   return obj;
 }
 
@@ -86,12 +84,21 @@ function saveBundle() {
   if (obj == undefined) {
     return;
   }
+  var formdata = new FormData();
+  var fileName = $("#fileImageBundle").val();
+  if (fileName == "") {
+    alert("Please select a bunlde image")
+  }
+  var file = $("#fileImageBundle")[0].files[0];
+  formdata.append("file", file);
+  formdata.append("bundle", JSON.stringify(obj));
   $.ajax({
     url: protocol + "//" + host + "/bundle",
     type: "POST",
     cache: false,
-    data: JSON.stringify(obj),
-    contentType: "application/json; charset=utf-8",
+    data: formdata,
+    processData: false,
+    contentType: false,
     success: function(obj) {
       getAllBundles();
       $("#divAddNewBundlePage").modal("hide");
@@ -105,13 +112,22 @@ function editBundle() {
   if (obj == undefined) {
     return;
   }
+  var formdata = new FormData();
+  var fileName = $("#fileImageBundle").val();
+  if (fileName == "") {
+    alert("Please select a bunlde image")
+  }
   obj.bundleId = $("#btnAddNewBundleSave").attr("bundleId")
+  var file = $("#fileImageBundle")[0].files[0];
+  formdata.append("file", file);
+  formdata.append("bundle", JSON.stringify(obj));
   $.ajax({
     url: protocol + "//" + host + "/bundle",
     type: "PUT",
     cache: false,
-    data: JSON.stringify(obj),
-    contentType: "application/json; charset=utf-8",
+    data: formdata,
+    processData: false,
+    contentType: false,
     success: function(obj) {
       getAllBundles();
       $("#divAddNewBundlePage").modal("hide");
@@ -123,8 +139,9 @@ function editBundle() {
 function showAddNewBundlePage(obj) {
   $("#divAddNewBundlePage").modal("show");
   $("#btnAddNewBundleSave").removeAttr("type");
+  $("#btnAddNewBundleSave").removeAttr("type", "edit");
+  $("#btnAddNewBundleSave").removeAttr("bundleId");
   if (obj != undefined) {
-    $("#btnAddNewBundleSave").removeAttr("type", "edit");
     populateAddNewBundlesPage(obj);
   }
 
@@ -234,12 +251,12 @@ function showManageQuestionPaperPage(obj) {
   $("#divManageQuestionPaper").modal("show");
   $("#pForBundleName").html(obj.name);
   $("#pForCategoryName").html(obj.category);
-  getQuestionPapersForBundle(obj.bundleId);
+  getQuestionPapersForBundle(obj.bundleId, obj.coachingType);
   getAddedQuestionPapersForBundle(obj.bundleId)
   $("#sltBundleQuestionPaper").attr("bundleId", obj.bundleId)
 }
 
-function getQuestionPapersForBundle(bundleId) {
+function getQuestionPapersForBundle(bundleId, coachingType) {
   $.ajax({
     url: protocol + "//" + host + "/question-paper/list?bundleId" + bundleId,
     type: "GET",
@@ -248,6 +265,25 @@ function getQuestionPapersForBundle(bundleId) {
       populateQuestionPapersForBundle(obj.data);
     }
   });
+}
+
+function getQuestionPaperBundleType() {
+  $.ajax({
+    url: protocol + "//" + host + "/bundle/coachingtypes",
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      populateQuestionPaperBundleType(obj.data);
+    }
+  });
+}
+
+function populateQuestionPaperBundleType(list) {
+  $("#sltBundleCategory").empty();
+  for (var i = 0; i < list.length; ++i) {
+    var option = $("<option>").val(list[i].coachingTypeId).html(list[i].name);
+    $("#sltBundleCategory").append(option);
+  }
 }
 
 function populateQuestionPapersForBundle(list) {

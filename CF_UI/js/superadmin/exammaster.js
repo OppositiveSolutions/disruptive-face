@@ -114,6 +114,10 @@ function loadExamMasterPage(isShow) {
 				getExamMasterExams();
 			});
 		});
+		$("#sltExamMasterCoachingType").change(function() {
+			var coachingType = $(this).val();
+			getExamMasterExams(coachingType);
+		})
 
 	});
 }
@@ -182,11 +186,24 @@ function validateAndReturnExamMasteExamDetails() {
 		alert("Please enter a course name");
 		return;
 	}
+	var testType = $("#sltExamMasterTestType").val();
 	obj.isDemo = false;
+	if (testType == 0) {
+		obj.isDemo = true;
+	}
 	obj.courseName = courseName;
 	obj.name = courseName;
 	var examDurationHours = $("#txtExamMasterExamDurationHours").val();
 	var examDurationMinutes = $("#txtExamMasterExamDurationMinutes").val();
+	var coachingType = $("#sltExamMasterAddNewCoachingType").val();
+	var durationType = $("#sltExamMasterType").val();
+	if (durationType == 1) {
+		obj.isElastic = "1"
+	} else {
+		obj.isElastic = "0";
+	}
+	obj.durationType = durationType;
+	obj.coachingType = coachingType;
 	if (examDurationHours == "" && examDurationMinutes == "") {
 		alert("Please enter exam duration");
 		return;
@@ -436,9 +453,12 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 
 }
 
-function getExamMasterExams() {
+function getExamMasterExams(coachingType) {
+	if (coachingType == undefined) {
+		coachingType = 0;
+	}
 	$.ajax({
-		url: protocol + "//" + host + "/question-paper/all",
+		url: protocol + "//" + host + "/question-paper/all?coachingType=" + coachingType,
 		type: "GET",
 		cache: false,
 		success: function(obj) {
@@ -477,6 +497,20 @@ function populateExamMasterExams(list) {
 		$(tdForModifiedDate).append(list[i].lastModified);
 		$(tr).append(tdForModifiedDate);
 
+		var tdForStatus = $("<td>");
+		var status = "";
+		if (list[i].status == "0") {
+			status = "Created";
+		} else if (list[i].status == "1") {
+			status = "Enabled";
+		} else if (list[i].status == "2") {
+			status = "Disabled";
+		} else if (list[i].status == "3") {
+			status = "Deleted";
+		}
+		$(tdForStatus).append(status);
+		$(tr).append(tdForStatus);
+
 		var settingsGear = createSettingsGearDiv();
 		$(settingsGear).removeClass("pull-right");
 		var tdForSettings = $("<td>").html(settingsGear);
@@ -487,7 +521,7 @@ function populateExamMasterExams(list) {
 	initializeDataTable("tblExamMaster");
 }
 
-function appendLiForExamSettings(div) {
+function appendLiForExamSettings(div, obj) {
 	var ul = $(div).find("ul")[0];
 	$(ul).empty();
 	var liForEdit = createAndReturnLiForSettingsGear("Edit Exam Details");
@@ -512,12 +546,42 @@ function appendLiForExamSettings(div) {
 	});
 
 	var liForDelete = createAndReturnLiForSettingsGear("Delete");
-	$(ul).append(liForDelete);
 	$(liForDelete).click(function() {
 		var obj = $(this).closest("tr").data("obj");
 		var questionPaperId = obj.questionPaperId;
 		deleteExamMasterExam(questionPaperId);
 	});
+	var liForStatus = createAndReturnLiForSettingsGear("Enable");
+	var status = "";
+	if (obj.status == "0") {
+		$(ul).append(liForDelete);
+		liForStatus = createAndReturnLiForSettingsGear("Enable");
+		$(liForStatus).attr("status", "1");
+		$(ul).append(liForStatus);
+	} else if (obj.status == "1") {
+		liForStatus = createAndReturnLiForSettingsGear("Disable");
+		$(liForStatus).attr("status", "2");
+		$(ul).append(liForStatus);
+	} else if (obj.status == "2") {
+		$(ul).append(liForDelete);
+		liForStatus = createAndReturnLiForSettingsGear("Enable");
+		$(liForStatus).attr("status", "1");
+		$(ul).append(liForStatus);
+	} else if (obj.status == "3") {
+		liForStatus = createAndReturnLiForSettingsGear("Recover");
+		$(liForStatus).attr("status", "3");
+		$(ul).append(liForStatus);
+	}
+	console.info("dfsd" + obj.status)
+	$(liForStatus).click(function() {
+		var obj = $(this).closest("tr").data("obj");
+		var status = $(this).attr("status");
+		var questionPaperId = obj.questionPaperId;
+		updateExamMasterStatus(questionPaperId, status);
+	});
+
+
+
 }
 
 function showMakeQuestionPage(obj, questionId) {
@@ -561,7 +625,10 @@ function createAndReturnFieldSet(index) {
 	return fieldSet;
 }
 
-function createAndReturnSubCategoryDetailsDiv(panelBody, index) {
+function createAndReturnSubCategoryDetailsDiv(panelBody, index, obj) {
+	var description = obj == undefined || obj == null ? "" : obj.description;
+	var noOfQuestions = obj == undefined || obj == null ? "" : obj.noOfQuestions
+
 	var divFormGroup = $("<div>").addClass("form-group");
 	var labelSubCategoryName = $("<label>").html("Subcategory name");
 	var inputCategoryName = $("<input>").attr("type", "text").addClass("input-sm form-control subcategoryName");
@@ -572,14 +639,14 @@ function createAndReturnSubCategoryDetailsDiv(panelBody, index) {
 
 	var divFormGroupForDescription = $("<div>").addClass("form-group");
 	var labelSubCategoryDescription = $("<label>").html("Description");
-	var inputDescription = $("<input>").attr("type", "text").addClass("input-sm form-control description");
+	var inputDescription = $("<input>").attr("type", "text").addClass("input-sm form-control description").val(description);
 	$(divFormGroupForDescription).append(labelSubCategoryDescription);
 	$(divFormGroupForDescription).append(inputDescription);
 	$(panelBody).append(divFormGroupForDescription);
 
 	var divFormGroupNoOfQuestion = $("<div>").addClass("form-group");
 	var labelSubCategoryNoOfQuestion = $("<label>").html("No. of Questions");
-	var inputNoOfQuestion = $("<input>").attr("type", "text").addClass("input-sm form-control noOfQuestions");
+	var inputNoOfQuestion = $("<input>").attr("type", "text").addClass("input-sm form-control noOfQuestions").val(noOfQuestions);
 	$(divFormGroupNoOfQuestion).append(labelSubCategoryNoOfQuestion);
 	$(divFormGroupNoOfQuestion).append(inputNoOfQuestion);
 	$(panelBody).append(divFormGroupNoOfQuestion);
@@ -609,7 +676,7 @@ function createSubCategoryDetailsForEachCategory(list) {
 			$(col).append(panelForSubCategory);
 			var label = $("<label>").html("Sub category " + parseInt(j + 1));
 			$(panelForSubCategory).find("div.panel-body").append(label);
-			createAndReturnSubCategoryDetailsDiv($(panelForSubCategory).find("div.panel-body"), parseInt(j + 1));
+			createAndReturnSubCategoryDetailsDiv($(panelForSubCategory).find("div.panel-body"), parseInt(j + 1), list[i].questionPaperSubCategorys[j]);
 		}
 		$("#divSubCategoryDetailsContainer").append(divPanel);
 
@@ -686,7 +753,7 @@ function saveExamMasterSubCategorytails(callBack) {
 
 function deleteExamMasterExam(questionPaperId) {
 	$.ajax({
-		url: protocol + "//" + host + "/question-paper",
+		url: protocol + "//" + host + "/question-paper/" + questionPaperId,
 		type: "DELETE",
 		cache: false,
 		contentType: "application/json; charset=utf-8",
@@ -696,6 +763,17 @@ function deleteExamMasterExam(questionPaperId) {
 			// 	callBack(returnMap.data);
 			//
 			// }
+		}
+	});
+}
+
+function updateExamMasterStatus(questionPaperId, status) {
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/" + questionPaperId + "/status/" + status,
+		type: "GET",
+		cache: false,
+		success: function(returnMap) {
+			getExamMasterExams();
 		}
 	});
 }
@@ -718,6 +796,13 @@ function populateExamMasterExamForm(obj) {
 	$("#txtExamMasterExamDurationMinutes").val(minutes);
 	$("#txtExamMasterTotalNoOfQuestions").val(obj.noOfQuestions);
 	$("#txtExamMasterTotalNoOfOptions").val(obj.noOfOptions);
+	var testtype = "1"
+	if (obj.isDemo) {
+		testtype = "0";
+	}
+	$("#sltExamMasterTestType").val(testtype);
+	$("#sltExamMasterAddNewCoachingType").val(obj.coachingType);
+	$("#sltExamMasterType").val(obj.durationType);
 
 }
 
@@ -735,4 +820,36 @@ function populateExamCategoriesForEdit(obj) {
 		$(tr).attr("questionPaperCategoryId", categories[i].questionPaperCategoryId);
 	}
 
+}
+
+function getCoachingTypes() {
+	$.ajax({
+		url: protocol + "//" + host + "/bundle/coachingtypes",
+		type: "GET",
+		cache: false,
+		success: function(obj) {
+			populateCoachingTypes(obj.data);
+			populateCoachingTypesIPopup(obj.data);
+		}
+	});
+}
+
+function populateCoachingTypes(list) {
+	$("#sltExamMasterCoachingType").empty();
+	var option = $("<option>").val(0).html("All");
+	$("#sltExamMasterCoachingType").append(option);
+	for (var i = 0; i < list.length; ++i) {
+		var option = $("<option>").val(list[i].coachingTypeId).html(list[i].name);
+		$("#sltExamMasterCoachingType").append(option);
+	}
+}
+
+function populateCoachingTypesIPopup(list) {
+	$("#sltExamMasterAddNewCoachingType").empty();
+	var option = $("<option>").val(0).html("All");
+	//$("#sltExamMasterAddNewCoachingType").append(option);
+	for (var i = 0; i < list.length; ++i) {
+		var option = $("<option>").val(list[i].coachingTypeId).html(list[i].name);
+		$("#sltExamMasterAddNewCoachingType").append(option);
+	}
 }

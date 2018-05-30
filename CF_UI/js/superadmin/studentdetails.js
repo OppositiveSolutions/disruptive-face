@@ -157,9 +157,9 @@ function validateAndReturnStudentInfo() {
 	var centerCode = $("#sltManageStudentsCenterName").val();
 	if (centerCode == "Select") {}
 	centerCode = 0;
-//	obj.center = {};
-//	obj.centerId = centerCode;
-//	obj.center.centerCode = centerCode
+	//	obj.center = {};
+	//	obj.centerId = centerCode;
+	//	obj.center.centerCode = centerCode
 
 	var gender = $("input:radio[name='gendername']:checked").val();
 	if (gender == "" || gender == undefined || gender == null) {
@@ -182,11 +182,11 @@ function validateAndReturnStudentInfo() {
 		alert("Please enter select the state");
 		return;
 	}
-//	obj.stateId = stateId;
+	//	obj.stateId = stateId;
 	obj.state = {};
 	obj.state.stateId = stateId;
 	obj.state.name = stateId;
-	
+
 	var city = $("#txtManageStudentsCity").val();
 	if (city == "") {
 		// alert("Please enter a city");
@@ -328,8 +328,21 @@ function appendLiForStudentsSettings(div, obj) {
 	$(ul).append(liForDelete);
 	$(liForDelete).click(function() {
 		var obj = $(this).closest("tr").data("obj");
-		deleteACenter(obj.centerId);
+		deleteStudent(obj.userId);
 	});
+}
+
+function deleteStudent(userId, status, liStatus) {
+	$.ajax({
+		url: protocol + "//" + host + "/student/" + userId,
+		type: "DELETE",
+		cache: false,
+		success: function(obj) {
+			getStudents();
+
+		}
+	});
+
 }
 
 function updateStudentStatus(userId, status, liStatus) {
