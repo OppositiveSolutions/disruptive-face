@@ -1,5 +1,5 @@
 var protocol = location.protocol;
-var host = location.host+"/cf-restful";
+var host = location.host + "/cf-restful";
 var timerForCategory;
 $(document).ready(function () {
     createExamForTest();
@@ -424,6 +424,14 @@ function createQuestionElement(questionData, subCategory, categoryId) {
     $(li).attr("categoryId", categoryId);
     var divForQuestionHtml = $("<div>").addClass("questionSpan").html(questionMap.question);
     $(divForQuestion).append(divForQuestionHtml);
+    try {
+        var ImgMap = questionData.questionImage;
+        var imgForQuestion = $("<img>").attr("src", 'data:image/jpeg;base64,' + ImgMap.image);
+        $(imgForQuestion).attr("width", "300px");
+        $(divForQuestion).append(imgForQuestion);
+    } catch (e) {
+
+    }
     $(li).append(divForQuestions);
     populateOptions(questionMap.options, divForQuestion, questionData.questionNo);
 

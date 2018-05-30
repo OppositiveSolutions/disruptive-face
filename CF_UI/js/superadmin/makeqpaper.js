@@ -367,8 +367,9 @@ function populateQuestionAndOptions(subCategory, targetDiv, ) {
 			var pForQuestion = $("<p>").html(questionsList[k].questionNo + ") " + questionsList[k].question.question);
 			$(divForQuestion).append(pForQuestion);
 			try {
+				var ImgMap = questionsList[k].questionImage;
 				var divForImg = $("<div>").addClass("text-center");
-				var imgForQuestion = $("<img>").attr("src", protocol + "//" + host + "/question-paper/" + questionsList[k].question.questionId + "/image")
+				var imgForQuestion = $("<img>").attr("src", 'data:image/jpeg;base64,' + ImgMap.image);
 				$(imgForQuestion).attr("width", "300px");
 				$(divForQuestion).append(divForImg);
 				$(divForImg).append(imgForQuestion);
