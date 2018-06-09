@@ -425,7 +425,7 @@ function createQuestionElement(questionData, subCategory, categoryId) {
     var divForQuestionHtml = $("<div>").addClass("questionSpan").html(questionMap.question);
     $(divForQuestion).append(divForQuestionHtml);
     try {
-        var ImgMap = questionData.questionImage;
+        var ImgMap = questionData.question.questionImage[0];
         var imgForQuestion = $("<img>").attr("src", 'data:image/jpeg;base64,' + ImgMap.image);
         $(imgForQuestion).attr("width", "300px");
         $(divForQuestion).append(imgForQuestion);

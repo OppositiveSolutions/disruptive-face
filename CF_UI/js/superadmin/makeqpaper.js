@@ -364,15 +364,23 @@ function populateQuestionAndOptions(subCategory, targetDiv, ) {
 	if (questionsList.length != 0) {
 		for (var k = 0; k < questionsList.length; k++) {
 			var divForQuestion = $("<li>").addClass("questionLi");
-			var pForQuestion = $("<p>").html(questionsList[k].questionNo + ") " + questionsList[k].question.question);
-			$(divForQuestion).append(pForQuestion);
+
+			var pForNumber = $("<p>").html(questionsList[k].questionNo + ") ");
+			$(divForQuestion).append(pForNumber);
+
 			try {
-				var ImgMap = questionsList[k].questionImage;
+				var ImgMapList = questionsList[k].question.questionImage;
+				console.info(questionsList[k]);
 				var divForImg = $("<div>").addClass("text-center");
-				var imgForQuestion = $("<img>").attr("src", 'data:image/jpeg;base64,' + ImgMap.image);
-				$(imgForQuestion).attr("width", "300px");
+				for (var i = 0; i < ImgMapList.length; i++) {
+					var ImgMap = ImgMapList[i];
+					var imgForQuestion = $("<img>").attr("src", 'data:image/jpeg;base64,' + ImgMap.image);
+					$(imgForQuestion).attr("width", "300px");
+					$(divForImg).append(imgForQuestion);
+				}
 				$(divForQuestion).append(divForImg);
-				$(divForImg).append(imgForQuestion);
+				var pForQuestion = $("<p>").html(questionsList[k].question.question);
+				$(divForQuestion).append(pForQuestion);
 			} catch (e) {
 
 			}
