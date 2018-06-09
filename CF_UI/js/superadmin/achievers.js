@@ -30,6 +30,7 @@ function initializeAddNewAchiever() {
     $("#achiverDescription").val("");
     $("#achiverContact").val("");
     $("#achiverName").val("");
+    $("#achiverYear").val("");
     $("#divAddNewAchieverPage").modal("show");
 
 }
@@ -47,6 +48,8 @@ function populateAchieversDetails(list) {
         $(tr).append(tdForName);
         var tdForContact = $("<td>").html(list[i].contact);
         $(tr).append(tdForContact);
+        var tdForYear = $("<td>").html(list[i].year);
+        $(tr).append(tdForYear);
         var tdFordescription = $("<td>").html(list[i].description);
         $(tr).append(tdFordescription);
         var tdForimgFileName = $("<td>").html(list[i].imgFileName);
@@ -103,6 +106,12 @@ function validateAndReturnAchievementInfo() {
         alert("Please enter achiever description");
         return;
     }
+    var year = $("#achiverYear").val();
+    if (!year || (year && year.length != 4)) {
+        alert("Please enter a valid year");
+        return;
+    }
+    obj.year = year;
     if ($("#achieverPhotoUpload").val() == "") {
         alert("choose achiever image");
         return;
