@@ -111,6 +111,7 @@ function populateAchieversDetails(list) {
 function enableEditAchiever(achieverData) {
     initializeAddNewAchiever();
     $("#achiverName").val(achieverData.name);
+    $("#achiverId").val(achieverData.achieverId);
     $("#achiverContact").val(achieverData.contact);
     $("#achiverDescription").val(achieverData.description);
     $("#achiverYear").val(achieverData.year);
@@ -140,6 +141,8 @@ function validateAndReturnAchievementInfo() {
         return;
     }
     obj.name = name;
+    var achieverId = $("#achiverId").val();
+    obj.achieverId = achieverId;
     var phnNo = $("#achiverContact").val();
     if (phnNo == "") {
         alert("Please enter achiever contact info");
