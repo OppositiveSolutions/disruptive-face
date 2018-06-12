@@ -13,11 +13,40 @@ function loadAchieversPage() {
         $("#achieverPhotoUpload").change(function () {
             showFileNameOfSelectedImage();
         });
+        $("#achieversYearSelect").change(function () {
+            getAchieversByYear();
+        });
     });
 }
-function initializeAchiverPage() {
+function initializeAchiverPage(callBack) {
     $.ajax({
-        url: protocol + "//" + host + "/achievers",
+        url: protocol + "//" + host + "/achievers/years",
+        type: "GET",
+        success: function (data) {
+            populateAchieversYearDropDown(data.data);
+            if (callBack)
+                callBack();
+        }
+    });
+
+}
+
+function populateAchieversYearDropDown(list) {
+    if (!list || !list.length) {
+        return;
+    }
+    $("#achieversYearSelect").empty();
+    for (var i = 0; i < list.length; i++) {
+        var option = $("<option>").html(list[i]).val(list[i]);
+        $("#achieversYearSelect").append(option);
+    }
+    getAchieversByYear();
+}
+
+function getAchieversByYear() {
+    var year = $("#achieversYearSelect").val();
+    $.ajax({
+        url: protocol + "//" + host + "/achievers/" + year + "/list",
         type: "GET",
         success: function (data) {
             populateAchieversDetails(data.data);
@@ -31,6 +60,7 @@ function initializeAddNewAchiever() {
     $("#achiverContact").val("");
     $("#achiverName").val("");
     $("#achiverYear").val("");
+    $("#divAddNewAchieverPage").attr("isEdit", false);
     $("#divAddNewAchieverPage").modal("show");
 
 }
@@ -60,7 +90,6 @@ function populateAchieversDetails(list) {
         $(tdForimg).append(imgForTd);
         $(tr).append(tdForimg);
         var btnForDelete = $("<button>").addClass("btn btn-default btn-sm").html("Delete");
-        $(tdForDelete).append(btnForDelete);
         var tdForDelete = $("<td>").append(btnForDelete);
         $(btnForDelete).click(function () {
             if (confirm("Are you sure you want to delete the achiever")) {
@@ -68,9 +97,25 @@ function populateAchieversDetails(list) {
                 deleteAchiever(achieverData);
             }
         });
+        var btnForEdit = $("<button>").addClass("btn btn-default btn-sm").html("Edit");
+        $(btnForEdit).click(function () {
+            var achieverData = $(this).closest("tr").data("achiever");
+            enableEditAchiever(achieverData);
+        });
+        $(tdForDelete).append(btnForEdit);
+        $(tdForDelete).append(btnForDelete);
         $(tr).append(tdForDelete);
         $(tbody).append(tr);
     }
+}
+function enableEditAchiever(achieverData) {
+    initializeAddNewAchiever();
+    $("#achiverName").val(achieverData.name);
+    $("#achiverContact").val(achieverData.contact);
+    $("#achiverDescription").val(achieverData.description);
+    $("#achiverYear").val(achieverData.year);
+    $("#divAddNewAchieverPage").attr("isEdit", true);
+
 }
 
 function deleteAchiever(achieverData) {
@@ -112,7 +157,8 @@ function validateAndReturnAchievementInfo() {
         return;
     }
     obj.year = year;
-    if ($("#achieverPhotoUpload").val() == "") {
+    var isEdit = $("#divAddNewAchieverPage").attr("isEdit");
+    if ($("#achieverPhotoUpload").val() == "" && !isEdit) {
         alert("choose achiever image");
         return;
     }
@@ -128,6 +174,11 @@ function saveAchievement() {
     if (formdata == undefined) {
         return;
     }
+    var isEdit = $("#divAddNewAchieverPage").attr("isEdit");
+    if (isEdit) {
+        editAchiever(formdata);
+        return;
+    }
     $.ajax({
         url: protocol + "//" + host + "/achievers",
         type: "POST",
@@ -137,10 +188,29 @@ function saveAchievement() {
         data: formdata,
         success: function (obj) {
             $("#divAddNewAchieverPage").modal("hide");
-            initializeAchiverPage();
+            initializeAchiverPage(function () {
+                $("#achieversYearSelect").val(obj.year);
+            });
         }
     });
 
+}
+
+function editAchiever(formdata) {
+    $.ajax({
+        url: protocol + "//" + host + "/achievers",
+        type: "PUT",
+        processData: false,
+        contentType: false,
+        cache: false,
+        data: formdata,
+        success: function (obj) {
+            $("#divAddNewAchieverPage").modal("hide");
+            initializeAchiverPage(function () {
+                $("#achieversYearSelect").val(obj.year);
+            });
+        }
+    });
 }
 function showFileNameOfSelectedImage() {
     $("#filenameSpan").html($("#achieverPhotoUpload")[0].files[0].name);
