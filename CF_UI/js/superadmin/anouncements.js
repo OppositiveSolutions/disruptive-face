@@ -64,7 +64,7 @@ function saveAnouncement() {
     cache: false,
     data: formdata,
     success: function(obj) {
-      getVideoTutorials();
+    	getAnnouncements();
       $("#divAddNewAnoucementPage").modal("hide");
     }
   });
@@ -139,15 +139,20 @@ function populateAnnouncements(list) {
     var tr = $("<tr>").data("obj", list[i]);
     $("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
     $(tr).data("obj", list[i]);
+    
     var tdForName = $("<td>");
     $(tdForName).append("<b>" + list[i].name + "</b>");
-    $(tdForName).append("<br>" + list[i].description);
     $(tr).append(tdForName);
+    
+    var tdForDescription = $("<td>");
+    $(tdForDescription).append(list[i].description);
+    $(tr).append(tdForDescription);
 
-
-    var tdForUrl = $("<td>");
-    $(tdForUrl).append(list[i].url);
-    $(tr).append(tdForUrl);
+    var tdForimg = $("<td>");
+    var imgForTd = $("<img>").attr("src", protocol + "//" + host + "/announcement/" + list[i].announcementId + "/image");
+    $(imgForTd).attr("width", "100px");
+    $(tdForimg).append(imgForTd);
+    $(tr).append(tdForimg);
 
     var settingsGear = createSettingsGearDiv();
     $(settingsGear).removeClass("pull-right");
