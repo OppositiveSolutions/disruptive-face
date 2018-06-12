@@ -200,6 +200,30 @@ function populateBundleDetails(list) {
     $(tdEmail).append(list[i].mrp);
     $(tr).append(tdEmail);
 
+    var tdSelling = $("<td>");
+    $(tdSelling).append(list[i].sellingPrice);
+    $(tr).append(tdSelling);
+
+    var tdDiscount = $("<td>");
+    $(tdDiscount).append(list[i].discountPercent);
+    $(tr).append(tdDiscount);
+
+    var tdCoachingtype = $("<td>");
+    $(tdCoachingtype).append(list[i].coachingTypeName);
+    $(tr).append(tdCoachingtype);
+
+    var status = ""
+    if (list[i].isAvailavble == 1) {
+      status = "Enabled";
+    } else if (list[i].isAvailavble == 0) {
+      status = "Disabled";
+    } else if (list[i].isAvailavble == 2) {
+      status = "Deleted";
+    }
+    var tdForStatus = $("<td>");
+    $(tdForStatus).append(status);
+    $(tr).append(tdForStatus);
+
     // var tdForMobile = $("<td>");
     // $(tdForMobile).append(list[i].mobileNo);
     // $(tr).append(tdForMobile);
@@ -238,6 +262,21 @@ function appendLiForBundleSettings(div, obj) {
     var obj = $(this).closest("tr").data("obj");
     deleteBundle(obj.bundleId);
   });
+
+  var liForStatus = createAndReturnLiForSettingsGear("Disable");
+  $(liForStatus).attr("status", 0);
+  if (obj.isAvailavble == "0") {
+    liForStatus = createAndReturnLiForSettingsGear("Enable");
+    $(liForStatus).attr("status", 1);
+  }
+
+  $(ul).append(liForStatus);
+  $(liForStatus).click(function() {
+    var obj = $(this).closest("tr").data("obj");
+    var status = $(this).attr("status");
+    changeBundleStatus(obj.bundleId, status)
+  });
+
   var liForQuestionPapers = createAndReturnLiForSettingsGear("Manage Question Papers");
   $(ul).append(liForQuestionPapers);
   $(liForQuestionPapers).click(function() {
@@ -339,6 +378,17 @@ function addQuestionPaperToBunlde(bundleId, questionPaperId) {
     cache: false,
     success: function(obj) {
       getAddedQuestionPapersForBundle(bundleId)
+    }
+  });
+}
+
+function changeBundleStatus(bundleId, status) {
+  $.ajax({
+    url: protocol + "//" + host + "/bundle/" + bundleId + "/changestatus/" + status,
+    type: "GET",
+    cache: false,
+    success: function(obj) {
+      getAllBundles();
     }
   });
 }

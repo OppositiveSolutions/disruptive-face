@@ -272,9 +272,17 @@ function populateStudentDetails(list) {
 		$(tr).append(tdForCreatedDate);
 
 
-		var tdForexpiryDate = $("<td>");
-		$(tdForexpiryDate).append(list[i].expiryDate);
-		$(tr).append(tdForexpiryDate);
+		var tdQualification = $("<td>");
+		$(tdQualification).append(list[i].qualification);
+		$(tr).append(tdQualification);
+
+		var tdPlace = $("<td>");
+		$(tdPlace).append(list[i].place);
+		$(tr).append(tdPlace);
+
+		var tdDob = $("<td>");
+		$(tdDob).append(list[i].dob);
+		$(tr).append(tdDob);
 
 		var tdEmail = $("<td>");
 		$(tdEmail).append(list[i].username);
@@ -347,16 +355,11 @@ function deleteStudent(userId, status, liStatus) {
 
 function updateStudentStatus(userId, status, liStatus) {
 	$.ajax({
-		url: protocol + "//" + host + "/student/" + userId + "/expiry",
-		type: "PUT",
+		url: protocol + "//" + host + "/student/" + userId + "/activate",
+		type: "GET",
 		cache: false,
-		contentType: "text/plain",
 		success: function(obj) {
-			if (status == 1) {
-				$(liStatus).find("a").html("Deactivate");
-			} else {
-				$(liStatus).find("a").html("Activte")
-			}
+			getStudents();
 
 		}
 	});
