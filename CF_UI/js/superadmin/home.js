@@ -102,6 +102,7 @@ function loadSuperAmdinHomePage() {
 	}, function(data) {
 		$("#pageContainer").append(data);
 		showSuperAdminHomPage();
+		$("#footerContent").parent().remove();
 	});
 }
 
