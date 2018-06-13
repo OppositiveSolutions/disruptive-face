@@ -23,23 +23,24 @@ function initializeAchiverPage(callBack) {
         url: protocol + "//" + host + "/achievers/years",
         type: "GET",
         success: function (data) {
-            populateAchieversYearDropDown(data.data);
-            if (callBack)
-                callBack();
+            populateAchieversYearDropDown(data.data, callBack);
         }
     });
 
 }
 
-function populateAchieversYearDropDown(list) {
+function populateAchieversYearDropDown(list, callBack) {
     if (!list || !list.length) {
         return;
     }
     $("#achieversYearSelect").empty();
+    var optionZero = $("<option>").html("All").val(0);
+    $("#achieversYearSelect").append(optionZero);
     for (var i = 0; i < list.length; i++) {
         var option = $("<option>").html(list[i]).val(list[i]);
         $("#achieversYearSelect").append(option);
     }
+    $("#achieversYearSelect").val(0);
     getAchieversByYear();
 }
 
@@ -175,7 +176,7 @@ function saveAchievement() {
         return;
     }
     var isEdit = $("#divAddNewAchieverPage").attr("isEdit");
-    if (isEdit) {
+    if (isEdit == "true") {
         editAchiever(formdata);
         return;
     }
@@ -206,9 +207,7 @@ function editAchiever(formdata) {
         data: formdata,
         success: function (obj) {
             $("#divAddNewAchieverPage").modal("hide");
-            initializeAchiverPage(function () {
-                $("#achieversYearSelect").val(obj.year);
-            });
+            initializeAchiverPage();
         }
     });
 }

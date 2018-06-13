@@ -290,7 +290,9 @@ hr {
 	padding-top:10px;
 }
 .logo-block {
-	min-height:77px;
+	min-height: 77px;
+    padding-top: 5px;
+    margin-left: -5px;
 }
 .navbar-right {
 	margin-right:0;
