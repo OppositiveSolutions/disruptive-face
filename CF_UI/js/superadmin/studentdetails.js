@@ -267,9 +267,9 @@ function populateStudentDetails(list) {
 		$(tr).append(tdForName);
 
 
-		var tdForCreatedDate = $("<td>");
-		$(tdForCreatedDate).append(list[i].createdDate);
-		$(tr).append(tdForCreatedDate);
+//		var tdForCreatedDate = $("<td>");
+//		$(tdForCreatedDate).append(list[i].createdDate);
+//		$(tr).append(tdForCreatedDate);
 
 
 		var tdQualification = $("<td>");
@@ -283,14 +283,21 @@ function populateStudentDetails(list) {
 		var tdDob = $("<td>");
 		$(tdDob).append(list[i].dob);
 		$(tr).append(tdDob);
+		
+		var tdContact = $("<td>");
+		$(tdContact).append(list[i].username);
+		$(tdContact).append("<br/>");
+		$(tdContact).append(list[i].phoneNo);
+		$(tr).append(tdContact);
 
-		var tdEmail = $("<td>");
-		$(tdEmail).append(list[i].username);
-		$(tr).append(tdEmail);
-
-		var tdForMobile = $("<td>");
-		$(tdForMobile).append(list[i].phoneNo);
-		$(tr).append(tdForMobile);
+//		var tdEmail = $("<td>");
+//		$(tdEmail).append(list[i].username);
+//		$(tr).append(tdEmail);
+//
+//		var tdForMobile = $("<td>");
+//		$(tdForMobile).append(list[i].phoneNo);
+//		$(tr).append(tdForMobile);
+		
 		var status = "Active";
 		if (list[i].status == 0) {
 			status = "Deactive";
@@ -299,6 +306,12 @@ function populateStudentDetails(list) {
 		var tdForStatus = $("<td>");
 		$(tdForStatus).append(status);
 		$(tr).append(tdForStatus);
+		
+		var tdForimg = $("<td>");
+	    var imgForTd = $("<img>").attr("src", protocol + "//" + host + "/student/" + list[i].userId + "/image");
+    	$(imgForTd).attr("width", "100px");
+    	$(tdForimg).append(imgForTd);
+	    $(tr).append(tdForimg);
 
 		var settingsGear = createSettingsGearDiv();
 		$(settingsGear).removeClass("pull-right");

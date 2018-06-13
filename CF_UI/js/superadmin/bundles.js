@@ -195,10 +195,14 @@ function populateBundleDetails(list) {
     var tdForName = $("<td>");
     $(tdForName).append(list[i].name);
     $(tr).append(tdForName);
+    
+    var tdDescription = $("<td>");
+    $(tdDescription).append(list[i].description);
+    $(tr).append(tdDescription);
 
-    var tdEmail = $("<td>");
-    $(tdEmail).append(list[i].mrp);
-    $(tr).append(tdEmail);
+    var tdMrp = $("<td>");
+    $(tdMrp).append(list[i].mrp);
+    $(tr).append(tdMrp);
 
     var tdSelling = $("<td>");
     $(tdSelling).append(list[i].sellingPrice);
@@ -224,6 +228,12 @@ function populateBundleDetails(list) {
     $(tdForStatus).append(status);
     $(tr).append(tdForStatus);
 
+    var tdForimg = $("<td>");
+    var imgForTd = $("<img>").attr("src", protocol + "//" + host + "/bundle/" + list[i].bundleId + "/image");
+    $(imgForTd).attr("width", "100px");
+    $(tdForimg).append(imgForTd);
+    $(tr).append(tdForimg);
+    
     // var tdForMobile = $("<td>");
     // $(tdForMobile).append(list[i].mobileNo);
     // $(tr).append(tdForMobile);
