@@ -508,7 +508,14 @@ function populateExamMasterExams(list) {
 		} else if (list[i].status == "3") {
 			status = "Deleted";
 		}
+		var demo = "";
+		if (list[i].isDemo) {
+			demo = "Demo";
+		} else {
+			demo = "Regular";
+		} 
 		$(tdForStatus).append(status);
+		$(tdForStatus).append("<br/>" + demo);
 		$(tr).append(tdForStatus);
 
 		var settingsGear = createSettingsGearDiv();
@@ -572,12 +579,32 @@ function appendLiForExamSettings(div, obj) {
 		$(liForStatus).attr("status", "3");
 		$(ul).append(liForStatus);
 	}
-	console.info("dfsd" + obj.status)
+	console.info("status = " + obj.status)
 	$(liForStatus).click(function() {
 		var obj = $(this).closest("tr").data("obj");
 		var status = $(this).attr("status");
 		var questionPaperId = obj.questionPaperId;
 		updateExamMasterStatus(questionPaperId, status);
+	});
+	
+	var liForDemo = createAndReturnLiForSettingsGear("Set as Demo");
+	var demo = "";
+	if (obj.isDemo == "0") {
+		$(ul).append(liForDelete);
+		liForDemo = createAndReturnLiForSettingsGear("Set as Demo");
+		$(liForDemo).attr("isDemo", "1");
+		$(ul).append(liForDemo);
+	} else if (obj.isDemo == "1") {
+		liForDemo = createAndReturnLiForSettingsGear("Set as Regular");
+		$(liForDemo).attr("isDemo", "0");
+		$(ul).append(liForDemo);
+	}
+	console.info("isDemo = " + obj.isDemo)
+	$(liForDemo).click(function() {
+		var obj = $(this).closest("tr").data("obj");
+		var isDemo = $(this).attr("isDemo");
+		var questionPaperId = obj.questionPaperId;
+		updateExamMasterIsDemo(questionPaperId, isDemo);
 	});
 
 
@@ -770,6 +797,17 @@ function deleteExamMasterExam(questionPaperId) {
 function updateExamMasterStatus(questionPaperId, status) {
 	$.ajax({
 		url: protocol + "//" + host + "/question-paper/" + questionPaperId + "/status/" + status,
+		type: "GET",
+		cache: false,
+		success: function(returnMap) {
+			getExamMasterExams();
+		}
+	});
+}
+
+function updateExamMasterIsDemo(questionPaperId, isDemo) {
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/" + questionPaperId + "/isdemo/" + isDemo,
 		type: "GET",
 		cache: false,
 		success: function(returnMap) {
