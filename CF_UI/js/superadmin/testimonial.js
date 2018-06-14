@@ -8,6 +8,7 @@ function loadTestimonialPage(isShow) {
     }
     $("#btnAddNewTestimonial").click(function () {
       $("#divSuperAdminAddNewTestimonial").modal("show");
+      $("#btnNewTestimonialSave").attr("type", "add");
     });
     $("#divSuperAdminAddNewTestimonial").on("shown.bs.modal", function () {
 

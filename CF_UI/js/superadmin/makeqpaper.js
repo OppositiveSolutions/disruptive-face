@@ -20,6 +20,10 @@ function loadMakeQPaperPage(obj, questionId, isShow) {
 			});
 
 		});
+		$("#btnBackToMaster").click(function () {
+			$("#divSuperAdminExamMasterPage").show();
+			$("#divSuperAdminMakeQPaperPage").hide();
+		});
 		$("button[href='#imgTab']").click(function () {
 			$("#makeQuetionPageBody").find("ul.nav-tabs").find("li").removeClass("active");
 		});
@@ -95,21 +99,59 @@ function saveQuestion() {
 		success: function (returnMap) {
 			checkIfImageToUpload(returnMap, function () {
 				$("#divAddNewQPaperPage").modal("hide");
-				refreshQuestionPaperPage();
+				refreshQuestionPaperPage(function () {
+					var categoryId = $("#divAddNewQPaperPage").attr("categoryId");
+					$("#divSuperAdminMakeQPaperPage").find("div.panel[categoryId=" + categoryId + "]").find("button.btnView").trigger("click");
+				});
 			});
 
 		}
 	});
 
 }
+function b64toBlob(b64Data, sliceSize) {
+	var contentType = 'image/jpg';
+	sliceSize = sliceSize || 512;
+
+	var byteCharacters = atob(b64Data);
+	var byteArrays = [];
+
+	for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+		var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+		var byteNumbers = new Array(slice.length);
+		for (var i = 0; i < slice.length; i++) {
+			byteNumbers[i] = slice.charCodeAt(i);
+		}
+
+		var byteArray = new Uint8Array(byteNumbers);
+
+		byteArrays.push(byteArray);
+	}
+
+	var blob = new Blob(byteArrays, { type: contentType });
+	return blob;
+}
 function checkIfImageToUpload(returnMap, callBack) {
+
+	var formdata = new FormData();
+	var hasImage = false;
+	var isEdit = $("#divAddNewQPaperPage").attr("isEdit");
+	if (isEdit) {
+		var imageMap = $('#makeQuetionPageBody').find("div.previewDiv").find("img").data("questionimageMap");
+		if (imageMap) {
+			hasImage = true;
+			formdata.append("file", b64toBlob(imageMap.image));
+		}
+	}
 	if ($("#questionImage")[0].files && $("#questionImage")[0].files[0]) {
-
-		var questionId = returnMap.data[0].questionId;
-
-		var formdata = new FormData();
+		hasImage = true;
 		formdata.append("file", $("#questionImage")[0].files[0]);
-		formdata.append("description", "jwerty");
+	}
+
+	if (hasImage) {
+		var questionId = returnMap.data[0].questionId;
+		formdata.append("description", "Question Image");
 		$.ajax({
 			url: protocol + "//" + host + "/question-paper/" + questionId + "/image",
 			type: "POST",
@@ -121,15 +163,18 @@ function checkIfImageToUpload(returnMap, callBack) {
 				callBack();
 			}
 		});
+	} else {
+		callBack();
 	}
 }
 
 
-function showQuestionCreateSection(subCategoryId, obj, questionNo) {
+function showQuestionCreateSection(subCategoryId, obj, questionNo, categoryId) {
 	$("#divAddNewQPaperPage").removeAttr("questionId");
 	var optionCount = $("#divAddNewQPaperPage").attr("optionsCount");
 	$("#divAddNewQPaperPage").modal("show");
 	$("#divAddNewQPaperPage").attr("subCategoryId", subCategoryId);
+	$("#divAddNewQPaperPage").attr("categoryId", categoryId);
 	createOptionTabsAccordingToOptionCount(optionCount, function () {
 		$("#makeQuetionPageBody").find("textarea").each(function () {
 			var id = $(this).attr("id");
@@ -165,7 +210,6 @@ function showQuestionCreateSection(subCategoryId, obj, questionNo) {
 			}
 			$("#txtQuestionNumber").focus();
 		}, 1000);
-
 		var divForImage = $("<div>").addClass("tab-pane");
 		var divForBtn = $("<div>").addClass("text-center");
 		var fileInput = $("<input>").attr("type", "file");
@@ -184,12 +228,16 @@ function showQuestionCreateSection(subCategoryId, obj, questionNo) {
 			showImagePreview(event.target)
 		});
 		$("#makeQuetionPageBody").find("div.tab-content").append(divForImage);
-
+		if (obj && obj.questionImage && obj.questionImage.length) {
+			var img = $("<img>").attr("src", "data:image/jpg;base64," + obj.questionImage[0].image).attr("width", "100%");
+			$(divForPreview).html("").append(img);
+			$(img).data("questionimageMap", obj.questionImage[0])
+		}
 	});
 
 }
 function showImagePreview(input) {
-	console.info($(input).files);
+	console.info(input.files);
 	if (input.files && input.files[0]) {
 		var reader = new FileReader();
 		reader.onload = function (e) {
@@ -285,7 +333,7 @@ function initializeSetQPaperPage(obj, questionId) {
 	getAllCategoriesForQuestionPaper(obj.questionPaperCategorys);
 	$("#divAddNewQPaperPage").attr("optionsCount", obj.noOfOptions);
 }
-function refreshQuestionPaperPage() {
+function refreshQuestionPaperPage(callBack) {
 	var questionpaperId = $("#makeQuetionPageBody").attr("questionPaperId");
 	$.ajax({
 		url: protocol + "//" + host + "/question-paper/" + questionpaperId + "/category",
@@ -293,7 +341,7 @@ function refreshQuestionPaperPage() {
 		cache: false,
 		success: function (obj) {
 			var list = obj.data;
-			getAllCategoriesForQuestionPaper(list);
+			getAllCategoriesForQuestionPaper(list, callBack);
 		}
 	});
 }
@@ -303,7 +351,7 @@ function setTabKeyPressDirectToQuestionArea(item) {
 	//tinyMCE.get("textAreaForQuestion").focus();
 }
 
-function getAllCategoriesForQuestionPaper(list) {
+function getAllCategoriesForQuestionPaper(list, callBack) {
 	var mainDiv = $("#makeQPaperPageBody").empty();
 	if (list.length != 0) {
 		for (var i = 0; i < list.length; i++) {
@@ -313,7 +361,8 @@ function getAllCategoriesForQuestionPaper(list) {
 			var divPanelHeading = $("<div>").addClass("panel-heading");
 			$(divPanel).append(divPanelHeading);
 			$(divPanelHeading).attr("categoryId", list[i].category.categoryId);
-			var aToggleButton = $("<button>").addClass("btn btn-sm btn-default pull-right").html("view");
+			$(divPanel).attr("categoryId", list[i].category.categoryId);
+			var aToggleButton = $("<button>").addClass("btn btn-sm btn-default pull-right btnView").html("view");
 			$(divPanelHeading).append(aToggleButton);
 			$(aToggleButton).attr("data-toggle", "collapse");
 			$(aToggleButton).attr("data-parent", "#makeQPaperPageBody");
@@ -328,6 +377,9 @@ function getAllCategoriesForQuestionPaper(list) {
 			$(divForCategoryCondent).append(divForPanelCategoryCondent);
 			getSubCategoryForACategory(list[i].questionPaperSubCategorys, divForPanelCategoryCondent, list[i].correctAnswerMark);
 		}
+	}
+	if (callBack) {
+		callBack();
 	}
 }
 
@@ -347,7 +399,9 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 			var btnForAddQuestion = $("<button>").addClass("btn btn-default btn-sm pull-right").html("Add Question");
 			$(btnForAddQuestion).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
 			$(btnForAddQuestion).click(function () {
-				showQuestionCreateSection($(this).attr("subCategoryId"));
+				$("#divAddNewQPaperPage").attr("isEdit", "false");
+				var categoryId = $(this).closest("div.panel").attr("categoryId");
+				showQuestionCreateSection($(this).attr("subCategoryId"), undefined, undefined, categoryId);
 			});
 			$(divSubCategoryTop).append(btnForAddQuestion);
 			$(categoryDiv).append(divSubCategoryTop);
@@ -356,7 +410,8 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 	}
 }
 
-function populateQuestionAndOptions(subCategory, targetDiv, ) {
+function populateQuestionAndOptions(subCategory, targetDiv) {
+	$(targetDiv).css("border-top", "1px solid #ddd");
 	var questionsList = subCategory.questions;
 	var ulForQuestion = $("<ul>").addClass('noPadding QuestionUl');
 	$(ulForQuestion).attr("subCategoryId", subCategory.questionPaperSubCategoryId);
@@ -367,6 +422,11 @@ function populateQuestionAndOptions(subCategory, targetDiv, ) {
 
 			var pForNumber = $("<p>").html(questionsList[k].questionNo + ") ");
 			$(divForQuestion).append(pForNumber);
+			try {
+				$(divForQuestion).attr("questionId", questionsList[k].question.questionId);
+			} catch (e) {
+
+			}
 
 			try {
 				var ImgMapList = questionsList[k].question.questionImage;
@@ -396,11 +456,18 @@ function populateQuestionAndOptions(subCategory, targetDiv, ) {
 				var questionMap = $(this).parent().data("question");
 				var subCategoryId = $(this).parent().attr("subCategroyId");
 				var questionNo = $(this).parent().attr("questionNo");
-				showQuestionCreateSection(subCategoryId, questionMap, questionNo);
+				var categoryId = $(this).closest("div.panel").attr("categoryId");
+				$("#divAddNewQPaperPage").attr("isEdit", "true");
+
+				showQuestionCreateSection(subCategoryId, questionMap, questionNo, categoryId);
 			});
 			var deleteIcon = $("<i>").addClass("fa fa-trash-o");
 			$(spanForEditAndDelete).append(editIcon);
 			$(spanForEditAndDelete).append(deleteIcon);
+			$(deleteIcon).click(function () {
+				var questionMap = $(this).parent().data("question");
+				deleteQuestion(questionMap.questionId);
+			});
 			$(divForQuestion).append(spanForEditAndDelete);
 			var ulForOptions = $("<ul>").addClass("optionsList");
 			var optionsList = questionsList[k].question.options;
@@ -421,6 +488,17 @@ function populateQuestionAndOptions(subCategory, targetDiv, ) {
 	}
 }
 
-function editQuestion(questionMap, subCategoryId) {
+function deleteQuestion(questionId) {
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/question",
+		type: "DELETE",
+		cache: false,
+		success: function (obj) {
+			try {
+				$("#makeQPaperPageBody").find("li.questionLi[questionId=" + questionId + "]").remove();
+			} catch(e){
 
+			}
+		}
+	});
 }
