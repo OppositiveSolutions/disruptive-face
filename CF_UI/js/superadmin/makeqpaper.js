@@ -466,7 +466,9 @@ function populateQuestionAndOptions(subCategory, targetDiv) {
 			$(spanForEditAndDelete).append(deleteIcon);
 			$(deleteIcon).click(function () {
 				var questionMap = $(this).parent().data("question");
-				deleteQuestion(questionMap.questionId);
+				if (confirm("Are you sure you want to delete the question")) {
+					deleteQuestion(questionMap.questionId);
+				}
 			});
 			$(divForQuestion).append(spanForEditAndDelete);
 			var ulForOptions = $("<ul>").addClass("optionsList");
@@ -496,7 +498,7 @@ function deleteQuestion(questionId) {
 		success: function (obj) {
 			try {
 				$("#makeQPaperPageBody").find("li.questionLi[questionId=" + questionId + "]").remove();
-			} catch(e){
+			} catch (e) {
 
 			}
 		}
