@@ -545,7 +545,7 @@ function populateQuestionAndOptions(subCategory, targetDiv) {
 
 function deleteQuestion(questionId) {
 	$.ajax({
-		url: protocol + "//" + host + "/question-paper/question",
+		url: protocol + "//" + host + "/question-paper/" + questionId + "/question",
 		type: "DELETE",
 		cache: false,
 		success: function (obj) {

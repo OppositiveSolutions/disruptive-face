@@ -106,7 +106,7 @@ function editTestimonials() {
 
 function getTestimonials() {
   $.ajax({
-    url: protocol + "//" + host + "/testimonial",
+    url: protocol + "//" + host + "/testimonial/all",
     type: "GET",
     cache: false,
     success: function (obj) {

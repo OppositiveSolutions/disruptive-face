@@ -6,6 +6,7 @@ function loadExamMasterPage(isShow) {
 		if (isShow) {
 			showExamMasterPage();
 		}
+		makeNumericTextBox($("#divAddNewExamMasterPage")[0]);
 		$("#btnAddNewExamMasterExam").click(function() {
 			$("#divAddNewExamMasterPage").modal("show");
 		});
@@ -278,6 +279,12 @@ function populateCategoryForExam(list) {
 		$(label).append(list[i].name);
 		$(tdForName).append(label);
 		$(tr).append(tdForName);
+
+		var inputOrder = $("<input>").addClass("form-control input-sm order numberOnly");
+		var tdOrder = $("<td>");
+		$(tdOrder).append(inputOrder);
+		$(tr).append(tdOrder);
+
 		var inputForQuestion = $("<input>").addClass("form-control input-sm noOfQuestion");
 		var tdForQuestion = $("<td>");
 		$(tdForQuestion).append(inputForQuestion);
@@ -307,6 +314,7 @@ function populateCategoryForExam(list) {
 
 		$(tbody).append(tr);
 	}
+	makeNumericTextBox($("#divAddNewExamMasterPage")[0], true);
 
 }
 
@@ -360,12 +368,27 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 	var examMasterType = $("#sltExamMasterType").val();
 	var totalQuestions = $("#txtExamMasterTotalNoOfQuestions").val();
 	var totalCategroyQuestions = 0;
+	var prevOrder = "";
 	$("#tblCategoryForExam tbody").find("input:checkbox:checked").each(function() {
 		var obj = {};
 		var categoryId = $(this).val();
 		var name = $(this).attr("name");
 		var tr = $(this).closest("tr")[0];
 		var questionPaperCategoryId = $(tr).attr("questionPaperCategoryId");
+
+		var order = $(tr).find("input:text.order").val();
+		if (order == "") {
+			alert("Please enter the order");
+			shouldReturn = true;
+			return false;
+		}
+		if (prevOrder == order) {
+			alert("You can't give same order for different category");
+			shouldReturn = true;
+			return false;
+		}
+		prevOrder = order;
+
 		var noOfQuestions = $(tr).find("input:text.noOfQuestion").val();
 		if (noOfQuestions == "") {
 			alert("Please enter no. of questions");
@@ -410,6 +433,7 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 		obj.questionPaperCategoryId = questionPaperCategoryId;
 		obj.category.categoryId = categoryId;
 		obj.category.name = name;
+		obj.order = order;
 		obj.noOfQuestions = noOfQuestions;
 		obj.noOfSubCategory = noOfSubCategory;
 		obj.correctAnswerMark = correctAnswerMark;
@@ -441,6 +465,9 @@ function validateAndReturnExamMasterCategoryDetails(questionPaperId) {
 			alert("Exam duration and total of category duration doesn't match");
 			shouldReturn = true;
 		}
+	}
+	if (shouldReturn) {
+		return;
 	}
 	if (parseInt(totalQuestions) != totalCategroyQuestions) {
 		alert("Total no. of questions and total category questions doesn't match");
@@ -508,7 +535,14 @@ function populateExamMasterExams(list) {
 		} else if (list[i].status == "3") {
 			status = "Deleted";
 		}
+		var demo = "";
+		if (list[i].isDemo) {
+			demo = "Demo";
+		} else {
+			demo = "Regular";
+		}
 		$(tdForStatus).append(status);
+		$(tdForStatus).append("<br/>" + demo);
 		$(tr).append(tdForStatus);
 
 		var settingsGear = createSettingsGearDiv();
@@ -572,12 +606,32 @@ function appendLiForExamSettings(div, obj) {
 		$(liForStatus).attr("status", "3");
 		$(ul).append(liForStatus);
 	}
-	console.info("dfsd" + obj.status)
+	console.info("status = " + obj.status)
 	$(liForStatus).click(function() {
 		var obj = $(this).closest("tr").data("obj");
 		var status = $(this).attr("status");
 		var questionPaperId = obj.questionPaperId;
 		updateExamMasterStatus(questionPaperId, status);
+	});
+
+	var liForDemo = createAndReturnLiForSettingsGear("Set as Demo");
+	var demo = "";
+	if (obj.isDemo == "0") {
+		$(ul).append(liForDelete);
+		liForDemo = createAndReturnLiForSettingsGear("Set as Demo");
+		$(liForDemo).attr("isDemo", "1");
+		$(ul).append(liForDemo);
+	} else if (obj.isDemo == "1") {
+		liForDemo = createAndReturnLiForSettingsGear("Set as Regular");
+		$(liForDemo).attr("isDemo", "0");
+		$(ul).append(liForDemo);
+	}
+	console.info("isDemo = " + obj.isDemo)
+	$(liForDemo).click(function() {
+		var obj = $(this).closest("tr").data("obj");
+		var isDemo = $(this).attr("isDemo");
+		var questionPaperId = obj.questionPaperId;
+		updateExamMasterIsDemo(questionPaperId, isDemo);
 	});
 
 
@@ -699,6 +753,7 @@ function validateAndReturnSubcategoryDetails() {
 		obj.description = description;
 		obj.noOfQuestions = noOfQuestions;
 		obj.name = name;
+		obj.order = "0";
 		obj.questionPaperCategoryId = questionPaperCategoryId;
 		if (obj.noOfQuestions == "") {
 			alert("Please enter no of questions");
@@ -778,6 +833,17 @@ function updateExamMasterStatus(questionPaperId, status) {
 	});
 }
 
+function updateExamMasterIsDemo(questionPaperId, isDemo) {
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/" + questionPaperId + "/isdemo/" + isDemo,
+		type: "GET",
+		cache: false,
+		success: function(returnMap) {
+			getExamMasterExams();
+		}
+	});
+}
+
 function populateExamMasterExamForm(obj) {
 	$("#btnExamMasterExamDetailsNext").data("obj", obj);
 	$("#divAddNewExamMasterPage").modal("show");
@@ -814,6 +880,7 @@ function populateExamCategoriesForEdit(obj) {
 		var tr = $("#tblCategoryForExam").find("input:checkbox[value=" + categories[i].category.categoryId + "]").closest("tr");
 		$("#tblCategoryForExam").find("input:checkbox[value=" + categories[i].category.categoryId + "]").prop("checked", true);
 		$(tr).find("input:text.noOfQuestion").val(categories[i].noOfQuestions);
+		$(tr).find("input:text.order").val(categories[i].order);
 		$(tr).find("input:text.noOfSubcategory").val(categories[i].noOfSubCategory);
 		$(tr).find("input:text.weightage").val(categories[i].correctAnswerMark);
 		$(tr).find("input:text.negativeMark").val(categories[i].negativeMark);
