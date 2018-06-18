@@ -2,11 +2,61 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">Set Question Papers
-				<button class="btn btn-sm btn-default pull-right" id="btnBackToMaster" >Back</button>
+				<button class="btn btn-sm btn-default pull-right" id="btnBackToMaster">Back</button>
 
 			</h3>
 		</div>
 		<div class="panel-body" id="makeQPaperPageBody">
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="divAddNewSubContentPage">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content ">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title">Add Sub-Category Content</h4>
+			</div>
+			<div class="modal-body" id="NewSubContent">
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active">
+						<a href="#divAddCOntentForMakeQPaper" aria-controls="divAddCOntentForMakeQPaper" role="tab" data-toggle="tab">Content</a>
+					</li>
+					<li role="presentation">
+						<a href="#divAddImgCOntentForMakeQPaper" aria-controls="divAddImgCOntentForMakeQPaper" role="tab" data-toggle="tab">Image</a>
+					</li>
+				</ul>
+				<div role="tabpanel">
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="divAddCOntentForMakeQPaper">
+							<div class="form-group">
+								<textarea id="txtAreaForSubContent" class="form-control">
+
+					</textarea>
+							</div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="divAddImgCOntentForMakeQPaper">
+							<div class="text-center">
+								<label class="btn btn-sm btn-default" for="questionImageSubContent">Upload Image</label>
+								<input type="file" id="questionImageSubContent" style="display: none;">
+							</div>
+							<div class="previewDiv"></div>
+						</div>
+					</div>
+				</div>
+				<div class="text-center margintopfifteen">
+					<button class="btn btn-default" id="btnAddContentSubCategory">
+						Save
+					</button>
+					<button class="btn btn-default" data-dismiss="modal">
+						Close
+					</button>
+				</div>
+			</div>
 
 		</div>
 	</div>
@@ -52,5 +102,4 @@
 
 		</div>
 	</div>
-</div>
 </div>

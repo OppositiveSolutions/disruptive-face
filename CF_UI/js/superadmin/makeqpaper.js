@@ -32,9 +32,53 @@ function loadMakeQPaperPage(obj, questionId, isShow) {
 			var idOfTargetTextArea = $(targetDivId).find("textarea").attr("id");
 			tinyMCE.get(idOfTargetTextArea).focus();
 		});
+		tinymce.init({
+			selector: '#txtAreaForSubContent',
+			height: 250,
+			plugins: ["advlist autolink lists charmap print preview ", "searchreplace visualblocks fullscreen", "insertdatetime  table contextmenu paste pramukhime  "],
+			toolbar: " undo redo | styleselect | bold italic charmap | alignleft aligncenter alignright alignjustify | bullist numlist | fullscreen  | pramukhime   pramukhimetogglelanguage ",
+			content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
+			// language : 'ml_IN'
+		});
+		$("#questionImageSubContent").change(function (event) {
+			showImagePreview(event.target, "#divAddImgCOntentForMakeQPaper");
+		});
+		$("#btnAddContentSubCategory").click(function () {
+			var subCategoryId = $("#divAddNewSubContentPage").attr("subCategoryId");
+			saveSubContent(subCategoryId);
+		});
 	});
 }
+function saveSubContent(subCategoryId) {
+	var subContent = tinymce.get('txtAreaForSubContent').getContent();
+	if (!subContent || subContent.trim() == "") {
+		alert("Enter content ");
+		return;
+	}
 
+	var formdata = new FormData();
+	formdata.append("content", subContent);
+	var hasImage = false;
+	if ($("#questionImageSubContent")[0].files && $("#questionImageSubContent")[0].files[0]) {
+		hasImage = true;
+		formdata.append("file", $("#questionImageSubContent")[0].files[0]);
+	}
+	formdata.append("isImage", hasImage);
+	formdata.append("questionPaperSubCategoryId", subCategoryId);
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/sub-category/" + subCategoryId + "/content",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData: false,
+		data: formdata,
+		success: function (returnMap) {
+			refreshQuestionPaperPage(function () {
+
+			});
+		}
+	});
+}
 function saveQuestion() {
 	var subCategoryId = $("#divAddNewQPaperPage").attr("subCategoryId");
 	var questionNumber = $("#txtQuestionNumber").val();
@@ -225,7 +269,7 @@ function showQuestionCreateSection(subCategoryId, obj, questionNo, categoryId) {
 		$(divForImage).attr("id", "imgTab");
 		$(fileInput).hide();
 		$(fileInput).change(function (event) {
-			showImagePreview(event.target)
+			showImagePreview(event.target, "#makeQuetionPageBody")
 		});
 		$("#makeQuetionPageBody").find("div.tab-content").append(divForImage);
 		if (obj && obj.questionImage && obj.questionImage.length) {
@@ -236,14 +280,12 @@ function showQuestionCreateSection(subCategoryId, obj, questionNo, categoryId) {
 	});
 
 }
-function showImagePreview(input) {
-	console.info(input.files);
+function showImagePreview(input, div) {
 	if (input.files && input.files[0]) {
 		var reader = new FileReader();
 		reader.onload = function (e) {
 			var img = $("<img>").attr("src", e.target.result).attr("width", "100%");
-			console.info(e.target.result);
-			$('#makeQuetionPageBody').find("div.previewDiv").html("").append(img);
+			$(div).find("div.previewDiv").html("").append(img);
 		}
 
 		reader.readAsDataURL(input.files[0]);
@@ -404,12 +446,23 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 				showQuestionCreateSection($(this).attr("subCategoryId"), undefined, undefined, categoryId);
 			});
 			$(divSubCategoryTop).append(btnForAddQuestion);
+			var btnForAddContent = $("<button>").addClass("btn btn-default contentBtn btn-sm pull-right marginrgtfive").html("Add Content");
+			$(btnForAddContent).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
+			$(btnForAddContent).click(function () {
+				var subCategoryId = $(this).attr("subCategoryId");
+				addContentToSUbCategory(subCategoryId);
+			});
+			$(divSubCategoryTop).append(btnForAddContent);
 			$(categoryDiv).append(divSubCategoryTop);
 			populateQuestionAndOptions(subCategoryList[j], categoryDiv);
 		}
 	}
 }
 
+function addContentToSUbCategory(subCategoryId) {
+	$("#divAddNewSubContentPage").modal("show");
+	$("#divAddNewSubContentPage").attr("subCategoryId", subCategoryId);
+}
 function populateQuestionAndOptions(subCategory, targetDiv) {
 	$(targetDiv).css("border-top", "1px solid #ddd");
 	var questionsList = subCategory.questions;

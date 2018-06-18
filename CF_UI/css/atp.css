@@ -407,7 +407,7 @@ padding:10px;
 	padding-left:10px;
 	font-size: 12px;
 }
-#makeQuetionPageBody .previewDiv{
+#makeQuetionPageBody .previewDiv,#divAddImgCOntentForMakeQPaper .previewDiv{
 min-height:300px;
 width: 300px;
 margin-top:20px;
