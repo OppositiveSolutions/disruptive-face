@@ -57,14 +57,14 @@ function saveSubContent(subCategoryId) {
 	}
 
 	var formdata = new FormData();
-	formdata.append("content", subContent);
+	formdata.append("contents", subContent);
 	var hasImage = false;
 	if ($("#questionImageSubContent")[0].files && $("#questionImageSubContent")[0].files[0]) {
 		hasImage = true;
 		formdata.append("file", $("#questionImageSubContent")[0].files[0]);
 	}
-	formdata.append("isImage", hasImage);
-	formdata.append("questionPaperSubCategoryId", subCategoryId);
+//	formdata.append("isImage", hasImage);
+//	formdata.append("questionPaperSubCategoryId", subCategoryId);
 	$.ajax({
 		url: protocol + "//" + host + "/question-paper/sub-category/" + subCategoryId + "/content",
 		type: "POST",
