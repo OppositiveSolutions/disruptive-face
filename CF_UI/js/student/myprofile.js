@@ -6,7 +6,8 @@ function loadStudentProfilePage() {
         $("#editMyprofileBtn").click(function () {
             enableEditMyProfile();
         });
-        showStudentProfile();
+//        showStudentProfile();
+        populateStudentData(data);
         populateStateDropdown($("#sltManageStudentsStatesMyProfile"));
         $("#btnStudentDetailsSaveMyProfile").click(function () {
             saveEditedPersonalInfo();
@@ -40,7 +41,7 @@ function saveEditedPersonalInfo() {
     postMap.stateId = $("#sltManageStudentsStatesMyProfile").val();
     postMap.userId = userData.userId;
     $.ajax({
-        url: protocol + "//" + host + "/student",
+        url: protocol + "//" + host + "/profile",
         type: "PUT",
         cache: false,
         data: JSON.stringify(postMap),
@@ -60,13 +61,15 @@ function enableEditMyProfile() {
     var userDetails = userData.user;
     if (userDetails) {
         var address = userDetails.address[0];
-        $("#sltManageStudentsAddressMyProfile").val(address.streetAddress);
-        if (address.states && address.states.stateId)
-            $("#sltManageStudentsStatesMyProfile").val(address.states.stateId);
-        else
-            $("#sltManageStudentsStatesMyProfile").val(0);
-        $("#txtManageStudentsCityMyProfile").val(address.city);
-        $("#txtManageStudentsPinCode").val(address.pinCode);
+        if (address) {
+        	$("#sltManageStudentsAddressMyProfile").val(address.streetAddress);
+        	if (address.states && address.states.stateId)
+        		$("#sltManageStudentsStatesMyProfile").val(address.states.stateId);
+        	else
+        		$("#sltManageStudentsStatesMyProfile").val(0);
+        	$("#txtManageStudentsCityMyProfile").val(address.city);
+        	$("#txtManageStudentsPinCode").val(address.pinCode);
+        }
     }
     $("#txtFirstNameMyProfile").val(userDetails.firstName);
     $("#txtLastNameMyProfile").val(userDetails.lastName);
@@ -88,12 +91,14 @@ function populateStudentData(data) {
     var userDetails = data.user;
     if (userDetails) {
         var address = userDetails.address[0];
-        $("#studentAddress").html(address.streetAddress);
-        if (address.states) {
-            $("#studentState").html(address.states.name);
+        if (address) {
+        	$("#studentAddress").html(address.streetAddress);
+        	if (address.states) {
+        		$("#studentState").html(address.states.name);
+        	}
+        	$("#studentCity").html(address.city);
+        	$("#studentPin").html(address.pinCode);
         }
-        $("#studentCity").html(address.city);
-        $("#studentPin").html(address.pinCode);
         $("#studentFirstName").html(userDetails.firstName);
         $("#studentLastName").html(userDetails.lastName);
         $("#studentDob").html(userDetails.dob);
