@@ -1,19 +1,19 @@
 function loadStudentDetailPage(isShow) {
 	$.get("superadmin/studentdetails.html" + postUrl, {
-		"_" : $.now()
-	}, function(data) {
+		"_": $.now()
+	}, function (data) {
 		$("#pageContainer").append(data);
 		if (isShow) {
 			showStudentDetailsPage();
 		}
-		$("#btnAddNewStudentDetails").click(function() {
+		$("#btnAddNewStudentDetails").click(function () {
 			$("#divAddNewStudentDetailsPage").modal("show");
 		});
-		$("#divAddNewStudentDetailsPage").on("shown.bs.modal", function() {
+		$("#divAddNewStudentDetailsPage").on("shown.bs.modal", function () {
 
 		});
 		makeNumericTextBox($("#divAddNewStudentDetailsPage")[0])
-		$("#divAddNewStudentDetailsPage").on("hidden.bs.modal", function() {
+		$("#divAddNewStudentDetailsPage").on("hidden.bs.modal", function () {
 			$("#btnStudentDetailsSave").removeAttr("type");
 			clearStudentManagementPage();
 		});
@@ -21,7 +21,7 @@ function loadStudentDetailPage(isShow) {
 		populateManageStudentsCenter($("#sltManageStudentsCenterName"));
 		attachDatePickers($("#divAddNewStudentDetailsPage")[0]);
 		addIconToMandatoryItems($("#divAddNewStudentDetailsPage")[0])
-		$("#btnStudentDetailsSave").click(function() {
+		$("#btnStudentDetailsSave").click(function () {
 			var type = $(this).attr("type");
 			if (type == "edit") {
 				editStudentDetails();
@@ -29,21 +29,29 @@ function loadStudentDetailPage(isShow) {
 				saveStudentDetails();
 			}
 		});
+
+
+		$("a[href='#divRegisteredStudents']").click(function () {
+			getRegisteredStudents();
+		});
+		$("a[href='#divNotRegisteredStudents']").click(function () {
+			getNotRegisteredStudents();
+		});
 	});
 }
 
 function populateManageStudentsCenter(dropDown) {
 	$.ajax({
-		url : protocol + "//" + host + "/center",
-		type : "GET",
-		cache : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/center",
+		type: "GET",
+		cache: false,
+		success: function (obj) {
 			var list = obj.data;
 			var optionSelect = $("<option>").html("Select");
 			$(dropDown).append(optionSelect);
 			for (var i = 0; i < list.length; i++) {
 				var option = $("<option>").val(list[i].centerId).html(
-						list[i].centerCode);
+					list[i].centerCode);
 				$(dropDown).append(option);
 			}
 		}
@@ -69,15 +77,15 @@ function saveStudentDetails() {
 	formdata.append("studentJson", JSON.stringify(obj));
 
 	$.ajax({
-		url : protocol + "//" + host + "/student",
-		type : "POST",
-		cache : false,
-		data : formdata,
-		processData : false,
-		contentType : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/student",
+		type: "POST",
+		cache: false,
+		data: formdata,
+		processData: false,
+		contentType: false,
+		success: function (obj) {
 			console.info(obj);
-			getStudents();
+			getRegisteredStudents();
 			$("#divAddNewStudentDetailsPage").modal("hide");
 		}
 	});
@@ -98,15 +106,15 @@ function editStudentDetails() {
 	formdata.append("studentJson", JSON.stringify(obj));
 
 	$.ajax({
-		url : protocol + "//" + host + "/student",
-		type : "PUT",
-		cache : false,
-		data : formdata,
-		processData : false,
-		contentType : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/student",
+		type: "PUT",
+		cache: false,
+		data: formdata,
+		processData: false,
+		contentType: false,
+		success: function (obj) {
 			console.info(obj);
-			getStudents();
+			getRegisteredStudents();
 			$("#divAddNewStudentDetailsPage").modal("hide");
 		}
 	});
@@ -127,7 +135,7 @@ function editStudentDetails() {
 // contentType: "application/json; charset=utf-8",
 // success: function(obj) {
 // console.info(obj);
-// getStudents();
+// getRegisteredStudents();
 // $("#divAddNewStudentDetailsPage").modal("hide");
 // }
 // });
@@ -165,7 +173,7 @@ function validateAndReturnStudentInfo() {
 	obj.lastName = lastName;
 	var userId = $("#txtUserId").val();
 	obj.userId = userId;
-	
+
 	var qualification = $("#txtQualification").val();
 	if (qualification == "") {
 		alert("Please enter qualification");
@@ -267,12 +275,12 @@ function validateAndReturnStudentInfo() {
 	return obj;
 }
 
-function getStudents() {
+function getRegisteredStudents() {
 	$.ajax({
-		url : protocol + "//" + host + "/student/pageSize/100/pageNo/1",
-		type : "GET",
-		cache : false,
-		success : function(obj) {
+		url: protocol + "//" + host + "/student/pageSize/100/pageNo/1",
+		type: "GET",
+		cache: false,
+		success: function (obj) {
 			var list = obj.data;
 			populateStudentDetails(list);
 		}
@@ -280,9 +288,9 @@ function getStudents() {
 }
 
 function populateStudentDetails(list) {
-	var tbody = $("#tblStudentDetails tbody")[0];
+	var tbody = $("#tblStudentDetailsRegistered tbody")[0];
 	$(tbody).empty();
-	destroyDataTable("tblStudentDetails");
+	destroyDataTable("tblStudentDetailsRegistered");
 	for (var i = 0; i < list.length; i++) {
 		var tr = $("<tr>");
 		$("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
@@ -294,7 +302,7 @@ function populateStudentDetails(list) {
 		// var tdForCreatedDate = $("<td>");
 		// $(tdForCreatedDate).append(list[i].createdDate);
 		// $(tr).append(tdForCreatedDate);
-		
+
 		var tdQualification = $("<td>");
 		$(tdQualification).append(list[i].qualification);
 		$(tr).append(tdQualification);
@@ -332,9 +340,9 @@ function populateStudentDetails(list) {
 
 		var tdForimg = $("<td>");
 		var imgForTd = $("<img>").attr(
-				"src",
-				protocol + "//" + host + "/student/" + list[i].userId
-						+ "/image");
+			"src",
+			protocol + "//" + host + "/student/" + list[i].userId
+			+ "/image");
 		$(imgForTd).attr("width", "100px");
 		$(tdForimg).append(imgForTd);
 		$(tr).append(tdForimg);
@@ -346,7 +354,7 @@ function populateStudentDetails(list) {
 		appendLiForStudentsSettings(settingsGear, list[i]);
 		$(tbody).append(tr);
 	}
-	initializeDataTable("tblStudentDetails")
+	initializeDataTable("tblStudentDetailsRegistered")
 
 }
 
@@ -355,7 +363,7 @@ function appendLiForStudentsSettings(div, obj) {
 	$(ul).empty();
 	var liForEdit = createAndReturnLiForSettingsGear("Edit");
 	$(ul).append(liForEdit);
-	$(liForEdit).click(function() {
+	$(liForEdit).click(function () {
 		var obj = $(this).closest("tr").data("obj");
 		showAddNewStudentPage(obj);
 	});
@@ -366,14 +374,14 @@ function appendLiForStudentsSettings(div, obj) {
 	var liForUpdateStatus = createAndReturnLiForSettingsGear(status);
 	$(ul).append(liForUpdateStatus);
 	$(liForUpdateStatus).attr("status", obj.status);
-	$(liForUpdateStatus).click(function() {
+	$(liForUpdateStatus).click(function () {
 		var obj = $(this).closest("tr").data("obj");
 		var status = $(this).attr("status");
 		updateStudentStatus(obj.userId, status, $(this));
 	});
 	var liForDelete = createAndReturnLiForSettingsGear("Delete");
 	$(ul).append(liForDelete);
-	$(liForDelete).click(function() {
+	$(liForDelete).click(function () {
 		var obj = $(this).closest("tr").data("obj");
 		deleteStudent(obj.userId);
 	});
@@ -381,11 +389,11 @@ function appendLiForStudentsSettings(div, obj) {
 
 function deleteStudent(userId, status, liStatus) {
 	$.ajax({
-		url : protocol + "//" + host + "/student/" + userId,
-		type : "DELETE",
-		cache : false,
-		success : function(obj) {
-			getStudents();
+		url: protocol + "//" + host + "/student/" + userId,
+		type: "DELETE",
+		cache: false,
+		success: function (obj) {
+			getRegisteredStudents();
 
 		}
 	});
@@ -394,11 +402,11 @@ function deleteStudent(userId, status, liStatus) {
 
 function updateStudentStatus(userId, status, liStatus) {
 	$.ajax({
-		url : protocol + "//" + host + "/student/" + userId + "/activate",
-		type : "GET",
-		cache : false,
-		success : function(obj) {
-			getStudents();
+		url: protocol + "//" + host + "/student/" + userId + "/activate",
+		type: "GET",
+		cache: false,
+		success: function (obj) {
+			getRegisteredStudents();
 
 		}
 	});
@@ -420,7 +428,7 @@ function populateStudnetAddForm(obj) {
 	$("#txtLastName").val(obj.lastName);
 	$("#txtUserId").val(obj.userId);
 	$("input:radio[name='gendername'][value=" + obj.gender + "]").prop(
-			"checked", true);
+		"checked", true);
 	$("#txtDob").val(obj.dob);
 	$("#txtQualification").val(obj.qualification);
 	$("#txtEmailId").val(obj.username);
@@ -430,5 +438,8 @@ function populateStudnetAddForm(obj) {
 	$("#sltManageStudentsAddress").val(obj.address);
 	$("#txtManageStudentsPinCode").val(obj.pinCode);
 	$("#btnStudentDetailsSave").attr("userId", obj.userId)
+
+}
+function getNotRegisteredStudents() {
 
 }

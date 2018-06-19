@@ -215,7 +215,7 @@ function showStudentDetailsPage() {
 		});
 		return;
 	}
-	getStudents();
+	getRegisteredStudents();
 	updateLeftMenu("Student Details");
 	showPage($("#divSuperAdminStudentDetailsPage")[0]);
 }
