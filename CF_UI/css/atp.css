@@ -420,3 +420,6 @@ border:1px solid #ddd;
 .subContent{
 	padding: 10px;
 }
+.vitalSettings li{
+	cursor: pointer;
+}
