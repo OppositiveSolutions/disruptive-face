@@ -287,7 +287,7 @@ function loadContainerPage(statusMap) {
 			showChangePassword();
 		});
 		$("#btnSaveChangePassword").click(function () {
-
+			saveChangePassword();
 		});
 		console.info(currentAccountDetails);
 		$("#lblAccountHolderName").html(currentAccountDetails.firstName + " " + currentAccountDetails.lastName);
@@ -296,6 +296,44 @@ function loadContainerPage(statusMap) {
 
 }
 
+function saveChangePassword() {
+	var oldPass = $("#passwordOld").val();
+	var newPass = $("#passwordNew").val();
+	var confirmPass = $("#passwordConfirm").val();
+
+	if (!oldPass || (oldPass && !oldPass.trim())) {
+		alert("Enter your old password");
+		return;
+	}
+	if (!newPass || (newPass && (!newPass.trim() || newPass.length < 8))) {
+		alert("Enter valid new password");
+		return;
+	}
+	if (!confirmPass || (confirmPass && !confirmPass.trim())) {
+		alert("Confirm password");
+		return;
+	}
+	if (newPass != confirmPass) {
+		alert("Old password and confirm password donot match");
+		return
+	}
+	var passwordMap = {
+		oldPassword: oldPass,
+		newPassword: newPass
+	}
+	$.ajax({
+		url: protocol + "//" + host + "/profile/password/user/change",
+		type: "POST",
+		cache: false,
+		data: JSON.stringify(passwordMap),
+		contentType: "application/json; charset=utf-8",
+		success: function (obj) {
+			alert(obj.message);
+			$("#divChangePassword").modal("hide");
+		}
+	});
+
+}
 function showChangePassword() {
 	$("#divChangePassword").modal("show");
 

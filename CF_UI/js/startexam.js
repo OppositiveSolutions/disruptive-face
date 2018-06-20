@@ -409,11 +409,30 @@ function createQuestionElement(questionData, subCategory, categoryId) {
     var divForQuestions = $("<div>").addClass("row");
     var divForQuestionNumber = $("<div>").addClass("col-md-12 questionNumberDivision").html("Question No: " + questionData.questionNo);
     $(divForQuestions).append(divForQuestionNumber);
-    if (subCategory.direction) {
+    if (subCategory.direction || subCategory.content) {
         var divForQuestion = $("<div>").addClass("col-md-6");
         var divForDescription = $("<div>").addClass("col-md-6 divForDescription");
         $(divForDescription).html(subCategory.direction);
         $(divForQuestions).append(divForDescription);
+        try {
+            if (subCategory.content) {
+                var divForSubContent = $("<div>").html(subCategory.content);
+                $(divForDescription).append(divForSubContent);
+                var imgList = subCategory.questionPaperSubCategoryImage;
+                if (imgList && imgList.length) {
+                    for (var k = 0; k < imgList.length; k++) {
+                        var divForImage = $("<div>").addClass("text-center");
+                        var imgForContent = $("<img>").attr("src", 'data:image/jpeg;base64,' + imgList[k].image);
+                        $(imgForContent).attr("width", "300px");
+                        $(divForImage).append(imgForContent);
+                        $(divForDescription).append(divForImage);
+
+                    }
+                }
+            }
+        } catch (e) {
+
+        }
     } else {
         var divForQuestion = $("<div>").addClass("col-md-12");
     }
