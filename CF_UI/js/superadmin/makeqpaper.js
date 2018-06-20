@@ -56,15 +56,24 @@ function saveSubContent(subCategoryId) {
 		return;
 	}
 
+	var isEdit = $("#divAddNewSubContentPage").attr("isEdit");
 	var formdata = new FormData();
 	formdata.append("contents", subContent);
 	var hasImage = false;
+	if (isEdit == "true") {
+		var imageMap = $('#divAddNewSubContentPage').find("div.previewDiv").find("img").data("subImgMap");
+		console.info(imageMap);
+		if (imageMap) {
+			hasImage = true;
+			formdata.append("file", b64toBlob(imageMap.image));
+		}
+	}
 	if ($("#questionImageSubContent")[0].files && $("#questionImageSubContent")[0].files[0]) {
 		hasImage = true;
 		formdata.append("file", $("#questionImageSubContent")[0].files[0]);
 	}
-//	formdata.append("isImage", hasImage);
-//	formdata.append("questionPaperSubCategoryId", subCategoryId);
+	//	formdata.append("isImage", hasImage);
+	//	formdata.append("questionPaperSubCategoryId", subCategoryId);
 	$.ajax({
 		url: protocol + "//" + host + "/question-paper/sub-category/" + subCategoryId + "/content",
 		type: "POST",
@@ -73,6 +82,7 @@ function saveSubContent(subCategoryId) {
 		processData: false,
 		data: formdata,
 		success: function (returnMap) {
+			$("#divAddNewSubContentPage").modal("hide");
 			refreshQuestionPaperPage(function () {
 
 			});
@@ -452,16 +462,70 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 				var subCategoryId = $(this).attr("subCategoryId");
 				addContentToSUbCategory(subCategoryId);
 			});
+			var btnForEditContent = $("<button>").addClass("btn btn-default contentEditBtn btn-sm pull-right marginrgtfive").html("Edit Content");
+			$(btnForEditContent).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
+			$(btnForEditContent).data("subData", subCategoryList[j]);
+			$(btnForEditContent).click(function () {
+				var subCategoryId = $(this).attr("subCategoryId");
+				var subData = $(this).data("subData");
+				addContentToSUbCategory(subCategoryId, subData);
+			});
+			$(divSubCategoryTop).append(btnForEditContent);
 			$(divSubCategoryTop).append(btnForAddContent);
 			$(categoryDiv).append(divSubCategoryTop);
+
+
+
+			var divForContent = $("<div>").addClass("subContent").html(subCategoryList[j].content);
+			$(categoryDiv).append(divForContent);
+			try {
+				var imgList = subCategoryList[j].questionPaperSubCategoryImage;
+				if (imgList && imgList.length) {
+					for (var k = 0; k < imgList.length; k++) {
+						var divForImage = $("<div>").addClass("text-center");
+						var imgForContent = $("<img>").attr("src", 'data:image/jpeg;base64,' + imgList[k].image);
+						$(imgForContent).attr("width", "300px");
+						$(divForImage).append(imgForContent);
+						$(categoryDiv).append(divForImage);
+
+					}
+				}
+			} catch (e) {
+
+			}
 			populateQuestionAndOptions(subCategoryList[j], categoryDiv);
 		}
 	}
 }
 
-function addContentToSUbCategory(subCategoryId) {
+
+
+function addContentToSUbCategory(subCategoryId, subData) {
 	$("#divAddNewSubContentPage").modal("show");
+	$("#divAddNewSubContentPage").attr("isEdit", false);
+	tinymce.get('txtAreaForSubContent').setContent("");
+	$("#divAddImgCOntentForMakeQPaper").find("div.previewDiv").html("");
+	$("#questionImageSubContent").val("");
 	$("#divAddNewSubContentPage").attr("subCategoryId", subCategoryId);
+	try {
+		if (subData) {
+			$("#divAddNewSubContentPage").attr("isEdit", true);
+			tinymce.get('txtAreaForSubContent').setContent(subData.content);
+			try {
+				if (!subData.questionPaperSubCategoryImage[0]) {
+					return;
+				}
+				var img = $("<img>").attr("src", "data:image/jpg;base64," + subData.questionPaperSubCategoryImage[0].image).attr("width", "100%");
+				$("#divAddImgCOntentForMakeQPaper").find("div.previewDiv").html(img);
+				$(img).data("subImgMap", subData.questionPaperSubCategoryImage[0]);
+				$('#divAddNewSubContentPage').find("div.previewDiv").find("img").data("subImgMap");
+			} catch (e) {
+
+			}
+		}
+	} catch (e) {
+
+	}
 }
 function populateQuestionAndOptions(subCategory, targetDiv) {
 	$(targetDiv).css("border-top", "1px solid #ddd");
