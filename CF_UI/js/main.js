@@ -336,7 +336,9 @@ function saveChangePassword() {
 }
 function showChangePassword() {
 	$("#divChangePassword").modal("show");
-
+	$("#passwordOld").val("");
+	$("#passwordNew").val("");
+	$("#passwordConfirm").val("");
 }
 function initializePagesBasedOnRole() {
 	console.info(currentAccountDetails);
