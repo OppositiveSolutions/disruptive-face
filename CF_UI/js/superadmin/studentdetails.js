@@ -268,7 +268,6 @@ function validateAndReturnStudentInfo() {
 	// return;
 	// }
 	// obj.emailId = emailId;
-
 	// var centerId = $("#centerId").val();
 	// if (centerId == "") {
 	// alert("Please enter city");
