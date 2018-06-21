@@ -44,7 +44,7 @@ function loadStudentDetailPage(isShow) {
 }
 
 function refreshAccordingToCurrentTab() {
-	$("#studentTypeTabs").find("li[role='presentation'].active").trigger("click");
+	$("#studentTypeTabs").find("li[role='presentation'].active").find("a").trigger("click");
 }
 function populateManageStudentsCenter(dropDown) {
 	$.ajax({
