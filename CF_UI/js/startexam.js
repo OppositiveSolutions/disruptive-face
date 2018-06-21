@@ -407,7 +407,8 @@ function createQuestionElement(questionData, subCategory, categoryId) {
     var li = $("<div>").addClass("hide questionDiv");
     $("#questionContainer").append(li);
     var divForQuestions = $("<div>").addClass("row");
-    var divForQuestionNumber = $("<div>").addClass("col-md-12 questionNumberDivision").html("Question No: " + questionData.questionNo);
+    var divForQuestionNumber = $("<div>").addClass("col-md-12 questionNumberDivision").html("<b>" + subCategory.description + "</b>");
+//    		"Question No: " + questionData.questionNo);
     $(divForQuestions).append(divForQuestionNumber);
 
     if (subCategory.content) {
@@ -445,7 +446,7 @@ function createQuestionElement(questionData, subCategory, categoryId) {
     $(li).attr("questionId", questionMap.questionId);
     $(li).attr("status", 0);
     $(li).attr("categoryId", categoryId);
-    var divForQuestionHtml = $("<div>").addClass("questionSpan").html(questionMap.question);
+    var divForQuestionHtml = $("<div>").addClass("questionSpan").html("<span> " + questionData.questionNo + " ) </span>" +questionMap.question);
     $(divForQuestion).append(divForQuestionHtml);
     try {
         var ImgMap = questionData.question.questionImage[0];

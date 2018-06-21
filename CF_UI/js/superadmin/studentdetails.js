@@ -37,6 +37,9 @@ function loadStudentDetailPage(isShow) {
 		$("a[href='#divNotRegisteredStudents']").click(function () {
 			getNotRegisteredStudents();
 		});
+		$("a[href='#divInactiveStudents']").click(function () {
+			getInactiveStudents();
+		});
 	});
 }
 
@@ -438,8 +441,8 @@ function populateStudnetAddForm(obj) {
 	$("#sltManageStudentsAddress").val(obj.address);
 	$("#txtManageStudentsPinCode").val(obj.pinCode);
 	$("#btnStudentDetailsSave").attr("userId", obj.userId)
-
 }
+
 function getNotRegisteredStudents() {
 	$.ajax({
 		url: protocol + "//" + host + "/student/reg/pageSize/100/pageNo/1",
@@ -520,5 +523,87 @@ function populateStudentDetailsNotRegistered(list) {
 		$(tbody).append(tr);
 	}
 	initializeDataTable("tblStudentDetailsNotRegistered")
+}
+
+function getInactiveStudents() {
+	$.ajax({
+		url: protocol + "//" + host + "/student/inactive/pageSize/100/pageNo/1",
+		type: "GET",
+		cache: false,
+		success: function (obj) {
+			var list = obj.data;
+			populateStudentDetailsInactive(list);
+		}
+	});
+}
+
+function populateStudentDetailsInactive(list) {
+	var tbody = $("#tblStudentInactive tbody")[0];
+	$(tbody).empty();
+	destroyDataTable("tblStudentInactive");
+	for (var i = 0; i < list.length; i++) {
+		var tr = $("<tr>");
+		$("<td>" + parseInt(i + 1) + "</td>").appendTo(tr);
+		$(tr).data("obj", list[i]);
+		var tdForName = $("<td>");
+		$(tdForName).append(list[i].firstName + " " + list[i].lastName);
+		$(tr).append(tdForName);
+
+		// var tdForCreatedDate = $("<td>");
+		// $(tdForCreatedDate).append(list[i].createdDate);
+		// $(tr).append(tdForCreatedDate);
+
+		var tdQualification = $("<td>");
+		$(tdQualification).append(list[i].qualification);
+		$(tr).append(tdQualification);
+
+		var tdPlace = $("<td>");
+		$(tdPlace).append(list[i].place);
+		$(tr).append(tdPlace);
+
+		var tdDob = $("<td>");
+		$(tdDob).append(list[i].dob);
+		$(tr).append(tdDob);
+
+		var tdContact = $("<td>");
+		$(tdContact).append(list[i].username);
+		$(tdContact).append("<br/>");
+		$(tdContact).append(list[i].phoneNo);
+		$(tr).append(tdContact);
+
+		// var tdEmail = $("<td>");
+		// $(tdEmail).append(list[i].username);
+		// $(tr).append(tdEmail);
+		//
+		// var tdForMobile = $("<td>");
+		// $(tdForMobile).append(list[i].phoneNo);
+		// $(tr).append(tdForMobile);
+
+		var status = "Active";
+		if (list[i].status == 0) {
+			status = "Inactive";
+		}
+
+		var tdForStatus = $("<td>");
+		$(tdForStatus).append(status);
+		$(tr).append(tdForStatus);
+
+		var tdForimg = $("<td>");
+		var imgForTd = $("<img>").attr(
+			"src",
+			protocol + "//" + host + "/student/" + list[i].userId
+			+ "/image");
+		$(imgForTd).attr("width", "100px");
+		$(tdForimg).append(imgForTd);
+		$(tr).append(tdForimg);
+
+		var settingsGear = createSettingsGearDiv();
+		$(settingsGear).removeClass("pull-right");
+		var tdForSettings = $("<td>").html(settingsGear);
+		$(tr).append(tdForSettings);
+		appendLiForStudentsSettings(settingsGear, list[i]);
+		$(tbody).append(tr);
+	}
+	initializeDataTable("tblStudentInactive")
 
 }

@@ -9,10 +9,13 @@
 		<div class="panel-body">
 			<ul class="nav nav-tabs" role="tablist">
 				<li role="presentation" class="active">
-					<a href="#divRegisteredStudents" aria-controls="divRegisteredStudents" role="tab" data-toggle="tab">Registered</a>
+					<a href="#divRegisteredStudents" aria-controls="divRegisteredStudents" role="tab" data-toggle="tab">Active</a>
 				</li>
 				<li role="presentation">
-					<a href="#divNotRegisteredStudents" aria-controls="divNotRegisteredStudents" role="tab" data-toggle="tab">Not Registered</a>
+					<a href="#divNotRegisteredStudents" aria-controls="divNotRegisteredStudents" role="tab" data-toggle="tab">Registered</a>
+				</li>
+				<li role="presentation">
+					<a href="#divInactiveStudents" aria-controls="divInactiveStudents" role="tab" data-toggle="tab">Inactive</a>
 				</li>
 			</ul>
 			<div role="tabpanel">
@@ -40,6 +43,26 @@
 					<div role="tabpanel" class="tab-pane" id="divNotRegisteredStudents">
 						<div class="table-responsive noSwipe marginTopTen">
 							<table id="tblStudentDetailsNotRegistered" class="table table-bordered table-striped slNo">
+								<thead>
+									<tr>
+										<th class="slNo">No</th>
+										<th>Name</th>
+										<th>Degree</th>
+										<th>Place</th>
+										<th>DOB</th>
+										<th>Contact</th>
+										<th>Status</th>
+										<th>Image</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="divInactiveStudents">
+						<div class="table-responsive noSwipe marginTopTen">
+							<table id="tblStudentInactive" class="table table-bordered table-striped slNo">
 								<thead>
 									<tr>
 										<th class="slNo">No</th>
