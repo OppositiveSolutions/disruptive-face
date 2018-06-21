@@ -43,6 +43,9 @@ function loadStudentDetailPage(isShow) {
 	});
 }
 
+function refreshAccordingToCurrentTab() {
+	$("#studentTypeTabs").find("li[role='presentation'].active").trigger("click");
+}
 function populateManageStudentsCenter(dropDown) {
 	$.ajax({
 		url: protocol + "//" + host + "/center",
@@ -88,7 +91,7 @@ function saveStudentDetails() {
 		contentType: false,
 		success: function (obj) {
 			console.info(obj);
-			getRegisteredStudents();
+			refreshAccordingToCurrentTab();
 			$("#divAddNewStudentDetailsPage").modal("hide");
 		}
 	});
@@ -117,7 +120,7 @@ function editStudentDetails() {
 		contentType: false,
 		success: function (obj) {
 			console.info(obj);
-			getRegisteredStudents();
+			refreshAccordingToCurrentTab();
 			$("#divAddNewStudentDetailsPage").modal("hide");
 		}
 	});
@@ -395,7 +398,7 @@ function deleteStudent(userId, status, liStatus) {
 		type: "DELETE",
 		cache: false,
 		success: function (obj) {
-			getRegisteredStudents();
+			refreshAccordingToCurrentTab();
 
 		}
 	});
@@ -408,7 +411,7 @@ function updateStudentStatus(userId, status, liStatus) {
 		type: "GET",
 		cache: false,
 		success: function (obj) {
-			getRegisteredStudents();
+			refreshAccordingToCurrentTab();
 
 		}
 	});
