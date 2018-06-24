@@ -6,10 +6,6 @@
     font-size:26px;
 
 }
-.instructionDiv
-{
-    padding:20px;
-}
 .examName
 {
     padding:10px;
@@ -75,12 +71,6 @@ list-style: none;
 padding-top:10px;
 }
 
-.sectionContainer{
-    padding-top:5px;
-}
-.sectionContainer button {
-    margin-left:5px;
-}
 .examStatusContainer
 {
     height:88vh;
@@ -118,11 +108,8 @@ padding-top:10px;
 {
     padding: 10px ;
     background: #fff;
-    margin-top:10px;
     margin-bottom:10px;
-    height:450px;
     overflow: auto;
-    box-shadow:2px 2px 2px #ddd;
 
 }
 .questionNumberDivision
@@ -141,12 +128,6 @@ padding-top:10px;
 .hide{
     display: none;
 }
-.questionSpan
-{
-    padding:10px;
-    margin-top: 10px;
-}
-
 .statusTile
 {
     display: inline-block;
@@ -188,6 +169,7 @@ padding-top:10px;
 
 
 }
+
 .timerSpanGroup
 {
     display: block;
@@ -230,4 +212,134 @@ text-align: center;
 .finishArea
 {
     padding:10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------------------------------------------*/
+
+@media(min-width:991px) {
+
+    .exam-Panel{
+        margin-top:1vh;
+        border:1px solid #ddd;
+    }
+    .exam-panel-body{
+        height:83vh;
+        padding:0;
+        padding-left:10px;
+        padding-right:10px;
+        overflow: auto;
+    }
+    .questionContainer
+    {
+        height:66vh;
+    }
+
+
+}
+body{
+    background: white;
+}
+.exam-Panel .panel-heading{
+    background: #4a6da7;
+    color:white;
+}
+.grayBody{
+background: #eaedf1;
+}
+.whiteBody{
+    background: #fff;
+    }
+
+    .examName
+{
+    padding:5px;
+}
+.padding-20
+{
+    padding-top:20px;
+}
+.top10{
+    padding-top:10px;
+}
+ul{
+    padding:0;
+}
+.sectionContainer{
+    background:#fff;
+    border:1px solid #ddd;
+    padding: 0;
+}
+.sectionContainer button{
+    padding:5px;
+    border:none;
+    border-right:1px solid #ddd;
+    background:white;
+    font-weight: bold;
+}
+.sectionContainer button:hover{
+    background: #eaedf1;
+}
+.sectionContainer button.active{
+    background: #eaedf1;
+}
+.marginRgtFive{
+    margin-right: 5px;
+}
+.questionSpan
+{
+    padding:10px;
+    font-weight:bold;
+}
+.wellDiv{
+    padding:10px;
+    font-style: italic;
+    border:1px solid #ddd;
+    border-left:2px solid #849fbb;
+    font-size:13px;
+    color: #555;
+}
+
+.subContentDiv{
+    color:#444;
+    font-size: 13px;
+    padding-top:10px;
+}
+.displayBlock{
+    display: block;
+}
+.topZero{
+    padding-top:0;
+}
+.btn-second{
+    background: #849fbb;
+    color:white;
+}
+.questionSpan span{
+    width: 37px;
+    background: #4a6da7;
+    color: white;
+    float: left;
+    padding: 1px 14px;
+    margin-left: -17px;
+    margin-right: 5px;
+}
+.optionUl{
+    margin-top:10px;
+}
+​
+@media(max-width:991px) {
+    .sectionContainer button{ 
+        border:1px solid #ddd;
+    }
+
 }
