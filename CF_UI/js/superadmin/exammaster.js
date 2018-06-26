@@ -16,6 +16,7 @@ function loadExamMasterPage(isShow) {
 		$("#divAddNewExamMasterPage").on("hidden.bs.modal", function() {
 			$("#btnExamMasterExamDetailsNext").removeData("isNextClicked");
 			$("#btnExamMasterCategoryDetailsNext").removeData("isNextClicked");
+			$("#btnExamMasterCategoryDetailsNext").removeAttr("editMode");
 			clearExamMasterPage();
 		});
 		$("a[href='#divExamMasterCategoryTab']").click(function() {
@@ -110,10 +111,18 @@ function loadExamMasterPage(isShow) {
 			}
 		});
 		$("#btnExamMasterSubCategoryDetailsNext").click(function() {
-			saveExamMasterSubCategorytails(function(list) {
-				$("#divAddNewExamMasterPage").modal("hide");
-				getExamMasterExams();
-			});
+			var editMode = $("#btnExamMasterCategoryDetailsNext").attr("editMode");
+			if (editMode != 1) {
+				saveExamMasterSubCategorytails(function(list) {
+					$("#divAddNewExamMasterPage").modal("hide");
+					getExamMasterExams();
+				});
+			} else {
+				editExamMasterSubCategorytails(function(list) {
+					$("#divAddNewExamMasterPage").modal("hide");
+					getExamMasterExams();
+				});
+			}
 		});
 		$("#sltExamMasterCoachingType").change(function() {
 			var coachingType = $(this).val();
@@ -794,6 +803,26 @@ function saveExamMasterSubCategorytails(callBack) {
 	$.ajax({
 		url: protocol + "//" + host + "/question-paper/sub-category",
 		type: "POST",
+		cache: false,
+		data: JSON.stringify(obj),
+		contentType: "application/json; charset=utf-8",
+		success: function(returnMap) {
+			if (callBack != undefined) {
+				callBack(returnMap.data);
+			}
+		}
+	});
+
+}
+
+function editExamMasterSubCategorytails(callBack) {
+	var obj = validateAndReturnSubcategoryDetails();
+	if (obj == undefined) {
+		return;
+	}
+	$.ajax({
+		url: protocol + "//" + host + "/question-paper/sub-category",
+		type: "PUT",
 		cache: false,
 		data: JSON.stringify(obj),
 		contentType: "application/json; charset=utf-8",
