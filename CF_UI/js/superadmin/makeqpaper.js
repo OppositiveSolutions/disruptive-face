@@ -439,22 +439,50 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 	if (subCategoryList.length != 0) {
 		for (var j = 0; j < subCategoryList.length; j++) {
 			var index = j + 1;
-			var divSubCategoryTop = $("<div>").addClass("fontFourteen ");
-			if (subCategoryList[j].direction) {
+
+			//------------------------------panels for sub category-----------------------//
+			var subCategoryPanel = $("<div>").addClass("panel panel-default");
+			$(categoryDiv).append(subCategoryPanel);
+			var divSubCategoryTop = $("<div>").addClass("panel-heading subCatHead");
+			$(subCategoryPanel).append(divSubCategoryTop);
+			var h4ForSubHead = $("<h4>").addClass("panel-title").html("Sub Category " + (j + 1) + " ( Mark:" + subCategoryList[j].noOfQuestions + " X " + correctAnswerMark + " )");
+			$(divSubCategoryTop).append(h4ForSubHead);
+
+			var divForSubBody = $("<div>").addClass("panel-body subCat");
+			$(divForSubBody).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
+			$(subCategoryPanel).append(divForSubBody);
+			if (subCategoryList[j].description) {
 				var spanForDirection = $("<span>").addClass("boldFont").html("Directions:");
-				var PforDirection = $("<p>").html("[ " + subCategoryList[j].direction + " ]");
-				$(divSubCategoryTop).append(spanForDirection);
-				$(divSubCategoryTop).append(PforDirection);
+				var PforDirection = $("<p>").html("[ " + subCategoryList[j].description + " ]");
+				$(divForSubBody).append(spanForDirection);
+				$(divForSubBody).append(PforDirection);
 			}
-			var spanForMark = $("<span>").addClass("markSpan").html("Mark: (" + subCategoryList[j].noOfQuestions + " X " + correctAnswerMark + ")");
-			$(divSubCategoryTop).append(spanForMark);
-			var btnForAddQuestion = $("<button>").addClass("btn btn-default btn-sm pull-right").html("Add Question");
+			var btnForAddQuestion = $("<button>").addClass("btn btn-default btn-sm pull-right marginrgtfive").html("Add Question");
 			$(btnForAddQuestion).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
 			$(btnForAddQuestion).click(function () {
 				$("#divAddNewQPaperPage").attr("isEdit", "false");
 				var categoryId = $(this).closest("div.panel").attr("categoryId");
 				showQuestionCreateSection($(this).attr("subCategoryId"), undefined, undefined, categoryId);
 			});
+
+			//-------------------collapse buttons------------------------------------------------//
+
+			var btnForCollapse = $("<button>").addClass("btn btn-default contentBtn btn-sm pull-right marginrgtfive").html("-");
+			$(btnForCollapse).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
+			$(btnForCollapse).click(function () {
+
+				collapseCurrentSubCategoryData($(this));
+			});
+			$(h4ForSubHead).append(btnForCollapse);
+
+			var btnForExpandCollapse = $("<button>").addClass("btn btn-default contentBtn btn-sm pull-right marginrgtfive").html("+");
+			$(btnForExpandCollapse).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
+			$(btnForExpandCollapse).click(function () {
+				viewCurrentSubCategoryData($(this));
+			});
+			$(h4ForSubHead).append(btnForExpandCollapse);
+			//------------------------------------------------------------------------------//
+
 			var btnForDeleteContent = $("<button>").addClass("btn btn-default contentBtn btn-sm pull-right marginrgtfive").html("Delete Content");
 			$(btnForDeleteContent).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
 			$(btnForDeleteContent).click(function () {
@@ -462,7 +490,7 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 				if (confirm("Are you sure you want to delete content"))
 					deletContentToSUbCategory(subCategoryId);
 			});
-			$(divSubCategoryTop).append(btnForAddQuestion);
+			$(h4ForSubHead).append(btnForAddQuestion);
 			var btnForAddContent = $("<button>").addClass("btn btn-default contentBtn btn-sm pull-right marginrgtfive").html("Add Content");
 			$(btnForAddContent).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
 			$(btnForAddContent).click(function () {
@@ -478,17 +506,16 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 				addContentToSUbCategory(subCategoryId, subData);
 			});
 			if (subCategoryList[j].content) {
-				$(divSubCategoryTop).append(btnForDeleteContent);
-				$(divSubCategoryTop).append(btnForEditContent);
+				$(h4ForSubHead).append(btnForDeleteContent);
+				$(h4ForSubHead).append(btnForEditContent);
 			}
 			else
-				$(divSubCategoryTop).append(btnForAddContent);
-			$(categoryDiv).append(divSubCategoryTop);
+				$(h4ForSubHead).append(btnForAddContent);
 
 
 
 			var divForContent = $("<div>").addClass("subContent").html(subCategoryList[j].content);
-			$(categoryDiv).append(divForContent);
+			$(divForSubBody).append(divForContent);
 			try {
 				var imgList = subCategoryList[j].questionPaperSubCategoryImage;
 				if (imgList && imgList.length) {
@@ -497,19 +524,28 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 						var imgForContent = $("<img>").attr("src", 'data:image/jpeg;base64,' + imgList[k].image);
 						$(imgForContent).attr("width", "300px");
 						$(divForImage).append(imgForContent);
-						$(categoryDiv).append(divForImage);
+						$(divForSubBody).append(divForImage);
 
 					}
 				}
 			} catch (e) {
 
 			}
-			populateQuestionAndOptions(subCategoryList[j], categoryDiv);
+			populateQuestionAndOptions(subCategoryList[j], divForSubBody);
+			$(divForSubBody).hide();
 		}
 	}
 }
-
-
+function viewCurrentSubCategoryData(item) {
+	var subCategoryId = $(item).attr("subCategoryId");
+	$("#makeQPaperPageBody").find("div.subCat").hide();
+	$("#makeQPaperPageBody").find("div.subCat[subCategoryId=" + subCategoryId + "]").show();
+	window.scrollTo(0, ($(item).offset().top - 200));
+}
+function collapseCurrentSubCategoryData(item) {
+	var subCategoryId = $(item).attr("subCategoryId");
+	$("#makeQPaperPageBody").find("div.subCat[subCategoryId=" + subCategoryId + "]").hide();
+}
 function deletContentToSUbCategory(subCategoryId) {
 	$.ajax({
 		url: protocol + "//" + host + "/question-paper/sub-category/" + subCategoryId + "/content",
@@ -568,17 +604,25 @@ function populateQuestionAndOptions(subCategory, targetDiv) {
 			}
 
 			try {
+				var hasImage = false;
 				var ImgMapList = questionsList[k].question.questionImage;
-				console.info(questionsList[k]);
 				var divForImg = $("<div>").addClass("text-center");
 				for (var i = 0; i < ImgMapList.length; i++) {
 					var ImgMap = ImgMapList[i];
-					var imgForQuestion = $("<img>").attr("src", 'data:image/jpeg;base64,' + ImgMap.image);
-					$(imgForQuestion).attr("width", "300px");
+					if (ImgMap.image) {
+						var imgForQuestion = $("<img>").attr("src", 'data:image/jpeg;base64,' + ImgMap.image);
+						$(imgForQuestion).attr("width", "300px");
+						hasImage = true;
+					}
 					$(divForImg).append(imgForQuestion);
 				}
 				$(divForQuestion).append(divForImg);
-				var pForQuestion = $("<p>").html(questionsList[k].question.question);
+				var pForQuestion = $("<p>").html(questionsList[k].questionNo + ") " + questionsList[k].question.question);
+				if (hasImage) {
+					$(pForQuestion).html(questionsList[k].question.question)
+				} else {
+					$(pForNumber).remove();
+				}
 				$(divForQuestion).append(pForQuestion);
 			} catch (e) {
 
