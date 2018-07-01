@@ -26,102 +26,200 @@
 
 <body>
 	<script src="js/bootstrap.js"></script>
-	<div class="container-fluid" id="examContainerPage">
-		<div class="row topRow">
-			<div class="col-md-3 examName" id="examName">
-			</div>
-			<div class="col-md-3 companyLogo pull-right">
-				Career Focus
-			</div>
+	<div class="container-fluid examPage" id="examContainerPage">
+		<div class="logoImg pull-right">
+			<img id="imgLogo" src="img/cf-logo.jpg" height="44px" />
 		</div>
-		<div class="row" id="examIntroduction">
-			<div class="col-md-10 instructionDiv">
-				<div class=" text-center fontWeightBold underline">
-					Please read the following instructions carefully
-
-				</div>
-				<div class "fontWeightBold">
-					Total Number of questions:
-					<span id="totalNumberOfQuestions"></span>
-					<br/> Total time available:
-					<span id="totalTimeAvailable"></span>
-				</div>
-				<div class=" categoryListInIntroductionPage">
-					<table id="tblForExamIntroductionCategoryList">
-
-						<thead>
-							<tr>
-								<th>Section
-								</th>
-								<th>Section Name
-								</th>
-								<th>Total Number of Questions
-								</th>
-								<th>Max Score
-								</th>
-								<th>Marks for Correct Answer
-								</th>
-								<th>Negetive Marking for Wrong Anwer
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-				<div class="col-md-6 attemptStatusLegends">
-					<ul>
-						<li>
-							<span class="statusTile plain">1</span> You have not visted the question yet.
-						</li>
-						<li>
-							<span class="statusTile redTile">3</span> You have not answered the question yet.
-						</li>
-						<li>
-							<span class="statusTile greenTile">5</span> You have answered the question.
-						</li>
-						<li>
-							<span class="statusTile violetTile">7</span> You have marked the question for review.
-						</li>
-
-					</ul>
-
-
-
-
-				</div>
+		<div class="panel exam-Panel">
+			<div class="panel-heading">
+				<h4 class="panel-title examName" id="examName">
+				</h4>
 
 			</div>
-			<div class="col-md-12 text-center">
-				<button class="btn btn-default" id="btnStartExam">Start Exam</button>
-			</div>
-		</div>
-		<div class="row" id="examContainer">
-			<div class="col-md-9" id="examContainerDiv">
-				<div class="sectionContainer" id="sectionContainer">
+			<div class="panel-body grayBody exam-panel-body">
+				<div class="row" id="examIntroduction">
+					<div class="col-md-8 padding-20">
+						<div class="panel">
+							<div class="panel-heading">
+								<h4 class="panel-title">Instructions</h4>
+							</div>
+							<div class="panel-body whiteBody">
+								<div class=" text-center fontWeightBold underline">
+									Please read the following instructions carefully
 
-				</div>
-				<div class="row questionContainer " id="questionContainer">
+								</div>
+								<div class "fontWeightBold">Total Number of questions:
+									<span id="totalNumberOfQuestions"></span>
+									<br/> Total time available:
+									<span id="totalTimeAvailable"></span>
+								</div>
+								<div class=" categoryListInIntroductionPage table-responsive">
+									<table id="tblForExamIntroductionCategoryList" class="table">
 
-					<!--<div class="col-md-12 questionNumberDiv" id="questionNumberDiv">
-						Question Number: <span></span>
+										<thead>
+											<tr>
+												<th>Section
+												</th>
+												<th>Section Name
+												</th>
+												<th>Total Questions
+												</th>
+												<th>Max Score
+												</th>
+												<th>Marks for Correct Answer
+												</th>
+												<th>Negetive Marking for Wrong Answer
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
 					</div>
+					<div class="col-md-4  padding-20 attemptStatusLegends">
+						<div class="panel">
+							<div class="panel-heading">
+								<h4 class="panel-title">Question Status</h4>
+							</div>
+							<div class="panel-body whiteBody">
+								<div class=" text-center fontWeightBold underline">
+									Please read the question status indications
+
+								</div>
+								<ul>
+									<li>
+										<span class="statusTile plain">1</span> You have not visted the question yet.
+									</li>
+									<li>
+										<span class="statusTile redTile">3</span> You have not answered the question yet.
+									</li>
+									<li>
+										<span class="statusTile greenTile">5</span> You have answered the question.
+									</li>
+									<li>
+										<span class="statusTile violetTile">7</span> You have marked the question for review.
+									</li>
+
+								</ul>
+
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 sectionContainer" id="sectionContainer">
+
+					</div>
+				</div>
+				<div class="row" id="examContainer">
+					<div class="col-sm-9  top10">
+
+						<div class="panel ">
+							<div class="panel-heading">
+								<h4 class="panel-title ">
+									<i class="fa fa-question-circle"> Questions </i>
+								</h4>
+							</div>
+							<div class="panel-body white-body topZero">
+								<div class="row questionContainer " id="questionContainer">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3 top10">
+
+						<div class="panel">
+							<div class="panel-heading">
+								<h4 class="panel-title ">
+									<i class="fa fa-navicon"></i> Status
+								</h4>
+							</div>
+							<div class="panel-body white-body ">
+								<div class="row">
+									<div id="categoryCountDown" class=" CountDown col-sm-12">
+										Category Time Left
+										<div class="timerSpanGroup pull-right">
+											<span id="hourSpanCategory"></span>:
+											<span id="minuteSpanCategory"></span>:
+											<span id="secondsSpanCategory"></span>
+										</div>
+									</div>
+									<div id="CountDown" class="CountDown col-sm-12">
+										Total Time Left
+										<div class="timerSpanGroup pull-right">
+											<span id="hourSpan"></span>:
+											<span id="minuteSpan"></span>:
+											<span id="secondsSpan"></span>
+										</div>
+									</div>
+									<div class="col-sm-12 statusContainer" id="statusTable">
+
+
+									</div>
+									<div class="col-sm-12 statusLegends">
+										<ul>
+											<li>
+												<span class="statusTile plain">1</span>Not visted
+											</li>
+											<li>
+												<span class="statusTile redTile">3</span>Not answered
+											</li>
+											<li>
+												<span class="statusTile greenTile">5</span>Answered
+											</li>
+											<li>
+												<span class="statusTile violetTile">7</span>Marked for review
+											</li>
+
+										</ul>
+
+
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel-footer">
+				<div class="text-center" id="startExamFooter">
+					<button class="btn btn-default" id="btnStartExam">Start Exam</button>
+				</div>
+				<div class="row" id="examControls">
+					<div class="col-sm-9 text-center pull-left" >
+						<button class="btn btn-second btn-sm pull-left marginRgtFive" id="btnPreviousQuestion"> Previous </button>
+						<button class="btn btn-second btn-sm pull-right marginRgtFive" id="btnNextQuestion"> Save & Next </button>
+						<button class="btn btn-second btn-sm pull-right marginRgtFive" id="btnReviewNextQuestion"> Review & Next </button>
+					</div>
+					<div class="col-sm-3 pull-right">
+						<button class="btn btn-default btn-sm pull-right" id="btnFinishExam"> Submit </button>
+
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<!--
 					<div class=" descriptionContainer " id="descriptionContainer">
 
 					</div>
 					<div class="questionOptionContainer" id="questionOptionContainer">
 					</div>-->
-				</div>
-				<div class="row">
-					<div class="col-md-12 text-center">
-						<button class="btn btn-default pull-left" id="btnPreviousQuestion"> Previous </button>
-						<button class="btn btn-default " id="btnReviewNextQuestion"> Review & Next </button>
-						<button class="btn btn-default pull-right" id="btnNextQuestion"> Save & Next </button>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3 examStatusContainer" id="examStatusContainer">
-				<div class="row">
+			<!-- <div class="row">
+				</div> -->
+			<!-- <div class="col-md-3 examStatusContainer" id="examStatusContainer"> -->
+			<!-- <div class="row">
 					<div id="categoryCountDown" class=" CountDown col-md-6">
 						Category Time Left
 						<div class="timerSpanGroup ">
@@ -138,39 +236,19 @@
 							<span id="secondsSpan"></span>
 						</div>
 					</div>
-				</div>
-				<div class="statusContainer" id="statusTable">
+				</div> -->
+			<!-- <div class="statusContainer" id="statusTable">
 
 
-				</div>
-				<div class="statusLegends">
-					<ul>
-						<li>
-							<span class="statusTile plain">1</span>Not visted
-						</li>
-						<li>
-							<span class="statusTile redTile">3</span>Not answered
-						</li>
-						<li>
-							<span class="statusTile greenTile">5</span>Answered
-						</li>
-						<li>
-							<span class="statusTile violetTile">7</span>Marked for review
-						</li>
-
-					</ul>
-
-
-
-
-				</div>
-				<div class="finishArea">
+			</div> -->
+			<!--  -->
+			<!-- <div class="finishArea">
 					<button class="btn btn-default pull-right" id="btnFinishExam"> Submit </button>
 
-				</div>
+				</div> -->
 
 
-			</div>
+			<!-- </div> -->
 
 		</div>
 

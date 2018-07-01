@@ -90,7 +90,6 @@ function saveStudentDetails() {
 		processData: false,
 		contentType: false,
 		success: function (obj) {
-			console.info(obj);
 			refreshAccordingToCurrentTab();
 			$("#divAddNewStudentDetailsPage").modal("hide");
 		}

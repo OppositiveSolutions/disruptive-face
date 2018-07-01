@@ -423,3 +423,15 @@ border:1px solid #ddd;
 .vitalSettings li{
 	cursor: pointer;
 }
+
+.subCatHead{
+	background: #f3f3f3 !important;
+}
+#makeQPaperPageBody table{
+width: 100%;
+
+}
+#makeQPaperPageBody table td,#makeQPaperPageBody table th{
+	border:1px solid #ddd;
+	padding:5px;
+}

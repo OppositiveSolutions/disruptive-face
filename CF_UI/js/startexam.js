@@ -4,6 +4,8 @@ var timerForCategory;
 $(document).ready(function () {
     createExamForTest();
     $("#examContainer").hide();
+    $("#examControls").hide();
+    $("#sectionContainer").hide();
     $("#btnStartExam").click(function () {
 
         startExam();
@@ -32,7 +34,7 @@ function createExamForTest() {
         success: function (returnMap) {
             var examId = returnMap.data;
             getAllCategoriesOfQUestionPaper(examId);
-            $("#questionContainer").attr("examId", examId);
+            $("#examContainerPage").attr("examId", examId);
         }
     });
 
@@ -147,7 +149,7 @@ function saveQuestionInExam() {
 
         answerList.push(questionAnswerMap);
     });
-    var examId = $("#questionContainer").attr("examId");
+    var examId = $("#examContainerPage").attr("examId");
     $.ajax({
         url: protocol + "//" + host + "/exam/saveexam/" + examId,
         type: "POST",
@@ -266,7 +268,7 @@ function populateExamStartPage(examMap) {
     }
 }
 function startExam() {
-    var examId = $("#questionContainer").attr("examId");
+    var examId = $("#examContainerPage").attr("examId");
     var url = protocol + "//" + host + "/exam/" + examId + "/startexam/1"
     $.ajax({
         url: url,
@@ -275,6 +277,9 @@ function startExam() {
         success: function (map) {
             $("#examContainer").show();
             $("#examIntroduction").hide();
+            $("#startExamFooter").hide();
+            $("#examControls").show();
+            $("#sectionContainer").show();
             var examMap = $("#examContainer").data("examMap");
             setCounter(examMap.duration);
             populateSections(examMap.questionPaperCategorys);
@@ -288,11 +293,12 @@ function startExam() {
 
 function populateSections(sectionsList) {
     var sectionDiv = $("#sectionContainer");
+    $(sectionDiv).empty();
     var totalTime = 0;
     var totalDuration = 0;
     if (sectionsList.length != 0) {
         for (var i = 0; i < sectionsList.length; i++) {
-            var btnForSection = $("<button>").addClass("btn btn-white btn-sm").html(sectionsList[i].category.name);
+            var btnForSection = $("<button>").addClass("sectionSPan").html(sectionsList[i].category.name);
             $(sectionDiv).append(btnForSection);
             $(btnForSection).attr("categoryId", sectionsList[i].category.categoryId);
             $(btnForSection).data("categoryData", sectionsList[i]);
@@ -330,12 +336,12 @@ function populateQuestions(categoryList) {
         }
     }
 }
-function showQuestion(firstQuestionNumber, oldQuestion) {
+function showQuestion(currentQuestion, oldQuestion) {
     var type = 0;
-    if (firstQuestionNumber < oldQuestion) {
+    if (currentQuestion < oldQuestion) {
         type = 1;
     }
-    var currentQuestionDiv = $("#questionContainer").find("div[questionNumber=" + firstQuestionNumber + "]");
+    var currentQuestionDiv = $("#questionContainer").find("div[questionNumber=" + currentQuestion + "]");
     var selectedCategory = $(currentQuestionDiv).attr("categoryId");
     var currentCategory = $("#sectionContainer").find("button.active").attr("categoryId");
     var targetCategory = $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]");
@@ -360,8 +366,8 @@ function showQuestion(firstQuestionNumber, oldQuestion) {
     $("#questionContainer").find("div.questionDiv").removeClass("hide").addClass("hide");
     $(currentQuestionDiv).removeClass("hide");
     detectCategoryChanges(selectedCategory);
-    $("#questionContainer").attr("currentQuestion", firstQuestionNumber);
-    setStatusForQuestion(firstQuestionNumber);
+    $("#questionContainer").attr("currentQuestion", currentQuestion);
+    setStatusForQuestion(currentQuestion);
 
 }
 
@@ -374,14 +380,15 @@ function detectCategoryChanges(selectedCategory) {
         clearInterval(timerForCategory);
         setCounterForCategory(2);
         addCategoryChange(selectedCategory);
-        $("#sectionContainer").find("button").removeClass("btn-primary active").addClass("btn-white");
-        $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").addClass("btn-primary active").removeClass("btn-white");
+        $("#sectionContainer").find("button").removeClass("active");
+        $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").addClass("active");
+        showCurrentCategoryStatus(selectedCategory);
     }
 }
 
 
 function addCategoryChange(selectedCategory) {
-    var examId = $("#questionContainer").attr("examId");
+    var examId = $("#examContainerPage").attr("examId");
     var url = protocol + "//" + host + "/exam/save/" + examId + "/time/" + selectedCategory;
     $.ajax({
         url: url,
@@ -407,14 +414,14 @@ function createQuestionElement(questionData, subCategory, categoryId) {
     var li = $("<div>").addClass("hide questionDiv");
     $("#questionContainer").append(li);
     var divForQuestions = $("<div>").addClass("row");
-    var divForQuestionNumber = $("<div>").addClass("col-md-12 questionNumberDivision").html("<b>" + subCategory.description + "</b>");
-//    		"Question No: " + questionData.questionNo);
+    var divForQuestionNumber = $("<div>").addClass("col-md-12 questionNumberDivision wellDiv").html(subCategory.description);
+    //    		"Question No: " + questionData.questionNo);
     $(divForQuestions).append(divForQuestionNumber);
 
     if (subCategory.content) {
         try {
             if (subCategory.content) {
-                var divForSubContent = $("<div>").addClass("col-sm-12").html(subCategory.content);
+                var divForSubContent = $("<div>").addClass("col-sm-12 subContentDiv").html(subCategory.content);
                 $(divForQuestions).append(divForSubContent);
                 var imgList = subCategory.questionPaperSubCategoryImage;
                 if (imgList && imgList.length) {
@@ -446,7 +453,7 @@ function createQuestionElement(questionData, subCategory, categoryId) {
     $(li).attr("questionId", questionMap.questionId);
     $(li).attr("status", 0);
     $(li).attr("categoryId", categoryId);
-    var divForQuestionHtml = $("<div>").addClass("questionSpan").html("<span> " + questionData.questionNo + " ) </span>" +questionMap.question);
+    var divForQuestionHtml = $("<div>").addClass("questionSpan").html("<span> " + questionData.questionNo + "</span>" + questionMap.question);
     $(divForQuestion).append(divForQuestionHtml);
     try {
         var ImgMap = questionData.question.questionImage[0];
@@ -463,8 +470,9 @@ function createQuestionElement(questionData, subCategory, categoryId) {
 
 
 function populateOptions(optionList, divForQuestion, questionNo) {
-    var ulForOptions = $("<ul>");
+    var ulForOptions = $("<ul>").addClass("optionUl");
     $(divForQuestion).append(ulForOptions);
+    var character = 'a'.charCodeAt(0);
     for (var i = 0; i < optionList.length; i++) {
         var liForOption = $("<li>");
         var labelForOption = $("<label>");
@@ -472,7 +480,7 @@ function populateOptions(optionList, divForQuestion, questionNo) {
         $(inputForOption).attr("name", "optionFor" + questionNo);
         $(inputForOption).attr("value", optionList[i].optionNo);
         $(labelForOption).append(inputForOption);
-        $(labelForOption).append(" " + (i + 1) + ") " + optionList[i].option);
+        $(labelForOption).append(" &nbsp;" + (String.fromCharCode(character++)) + ". &nbsp;" + optionList[i].option);
         $(liForOption).append(labelForOption);
         $(ulForOptions).append(liForOption);
     }
@@ -498,8 +506,15 @@ function populateNextQuestion(type, reviewed) {
     } else {
         currentQuestion--;
     }
+
     showQuestion(currentQuestion, oldQuestion);
 
+}
+
+function showCurrentCategoryStatus(categoryId) {
+
+    $("#statusTable").find("span.statusTile").hide();
+    $("#statusTable").find("span.statusTile[categoryId=" + categoryId + "]").show();
 }
 
 function populateExamStatusTiles(questionsMap, subCategory, categoryId) {
@@ -518,12 +533,12 @@ function populateExamStatusTiles(questionsMap, subCategory, categoryId) {
     });
 }
 
-function setStatusForQuestion(firstQuestionNumber, status) {
+function setStatusForQuestion(currentQuestionNumber, status) {
     if (status) {
-        $("#statusTable").find("span[questionNumber=" + firstQuestionNumber + "]").addClass("greenTile");
-        $("#questionContainer").find("div.questionDiv[questionNumber=" + firstQuestionNumber + "]").attr("status", 1);
+        $("#statusTable").find("span[questionNumber=" + currentQuestionNumber + "]").addClass("greenTile");
+        $("#questionContainer").find("div.questionDiv[questionNumber=" + currentQuestionNumber + "]").attr("status", 1);
     } else {
-        $("#statusTable").find("span[questionNumber=" + firstQuestionNumber + "]").addClass("redTile");
+        $("#statusTable").find("span[questionNumber=" + currentQuestionNumber + "]").addClass("redTile");
     }
 }
 
