@@ -6,6 +6,12 @@
     font-size:26px;
 
 }
+.logoImg{
+    position: absolute;
+    right: 10px;
+    z-index: 99;
+    padding-top: 7px;
+}
 .examName
 {
     padding:10px;
@@ -26,6 +32,10 @@
 {
     text-decoration: underline;
 }
+table{
+    border: 1px solid #ddd;
+}
+
 .categoryListInIntroductionPage table th
 {
     text-align: center;
@@ -82,7 +92,7 @@ padding-top:10px;
 {
     display: block;
     margin-top:10px;
-    height:320px;
+    height:293px;
     overflow: auto;
 }
 
@@ -132,13 +142,14 @@ padding-top:10px;
 {
     display: inline-block;
     text-align: center;
-    padding: 5px;
-    margin:10px 10px 0;
+    padding: 3px;
+    margin: 5px 5px 0;
     border: 1px solid #ddd;
-    min-width: 40px;
+    min-width: 30px;
     background: white;
     cursor: pointer;
-    border-radius:5px;          
+    border-radius: 5px;
+    font-size: 12px;    
 }
 .redTile
 {
@@ -161,46 +172,36 @@ padding-top:10px;
     color:white;
 }
 #CountDown {
-    padding: 10px;
-    padding-top: 5px;
     display: block;
-    background: white;
-    padding-bottom: 20px;
+    background: #eaedf1;
 
 
 }
 
 .timerSpanGroup
 {
-    display: block;
-      color:white;
-     background: #444444;
-     border-radius: 5px;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
 }
 .CountDown span
 {
-     display: inline-block;
+    display: inline-block;
     text-align: center;
-    padding: 5px;
-    min-width: 30px;
     cursor: pointer;
-   
 }
 .CountDown {
-    padding: 10px;
-    padding-top: 5px;
-    display: block;
-    background: white;
-    padding-bottom: 20px;
-text-align: center;
+        padding-top: 5px;
+        display: block;
+        background: #eaedf1;
+        border-bottom: 1px solid #ddd;
+        padding: 7px;
 }
 
 .statusLegends 
 {
     border-top:1px solid #ddd; 
-     border-bottom:1px solid #ddd; 
-     padding-bottom: 10px;
-    margin-top:10px;
+    
 }
 .statusLegends ul
 {
@@ -321,7 +322,7 @@ ul{
     padding-top:0;
 }
 .btn-second{
-    background: #849fbb;
+    background: #4a6da7bd;
     color:white;
 }
 .questionSpan span{

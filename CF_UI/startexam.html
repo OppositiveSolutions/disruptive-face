@@ -27,10 +27,14 @@
 <body>
 	<script src="js/bootstrap.js"></script>
 	<div class="container-fluid examPage" id="examContainerPage">
+		<div class="logoImg pull-right">
+			<img id="imgLogo" src="img/cf-logo.jpg" height="44px" />
+		</div>
 		<div class="panel exam-Panel">
 			<div class="panel-heading">
 				<h4 class="panel-title examName" id="examName">
 				</h4>
+
 			</div>
 			<div class="panel-body grayBody exam-panel-body">
 				<div class="row" id="examIntroduction">
@@ -118,7 +122,8 @@
 
 						<div class="panel ">
 							<div class="panel-heading">
-								<h4 class="panel-title "> <i class="fa fa-question-circle"> Questions </i>
+								<h4 class="panel-title ">
+									<i class="fa fa-question-circle"> Questions </i>
 								</h4>
 							</div>
 							<div class="panel-body white-body topZero">
@@ -131,10 +136,54 @@
 
 						<div class="panel">
 							<div class="panel-heading">
-								<h4 class="panel-title "><i class="fa fa-navicon"></i> Status
+								<h4 class="panel-title ">
+									<i class="fa fa-navicon"></i> Status
 								</h4>
 							</div>
 							<div class="panel-body white-body ">
+								<div class="row">
+									<div id="categoryCountDown" class=" CountDown col-sm-12">
+										Category Time Left
+										<div class="timerSpanGroup pull-right">
+											<span id="hourSpanCategory"></span>:
+											<span id="minuteSpanCategory"></span>:
+											<span id="secondsSpanCategory"></span>
+										</div>
+									</div>
+									<div id="CountDown" class="CountDown col-sm-12">
+										Total Time Left
+										<div class="timerSpanGroup pull-right">
+											<span id="hourSpan"></span>:
+											<span id="minuteSpan"></span>:
+											<span id="secondsSpan"></span>
+										</div>
+									</div>
+									<div class="col-sm-12 statusContainer" id="statusTable">
+
+
+									</div>
+									<div class="col-sm-12 statusLegends">
+										<ul>
+											<li>
+												<span class="statusTile plain">1</span>Not visted
+											</li>
+											<li>
+												<span class="statusTile redTile">3</span>Not answered
+											</li>
+											<li>
+												<span class="statusTile greenTile">5</span>Answered
+											</li>
+											<li>
+												<span class="statusTile violetTile">7</span>Marked for review
+											</li>
+
+										</ul>
+
+
+
+
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -145,8 +194,8 @@
 				<div class="text-center" id="startExamFooter">
 					<button class="btn btn-default" id="btnStartExam">Start Exam</button>
 				</div>
-				<div class="row">
-					<div class="col-sm-9 text-center pull-left">
+				<div class="row" id="examControls">
+					<div class="col-sm-9 text-center pull-left" >
 						<button class="btn btn-second btn-sm pull-left marginRgtFive" id="btnPreviousQuestion"> Previous </button>
 						<button class="btn btn-second btn-sm pull-right marginRgtFive" id="btnNextQuestion"> Save & Next </button>
 						<button class="btn btn-second btn-sm pull-right marginRgtFive" id="btnReviewNextQuestion"> Review & Next </button>
@@ -192,27 +241,7 @@
 
 
 			</div> -->
-			<!-- <div class="statusLegends">
-					<ul>
-						<li>
-							<span class="statusTile plain">1</span>Not visted
-						</li>
-						<li>
-							<span class="statusTile redTile">3</span>Not answered
-						</li>
-						<li>
-							<span class="statusTile greenTile">5</span>Answered
-						</li>
-						<li>
-							<span class="statusTile violetTile">7</span>Marked for review
-						</li>
-
-					</ul>
-
-
-
-
-				</div> -->
+			<!--  -->
 			<!-- <div class="finishArea">
 					<button class="btn btn-default pull-right" id="btnFinishExam"> Submit </button>
 

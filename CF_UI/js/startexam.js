@@ -4,6 +4,8 @@ var timerForCategory;
 $(document).ready(function () {
     createExamForTest();
     $("#examContainer").hide();
+    $("#examControls").hide();
+    $("#sectionContainer").hide();
     $("#btnStartExam").click(function () {
 
         startExam();
@@ -264,7 +266,6 @@ function populateExamStartPage(examMap) {
             $(tbody).append(tr);
         }
     }
-    startExam();
 }
 function startExam() {
     var examId = $("#examContainerPage").attr("examId");
@@ -277,6 +278,8 @@ function startExam() {
             $("#examContainer").show();
             $("#examIntroduction").hide();
             $("#startExamFooter").hide();
+            $("#examControls").show();
+            $("#sectionContainer").show();
             var examMap = $("#examContainer").data("examMap");
             setCounter(examMap.duration);
             populateSections(examMap.questionPaperCategorys);
@@ -379,6 +382,7 @@ function detectCategoryChanges(selectedCategory) {
         addCategoryChange(selectedCategory);
         $("#sectionContainer").find("button").removeClass("active");
         $("#sectionContainer").find("button[categoryId=" + selectedCategory + "]").addClass("active");
+        showCurrentCategoryStatus(selectedCategory);
     }
 }
 
@@ -502,8 +506,15 @@ function populateNextQuestion(type, reviewed) {
     } else {
         currentQuestion--;
     }
+
     showQuestion(currentQuestion, oldQuestion);
 
+}
+
+function showCurrentCategoryStatus(categoryId) {
+
+    $("#statusTable").find("span.statusTile").hide();
+    $("#statusTable").find("span.statusTile[categoryId=" + categoryId + "]").show();
 }
 
 function populateExamStatusTiles(questionsMap, subCategory, categoryId) {
@@ -522,12 +533,12 @@ function populateExamStatusTiles(questionsMap, subCategory, categoryId) {
     });
 }
 
-function setStatusForQuestion(firstQuestionNumber, status) {
+function setStatusForQuestion(currentQuestionNumber, status) {
     if (status) {
-        $("#statusTable").find("span[questionNumber=" + firstQuestionNumber + "]").addClass("greenTile");
-        $("#questionContainer").find("div.questionDiv[questionNumber=" + firstQuestionNumber + "]").attr("status", 1);
+        $("#statusTable").find("span[questionNumber=" + currentQuestionNumber + "]").addClass("greenTile");
+        $("#questionContainer").find("div.questionDiv[questionNumber=" + currentQuestionNumber + "]").attr("status", 1);
     } else {
-        $("#statusTable").find("span[questionNumber=" + firstQuestionNumber + "]").addClass("redTile");
+        $("#statusTable").find("span[questionNumber=" + currentQuestionNumber + "]").addClass("redTile");
     }
 }
 
