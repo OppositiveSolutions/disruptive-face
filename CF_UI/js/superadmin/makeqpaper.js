@@ -37,7 +37,6 @@ function loadMakeQPaperPage(obj, questionId, isShow) {
 			height: 250,
 			plugins: ["advlist autolink lists charmap print preview ", "searchreplace visualblocks fullscreen", "insertdatetime  table contextmenu paste pramukhime  "],
 			toolbar: " undo redo | styleselect | bold italic charmap | alignleft aligncenter alignright alignjustify | bullist numlist | fullscreen  | pramukhime   pramukhimetogglelanguage ",
-			content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
 			// language : 'ml_IN'
 		});
 		$("#questionImageSubContent").change(function (event) {
@@ -226,7 +225,6 @@ function checkIfImageToUpload(returnMap, callBack) {
 function showQuestionCreateSection(subCategoryId, obj, questionNo, categoryId) {
 	$("#divAddNewQPaperPage").removeAttr("questionId");
 	var optionCount = $("#divAddNewQPaperPage").attr("optionsCount");
-	$("#divAddNewQPaperPage").modal("show");
 	$("#divAddNewQPaperPage").attr("subCategoryId", subCategoryId);
 	$("#divAddNewQPaperPage").attr("categoryId", categoryId);
 	createOptionTabsAccordingToOptionCount(optionCount, function () {
@@ -245,11 +243,11 @@ function showQuestionCreateSection(subCategoryId, obj, questionNo, categoryId) {
 				},
 				plugins: ["advlist autolink lists charmap print preview ", "searchreplace visualblocks fullscreen", "insertdatetime  table contextmenu paste pramukhime  "],
 				toolbar: " undo redo | styleselect | bold italic charmap | alignleft aligncenter alignright alignjustify | bullist numlist | fullscreen  | pramukhime   pramukhimetogglelanguage ",
-				content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i', '//www.tinymce.com/css/codepen.min.css'],
 				// language : 'ml_IN'
 			});
 
 		});
+		$("#divAddNewQPaperPage").modal("show");
 		setTimeout(function () {
 			if (obj) {
 				$("#divAddNewQPaperPage").attr("questionId", obj.questionId);
@@ -376,7 +374,9 @@ function createOptionTabsAccordingToOptionCount(optionCount, callBack) {
 		}
 
 	}
-	callBack();
+	setTimeout(function () {
+		callBack();
+	}, 2000);
 }
 
 function initializeSetQPaperPage(obj, questionId) {
