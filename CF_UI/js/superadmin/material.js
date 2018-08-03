@@ -15,6 +15,15 @@ function loadMaterialPage() {
         $("#saveMaterialUpload").click(function () {
             saveMaterial();
         });
+        $("#materialFileType").change(function () {
+            getCoachingCategoriesForType();
+        });
+        $("#materialFileCategory").change(function () {
+            getCoachingSubCategoriesForType();
+        });
+        $("#materialFileSubCategory").change(function () {
+            getCoachingSubCategoriesUnitForType();
+        });
     });
 }
 function initializeMaterialPage() {
@@ -29,6 +38,87 @@ function getAllMaterials() {
         }
     });
 }
+function getCoachingCategoriesForType() {
+    var typeId = $("#materialFileType").val();
+    $.ajax({
+        url: protocol + "//" + host + "/material/category/" + typeId,
+        type: "GET",
+        success: function (obj) {
+            populateCategoryForTypes(obj.data);
+        }
+    });
+}
+
+function populateCategoryForTypes(list) {
+    $("#materialFileCategory").empty();
+    if (!list || (list && !list.length)) {
+        return;
+    }
+    var slctOption = $("<option>").val("0").html("Select");
+    $("#materialFileCategory").append(slctOption);
+    for (var i = 0; i < list.length; i++) {
+        var option = $("<option>").val(list[i].coachingTypeCategoryId).html(list[i].name);
+        $("#materialFileCategory").append(option);
+    }
+}
+
+function getCoachingSubCategoriesForType() {
+    var categoryId = $("#materialFileCategory").val();
+    if (categoryId == 0) {
+        $("#materialFileSubCategory").hide();
+        return;
+    }
+    $.ajax({
+        url: protocol + "//" + host + "/material/category/sub/" + categoryId,
+        type: "GET",
+        success: function (obj) {
+            populateSubCategoriesForCategory(obj.data);
+        }
+    });
+}
+
+function populateSubCategoriesForCategory(list) {
+    $("#materialFileSubCategory").empty();
+    if (!list || (list && !list.length)) {
+        return;
+    }
+    var slctOption = $("<option>").val("0").html("Select");
+    $("#materialFileSubCategory").append(slctOption);
+    for (var i = 0; i < list.length; i++) {
+        var option = $("<option>").val(list[i].coachingTypeCategorySubId).html(list[i].name);
+        $("#materialFileSubCategory").append(option);
+    }
+}
+
+function getCoachingSubCategoriesUnitForType() {
+    var categorySubId = $("#materialFileSubCategory").val();
+    if (categorySubId == 0) {
+        $("#materialFileSubCategoryUnit").hide();
+        return;
+    }
+    $.ajax({
+        url: protocol + "//" + host + "/material/category/sub/unit/" + categorySubId,
+        type: "GET",
+        success: function (obj) {
+            populateSubCategoriesUnitForCategory(obj.data);
+        }
+    });
+}
+
+function populateSubCategoriesUnitForCategory(list) {
+    $("#materialFileSubCategoryUnit").empty();
+    if (!list || (list && !list.length)) {
+        return;
+    }
+    var slctOption = $("<option>").val("0").html("Select");
+    $("#materialFileSubCategoryUnit").append(slctOption);
+    for (var i = 0; i < list.length; i++) {
+        var option = $("<option>").val(list[i].coachingTypeCategorySubUnitId).html(list[i].name);
+        $("#materialFileSubCategoryUnit").append(option);
+    }
+}
+
+
 
 function populateUploadedFiles(list) {
     if (!list.length) {
@@ -117,9 +207,24 @@ function saveMaterial() {
     if (formdata == undefined) {
         return;
     }
-    var materialType = $("#materialFileType").val();
+
+    var coachingTypeId = $("#materialFileType").val();
+    var categoryId = $("#materialFileCategory").val();
+    var subCategoryId = $("#materialFileSubCategory").val();
+    var subCategoryUnitId = $("#materialFileSubCategoryUnit").val();
+
+    var url = protocol + "//" + host + "/material/upload/" + coachingTypeId;
+    if (categoryId && categoryId != 0 && categoryId != "0") {
+        url = protocol + "//" + host + "/material/category/upload/" + categoryId;
+    }
+    if (subCategoryId && subCategoryId != 0 && subCategoryId != "0") {
+        url = protocol + "//" + host + "/material/category/sub/upload/" + subCategoryId;
+    }
+    if (subCategoryUnitId && subCategoryUnitId != 0 && subCategoryUnitId != "0") {
+        url = protocol + "//" + host + "/material/category/sub/unit/upload/" + subCategoryUnitId;
+    }
     $.ajax({
-        url: protocol + "//" + host + "/material/upload/" + materialType,
+        url: url,
         type: "POST",
         processData: false,
         contentType: false,
@@ -127,7 +232,7 @@ function saveMaterial() {
         data: formdata,
         success: function (obj) {
             $("#divAddNewMaterials").modal("hide");
-             getAllMaterials();
+            getAllMaterials();
         }
     });
 
