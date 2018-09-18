@@ -2,12 +2,12 @@ var protocol = location.protocol;
 var host = location.host + "/cf-restful";
 var timerForCategory;
 $(document).ready(function () {
+    $("#loadingPanelContainer").hide();
     createExamForTest();
     $("#examContainer").hide();
     $("#examControls").hide();
     $("#sectionContainer").hide();
     $("#btnStartExam").click(function () {
-
         startExam();
     });
     $("#btnNextQuestion").click(function () {
@@ -21,6 +21,9 @@ $(document).ready(function () {
     });
     $("#btnFinishExam").click(function () {
         saveQuestionInExam();
+    });
+    $("#startExamModelClose").click(function () {
+        location.href="/CF_UI/#/mytests";
     });
 
 });
@@ -150,6 +153,7 @@ function saveQuestionInExam() {
         answerList.push(questionAnswerMap);
     });
     var examId = $("#examContainerPage").attr("examId");
+    $("#loadingPanelContainer").show();
     $.ajax({
         url: protocol + "//" + host + "/exam/saveexam/" + examId,
         type: "POST",
@@ -157,6 +161,7 @@ function saveQuestionInExam() {
         data: JSON.stringify(answerList),
         contentType: "application/json; charset=utf-8",
         success: function (returnMap) {
+            $("#loadingPanelContainer").hide();
             if (returnMap.data) {
                 alert("saved successfully");
                 showExamResultScoreBoard(examId);

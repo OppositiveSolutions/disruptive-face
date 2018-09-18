@@ -41,10 +41,10 @@ function populateMytestTable(list) {
             $(btnForTest).click(function () {
                 var testId = $(this).closest("tr").attr("testId");
                 var isDemo = $(this).closest("tr").attr("isDemo");
-                window.open('startexam.html?testId=' + testId + '&isDemo=' + isDemo, 'mywindow', 'width=1300,height=800')
+                location.href = 'startexam.html?testId=' + testId + '&isDemo=' + isDemo;
                 setTimeout(function () {
                     getAllTestList();
-                },1000);
+                }, 1000);
             });
         }
     }

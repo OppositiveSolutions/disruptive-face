@@ -195,7 +195,7 @@
 					<button class="btn btn-default" id="btnStartExam">Start Exam</button>
 				</div>
 				<div class="row" id="examControls">
-					<div class="col-sm-9 text-center pull-left" >
+					<div class="col-sm-9 text-center pull-left">
 						<button class="btn btn-second btn-sm pull-left marginRgtFive" id="btnPreviousQuestion"> Previous </button>
 						<button class="btn btn-second btn-sm pull-right marginRgtFive" id="btnNextQuestion"> Save & Next </button>
 						<button class="btn btn-second btn-sm pull-right marginRgtFive" id="btnReviewNextQuestion"> Review & Next </button>
@@ -331,12 +331,21 @@
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" id="startExamModelClose" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div id="loadingPanelContainer" style="z-index: 1;">
+		<!-- <label id="lblStopCurrentOperation">Click here to stop this operation</label> -->
+		<div id="loadingPanel">
+			<!--				<label id="lblLoadingMsg"></label>
+			<br />-->
+			<img src="images/sectionloading.gif" alt="loading..." />
+		</div>
+	</div>
+
 </body>
 
 </html>

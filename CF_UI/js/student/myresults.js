@@ -10,9 +10,10 @@ function loadMyResultsPage() {
 function initializeStudentResultPage() {
     google.charts.setOnLoadCallback(drawBarChart);
     getExamList();
-    getExamResultList();
 }
 function getExamList() {
+    $("#resultLeftmenu").find("ul").empty();
+    $("#tblMyResultsStatus").find("tbody").empty();
     var url = protocol + "//" + host + "/result/scorecard";
     $.ajax({
         url: url,
@@ -38,6 +39,7 @@ function populateExamListLeftMenu(list) {
             $(this).addClass('selection');
             var examData = $(this).data("examData");
             showMyResultExamResultScoreBoard(examData.examId);
+            getExamResultList(examData.examId);
         });
         $(ul).append(li);
         if (i == 0) {
@@ -134,15 +136,13 @@ function myResultPopulateTotalStatus(list) {
 }
 
 
-function getExamResultList() {
-    var testId = 1;
-    var url = protocol + "//" + host + "/exam/" + testId + "/questions";
+function getExamResultList(examId) {
+    var url = protocol + "//" + host + "/individual/" + examId + "/answers";
     $.ajax({
         url: url,
         type: "GET",
         cache: false,
         success: function (map) {
-            console.info(map);
             getAllCategoriesForQuestionPaper(map.data.questionPaperCategorys);
         }
     });
