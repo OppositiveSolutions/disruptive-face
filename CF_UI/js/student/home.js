@@ -198,7 +198,7 @@ function getCOmpletionStatusOfTheStudent() {
 function populateCompletionStatusBar(examCount) {
 	var examStatusPercentage = "100";
 	if (examCount.examCount < examCount.testCount) {
-		examStatusPercentage = (examCount.examCount / examCount.testCount) * 100;
+		examStatusPercentage = Math.round((examCount.examCount / examCount.testCount) * 100)*100/100;
 	}
 	$("#progressBArFIllSpan").css("width", + examStatusPercentage + "%");
 	$("#labelprogressBArFIllSpan").html(examStatusPercentage + "%");

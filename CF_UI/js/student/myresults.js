@@ -39,7 +39,6 @@ function populateExamListLeftMenu(list) {
             $(this).addClass('selection');
             var examData = $(this).data("examData");
             showMyResultExamResultScoreBoard(examData.examId);
-            getExamResultList(examData.examId);
         });
         $(ul).append(li);
         if (i == 0) {
@@ -59,6 +58,7 @@ function showMyResultExamResultScoreBoard(examId) {
         success: function (list) {
             populateMyResultScoreSheet(list.data);
             populateResultGraph(list.data);
+            getExamResultList(examId);
             $("#resultLeftmenu").find("ul").css("height", $("div.myResultContent").height() - 40);
         }
     });
@@ -104,7 +104,7 @@ function populateMyResultScoreSheet(list) {
         $(tr).append(tdWrong);
         var tdScore = $('<td>').html(list[i].totalMark);
         $(tr).append(tdScore);
-        var percentage = list[i].totalMark / list[i].totalPossibleMark * 100;
+        var percentage = Math.round((list[i].totalMark / list[i].totalPossibleMark * 100)*100)/100;
         var tdPercentage = $('<td>').html(percentage);
         $(tr).append(tdPercentage);
         var tdTime = $('<td>').html(list[i].timeTakenMin + "min " + list[i].timeTakenSec + "sec");
@@ -137,7 +137,7 @@ function myResultPopulateTotalStatus(list) {
 
 
 function getExamResultList(examId) {
-    var url = protocol + "//" + host + "/individual/" + examId + "/answers";
+    var url = protocol + "//" + host + "/question-paper/individual/" + examId + "/answers";
     $.ajax({
         url: url,
         type: "GET",
@@ -160,14 +160,9 @@ function getAllCategoriesForQuestionPaper(list) {
             $(divPanel).append(divPanelHeading);
             $(divPanelHeading).attr("categoryId", list[i].category.categoryId);
             $(divPanel).attr("categoryId", list[i].category.categoryId);
-            var aToggleButton = $("<button>").addClass("btn btn-sm btn-default pull-right btnView").html("view");
-            $(divPanelHeading).append(aToggleButton);
-            $(aToggleButton).attr("data-toggle", "collapse");
-            $(aToggleButton).attr("data-parent", "#questionAnswerList");
-            $(aToggleButton).attr("href", "#category" + index + "Condent");
             var h4title = $("<h4>").addClass("panel-title").html(list[i].category.name);
             $(divPanelHeading).append(h4title);
-            var divForCategoryCondent = $("<div>").addClass("panel-collapse collapse ");
+            var divForCategoryCondent = $("<div>").addClass("panel panel-default ");
             $(divForCategoryCondent).attr("id", "category" + index + "Condent");
             $(divPanel).append(divForCategoryCondent);
             var divForPanelCategoryCondent = $("<div>").addClass("panel-body");
@@ -201,20 +196,6 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 
             //-------------------collapse buttons------------------------------------------------//
 
-            var btnForCollapse = $("<button>").addClass("btn btn-default contentBtn btn-sm pull-right marginrgtfive").html("-");
-            $(btnForCollapse).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
-            $(btnForCollapse).click(function () {
-
-                collapseCurrentSubCategoryData($(this));
-            });
-            $(h4ForSubHead).append(btnForCollapse);
-
-            var btnForExpandCollapse = $("<button>").addClass("btn btn-default contentBtn btn-sm pull-right marginrgtfive").html("+");
-            $(btnForExpandCollapse).attr("subCategoryId", subCategoryList[j].questionPaperSubCategoryId);
-            $(btnForExpandCollapse).click(function () {
-                viewCurrentSubCategoryData($(this));
-            });
-            $(h4ForSubHead).append(btnForExpandCollapse);
             //------------------------------------------------------------------------------//
 
             var divForContent = $("<div>").addClass("subContent").html(subCategoryList[j].content);
@@ -235,7 +216,6 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
 
             }
             populateQuestionAndOptions(subCategoryList[j], divForSubBody);
-            $(divForSubBody).hide();
         }
     }
 }
@@ -249,45 +229,9 @@ function collapseCurrentSubCategoryData(item) {
     var subCategoryId = $(item).attr("subCategoryId");
     $("#questionAnswerList").find("div.subCat[subCategoryId=" + subCategoryId + "]").hide();
 }
-function deletContentToSUbCategory(subCategoryId) {
-    $.ajax({
-        url: protocol + "//" + host + "/question-paper/sub-category/" + subCategoryId + "/content",
-        type: "DELETE",
-        cache: false,
-        success: function (obj) {
-            refreshQuestionPaperPage();
-        }
-    });
-}
 
 
-function addContentToSUbCategory(subCategoryId, subData) {
-    $("#divAddNewSubContentPage").modal("show");
-    $("#divAddNewSubContentPage").attr("isEdit", false);
-    tinymce.get('txtAreaForSubContent').setContent("");
-    $("#divAddImgCOntentForMakeQPaper").find("div.previewDiv").html("");
-    $("#questionImageSubContent").val("");
-    $("#divAddNewSubContentPage").attr("subCategoryId", subCategoryId);
-    try {
-        if (subData) {
-            $("#divAddNewSubContentPage").attr("isEdit", true);
-            tinymce.get('txtAreaForSubContent').setContent(subData.content);
-            try {
-                if (!subData.questionPaperSubCategoryImage[0]) {
-                    return;
-                }
-                var img = $("<img>").attr("src", "data:image/jpg;base64," + subData.questionPaperSubCategoryImage[0].image).attr("width", "100%");
-                $("#divAddImgCOntentForMakeQPaper").find("div.previewDiv").html(img);
-                $(img).data("subImgMap", subData.questionPaperSubCategoryImage[0]);
-                $('#divAddNewSubContentPage').find("div.previewDiv").find("img").data("subImgMap");
-            } catch (e) {
 
-            }
-        }
-    } catch (e) {
-
-    }
-}
 function populateQuestionAndOptions(subCategory, targetDiv) {
     $(targetDiv).css("border-top", "1px solid #ddd");
     var questionsList = subCategory.questions;
@@ -332,31 +276,6 @@ function populateQuestionAndOptions(subCategory, targetDiv) {
             }
             $(ulForQuestion).append(divForQuestion);
 
-
-            var spanForEditAndDelete = $("<span>").addClass("pull-right editDeleteSpan");
-            $(spanForEditAndDelete).attr("subCategroyId", questionsList[k].questionPaperSubCategoryId);
-            $(spanForEditAndDelete).data("question", questionsList[k].question);
-            $(spanForEditAndDelete).attr("questionNo", questionsList[k].questionNo);
-            var editIcon = $("<i>").addClass("fa fa-pencil");
-            $(editIcon).click(function () {
-                var questionMap = $(this).parent().data("question");
-                var subCategoryId = $(this).parent().attr("subCategroyId");
-                var questionNo = $(this).parent().attr("questionNo");
-                var categoryId = $(this).closest("div.panel").attr("categoryId");
-                $("#divAddNewQPaperPage").attr("isEdit", "true");
-
-                showQuestionCreateSection(subCategoryId, questionMap, questionNo, categoryId);
-            });
-            var deleteIcon = $("<i>").addClass("fa fa-trash-o");
-            $(spanForEditAndDelete).append(editIcon);
-            $(spanForEditAndDelete).append(deleteIcon);
-            $(deleteIcon).click(function () {
-                var questionMap = $(this).parent().data("question");
-                if (confirm("Are you sure you want to delete the question")) {
-                    deleteQuestion(questionMap.questionId);
-                }
-            });
-            $(divForQuestion).append(spanForEditAndDelete);
             var ulForOptions = $("<ul>").addClass("optionsList");
             var optionsList = questionsList[k].question.options;
             if (optionsList) {
@@ -365,11 +284,14 @@ function populateQuestionAndOptions(subCategory, targetDiv) {
                     $(liForOption).attr("questionNumber", optionsList[p].optionNo);
                     $(liForOption).attr("optionId", optionsList[p].optionId);
                     $(ulForOptions).append(liForOption);
+                    if(optionsList[p].optionNo==questionsList[k].question.optionEntered){
+                        $(liForOption).css("color","blue");
+                    }
                 }
             }
             $(divForQuestion).append(ulForOptions);
             var correctAnswer = $(ulForOptions).find("li[questionNumber=" + questionsList[k].question.correctOptionNo + "]").text();
-            var pForAnswer = $("<p>").addClass("answerDiv").html(" Answer: " + correctAnswer);
+            var pForAnswer = $("<p>").addClass("answerDiv").html(" Answer: <span style='color:green;font-weight:bold;'>" + correctAnswer+"</span>");
             $(divForQuestion).append(pForAnswer);
 
         }
