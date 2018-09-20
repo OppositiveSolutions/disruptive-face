@@ -111,7 +111,7 @@ function populateMyResultScoreSheet(list) {
         $(tr).append(tdTime);
         $(tbody).append(tr);
     }
-    //for()
+    // for()
 
 }
 function myResultPopulateTotalStatus(list) {
@@ -177,7 +177,8 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
         for (var j = 0; j < subCategoryList.length; j++) {
             var index = j + 1;
 
-            //------------------------------panels for sub category-----------------------//
+            // ------------------------------panels for sub
+			// category-----------------------//
             var subCategoryPanel = $("<div>").addClass("panel panel-default");
             $(categoryDiv).append(subCategoryPanel);
             var divSubCategoryTop = $("<div>").addClass("panel-heading subCatHead");
@@ -194,9 +195,10 @@ function getSubCategoryForACategory(subCategoryList, categoryDiv, correctAnswerM
                 $(divForSubBody).append(PforDirection);
             }
 
-            //-------------------collapse buttons------------------------------------------------//
+            // -------------------collapse
+			// buttons------------------------------------------------//
 
-            //------------------------------------------------------------------------------//
+            // ------------------------------------------------------------------------------//
 
             var divForContent = $("<div>").addClass("subContent").html(subCategoryList[j].content);
             $(divForSubBody).append(divForContent);
@@ -285,7 +287,11 @@ function populateQuestionAndOptions(subCategory, targetDiv) {
                     $(liForOption).attr("optionId", optionsList[p].optionId);
                     $(ulForOptions).append(liForOption);
                     if(optionsList[p].optionNo==questionsList[k].question.optionEntered){
-                        $(liForOption).css("color","blue");
+                    	if(questionsList[k].question.correctOptionNo==questionsList[k].question.optionEntered){
+                    		$(liForOption).css("color","blue");
+                    	} else {
+                    		$(liForOption).css("color","red");
+                    	}
                     }
                 }
             }
