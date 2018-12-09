@@ -8,6 +8,11 @@ function loadMaterialPage() {
             $("#divAddNewMaterials").modal("show");
             $("#filenameSpanMaterialUpload").html("");
             $("#materialUpload").val("");
+            $("#materialFileType").val(0);
+            $("#materialFileCategory").empty();
+            $("#materialFileSubCategory").empty();
+            $("#materialFileSubCategoryUnit").empty();
+            $("#divIsfree").find("input:radio").prop("checked", false);
         });
         $("#materialUpload").change(function () {
             $("#filenameSpanMaterialUpload").html($("#materialUpload")[0].files[0].name)
@@ -31,7 +36,7 @@ function initializeMaterialPage() {
 }
 function getAllMaterials() {
     $.ajax({
-        url: protocol + "//" + host + "/material/all",
+        url: protocol + "//" + host + "/material",
         type: "GET",
         success: function (obj) {
             populateUploadedFiles(obj.data);
@@ -191,6 +196,11 @@ function validateAndReturnMaterialInfo() {
     //     alert("Please enter achiever description");
     //     return;
     // }
+    if ($("#materialFileType").val() == "0") {
+        alert("Select Coaching type");
+        return;
+    }
+
     if ($("#materialUpload").val() == "") {
         alert("choose material document");
         return;
@@ -208,6 +218,13 @@ function saveMaterial() {
         return;
     }
 
+    var isFree = $("#divIsfree").find("input:radio:checked").val();
+    if (isFree == undefined || isFree == null) {
+        alert("Select Material Type");
+        return;
+    }
+    formdata.append("isFree", isFree);
+
     var coachingTypeId = $("#materialFileType").val();
     var categoryId = $("#materialFileCategory").val();
     var subCategoryId = $("#materialFileSubCategory").val();
@@ -215,14 +232,15 @@ function saveMaterial() {
 
     var url = protocol + "//" + host + "/material/upload/" + coachingTypeId;
     if (categoryId && categoryId != 0 && categoryId != "0") {
-        url = protocol + "//" + host + "/material/category/upload/" + categoryId;
+        url = protocol + "//" + host + "/material/upload/category/" + categoryId;
     }
     if (subCategoryId && subCategoryId != 0 && subCategoryId != "0") {
-        url = protocol + "//" + host + "/material/category/sub/upload/" + subCategoryId;
+        url = protocol + "//" + host + "/material/upload/category/sub/" + subCategoryId;
     }
     if (subCategoryUnitId && subCategoryUnitId != 0 && subCategoryUnitId != "0") {
-        url = protocol + "//" + host + "/material/category/sub/unit/upload/" + subCategoryUnitId;
+        url = protocol + "//" + host + "/material/upload/category/sub/unit/" + subCategoryUnitId;
     }
+    url += "?isFree=" + isFree;
     $.ajax({
         url: url,
         type: "POST",

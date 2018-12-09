@@ -33,6 +33,7 @@
                 <div class="form-group">
                     <label> Coaching Type </label>
                     <select class="form-control " id="materialFileType">
+                        <option value="0">Select</option>
                         <option value="1">Banking</option>
                         <option value="2">Kerala PSC</option>
                         <option value="3">SSC/Railway</option>
@@ -61,6 +62,15 @@
                     <label for="materialUpload" class="btn btn-sm  btn-white"> Choose</label>
                     <input type="file" id="materialUpload" style="display: none" />
                     <span class="fileNameSpan" id="filenameSpanMaterialUpload"></span>
+                </div>
+                <div class="form-group " id="divIsfree">
+                    <label>
+                        Select Material Type:
+                    </label>
+                    <label>
+                        <input type="radio" name="materialIsFree" value="1" /> Free</label>
+                    <label>
+                        <input type="radio" name="materialIsFree" value="0" /> Paid</label>
                 </div>
             </div>
             <div class="modal-footer text-center">
